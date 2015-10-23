@@ -1,0 +1,50 @@
+<%= form_tag '/supply/orders/return', method: :get do %>
+    开始
+    <%= date_field_tag :start_date, params[:start_date] %>
+    结束
+    <%= date_field_tag :end_date, params[:end_date] %>
+    单据ID
+    <%= text_field_tag :id, params[:id] %>
+    单位ID
+    <%= text_field_tag :customer_id, params[:customer_id] %>
+    排除单位ID
+    <%= text_field_tag :not_customer_id, params[:not_customer_id] %>
+    <%= submit_tag '查询未录入数据的单据', class: 'btn btn-primary' %>
+<% end %>
+
+<table class="table table-striped">
+  <thead><th>订单ID</th><th>单位ID</th><th>订货单位</th><th>门店</th><th>到货量未填个数</th><th>单据类型</th><th>到货日期</th><th>金额</th><th>操作</th></thead>
+  <% @orders.each do |order| %>
+      <tr>
+        <td>
+          <%= order.id %>
+        </td>
+        <td>
+          <%= order.customer.id %>
+        </td>
+        <td>
+          <%= order.customer.simple_name %>
+        </td>
+        <td>
+          <%= order.store.name %>
+        </td>
+        <td>
+          <%= order.not_input_number %>
+        </td>
+        <td>
+          <%= order.order_type.name %>
+        </td>
+        <td>
+          <%= order.reach_order_date %>
+        </td>
+        <td>
+          <%= order.sum_money %>
+        </td>
+        <td>
+          <%= link_to '输入到货量', edit_supply_order_path(order.id), target: '_blank' %>
+        </td>
+      </tr>
+  <% end unless @orders.blank? %>
+</table>
+
+<%= will_paginate @orders, :class => 'flickr_pagination' ,:previous_label => '上一页', :next_label => '下一页' unless @orders.blank? %>

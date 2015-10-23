@@ -1,0 +1,1 @@
+$("#store_select").html("<%= escape_javascript( select_tag( 'store_id', options_from_collection_for_select(@stores, 'id', 'name', @store_id) ) ) %>");

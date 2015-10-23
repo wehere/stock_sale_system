@@ -1,0 +1,6 @@
+
+$("#customer_<%= @customer.id %>").html("<%= escape_javascript(render partial: 'order_types', locals: {c:@customer} ) %>");
+$(".order_type_name_<%= @customer.id %>").val('');
+$(".order_type_name_<%= @customer.id %>").hide();
+$(".btn_add_<%= @customer.id %>").hide();
+$(".show_add_<%= @customer.id %>").show();

@@ -1,0 +1,45 @@
+<div class="row">
+  <div class="col-md-3 text-right">
+  <h2>登录</h2>
+  </div>
+</div>
+
+<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+  <div class="row">
+    <div class="col-md-2 text-right">
+        <%= f.label '邮箱' %>
+    </div>
+    <div class="col-md-2">
+    <%= f.email_field :email, autofocus: true %>
+    </div>
+  </div>
+<br/>
+  <div class="row">
+    <div class="col-md-2 text-right">
+        <%= f.label '密码' %>
+    </div>
+    <div class="col-md-2">
+        <%= f.password_field :password, autocomplete: "off" %>
+    </div>
+  </div>
+<br/>
+  <% if devise_mapping.rememberable? -%>
+    <div class="row">
+      <div class="col-md-2 text-left col-md-offset-2">
+      <%= f.check_box :remember_me %> <%= f.label '记住我' %>
+      </div>
+    </div>
+  <% end -%>
+<br/>
+  <div class="row">
+    <div class="col-md-1 text-left col-md-offset-2">
+        <%= f.submit "登录", class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>
+<br/>
+<div class="row">
+  <div class="col-md-offset-2 col-md-2 text-left">
+    <%= render "devise/shared/links" %>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+<br/>
+<h2>价格查询</h2>
+<br/>
+<%= form_tag search_purchase_prices_path, method: :post do %>
+<%= label_tag 'year_month_id', '月份' %>
+<%= select_tag 'year_month_id', options_from_collection_for_select(@year_months, 'id', 'val', @year_month_id) %>
+<%= label_tag 'supplier_id', '供应商' %>
+<%= select_tag 'supplier_id', options_from_collection_for_select(@supplies, 'id', 'simple_name', @supplier_id) %>
+<%= label_tag 'product_name','品名' %>
+<%= text_field_tag 'product_name', @product_name %>
+    <%= submit_tag '查询', class: 'btn btn-info' %>
+<% end %>
+<br/>
+<% if @search_results.blank? %>
+    <%= '无'  %>
+<% else %>
+    <table class="table table-striped table-hover">
+        <thead>
+        <th>供应商</th><th>品名</th><th>规格</th><th>价格</th>
+        </thead>
+        <% @search_results.each do |price| %>
+          <% next if price.product.blank? || price.supplier.blank? %>
+          <tr>
+            <td>
+            <%= price.supplier.simple_name %>
+            </td>
+            <td>
+            <%= price.product.chinese_name %>
+            </td>
+            <td>
+            <%= price.true_spec %>
+            </td>
+            <td>
+            <%= price.price %>
+            </td>
+
+          </tr>
+        <% end %>
+    </table>
+<% end %>

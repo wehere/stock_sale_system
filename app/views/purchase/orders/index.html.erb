@@ -1,0 +1,63 @@
+<br/>
+<div class="row">
+  <% @recent_months.each do |date| %>
+      <div class="col-sm-1">
+        <%= form_tag purchase_orders_path, method: :post do %>
+            <%= hidden_field_tag 'query_date', date %>
+            <%= submit_tag "#{YearMonth.chinese_month_format date}", class: "btn #{YearMonth.chinese_month_format(date)==@active_month ? 'btn-success' : 'btn-primary'}" %>
+        <% end %>
+      </div>
+  <% end %>
+</div>
+<table class="table">
+  <thead><th>订单ID</th><th>送货单位</th><th>我的门店</th><th>单据类型</th><th>到货日期</th><th>金额</th></thead>
+  <% month_money = 0.0 %>
+  <% @orders.each do |order| %>
+      <tr>
+        <td>
+          <%= order.id %>
+        </td>
+        <td>
+          <%= order.supplier.simple_name %>
+        </td>
+        <td>
+          <%= order.store.name %>
+        </td>
+        <td>
+          <%= order.order_type.name %>
+        </td>
+        <td>
+          <%= order.reach_order_date %>
+        </td>
+        <td>
+          <b><%= order.sum_money %></b>
+          <% month_money += order.sum_money %>
+        </td>
+        <td>
+          <%= link_to '查看明细',edit_purchase_order_path(order.id),remote: true%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <%= link_to 'show', purchase_order_path(order.id) %>
+        </td>
+      </tr>
+  <% end %>
+  <tr>
+    <td colspan="5"><b>月金额</b></td><td><b><%= month_money.round(2) %></b></td><td></td><td></td>
+  </tr>
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel"></h4>
+      </div>
+      <div class="modal-body">
+        <div id="modal-body"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>

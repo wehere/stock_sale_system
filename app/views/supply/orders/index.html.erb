@@ -1,0 +1,41 @@
+<br/>
+<%= form_tag supply_orders_path, method: :get do %>
+    <%= label_tag 'date_between', '时间区间' %>
+    <%= date_field_tag 'date_start', @date_start %>
+    <%= label_tag 'to', '至' %>
+    <%= date_field_tag 'date_end', @date_end %>
+    <%= label_tag 'key', '关键词' %>
+    <%= text_field_tag 'key', @key %>
+    <%= submit_tag '查询', class: 'btn btn-primary' %>(关键词可以是订单ID、订货单位ID、订货单位名字)
+<% end %>
+<br/>
+<table class="table table-striped">
+  <thead><th>订单ID</th><th>订货单位</th><th>门店</th><th>单据类型</th><th>到货日期</th><th>金额</th><th>操作</th></thead>
+    <% @orders.each do |order| %>
+      <tr>
+        <td>
+        <%= order.id %>
+        </td>
+        <td>
+          <%= order.customer.simple_name %>
+        </td>
+        <td>
+          <%= order.store.name %>
+        </td>
+        <td>
+          <%= order.order_type.name %>
+        </td>
+        <td>
+          <%= order.reach_order_date %>
+        </td>
+        <td>
+          <%= order.sum_money %>
+        </td>
+        <td>
+          <%= link_to '输入到货量', edit_supply_order_path(order.id), target: '_blank' %>
+        </td>
+      </tr>
+    <% end %>
+</table>
+
+<%= will_paginate @orders, :class => 'flickr_pagination' ,:previous_label => '上一页', :next_label => '下一页'%>

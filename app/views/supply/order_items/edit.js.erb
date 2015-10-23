@@ -1,0 +1,6 @@
+$('#OrderItemModal').modal('show');
+$(".update_order_item_form").attr('action', '/supply/order_items/' + '<%= @order_item.id %>');
+$("#order_item_modal_name").text("<%= @order_item.product.chinese_name %>");
+$("#order_item_modal_plan_weight").val("<%= @order_item.plan_weight %>");
+$("#order_item_modal_price").val("<%= @order_item.real_price %>");
+$("#order_item_modal_real_weight").val("<%= @order_item.real_weight == 0 ? '' : @order_item.real_weight %>");

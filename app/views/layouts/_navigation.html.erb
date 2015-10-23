@@ -1,0 +1,34 @@
+<%# navigation styled for Bootstrap 3.0 %>
+<!--<nav class="navbar navbar-inverse navbar-fixed-top">-->
+  <!--<div class="container">-->
+    <!--<div class="navbar-header">-->
+      <!--<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">-->
+        <!--<span class="sr-only">Toggle navigation</span>-->
+        <!--<span class="icon-bar"></span>-->
+        <!--<span class="icon-bar"></span>-->
+        <!--<span class="icon-bar"></span>-->
+      <!--</button>-->
+      <!--<%= link_to 'Home', root_path, class: 'navbar-brand' %>-->
+    <!--</div>-->
+    <!--<div class="collapse navbar-collapse">-->
+      <!--<ul class="nav navbar-nav">-->
+        <!--<%= render 'layouts/navigation_links' %>-->
+      <!--</ul>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</nav>-->
+
+<div class="sx-global-topbar">
+  <div class="y-topbar-row" style="position: static; opacity: 1;">
+    <div class="aliyun-login">
+      <a class="lnk-login-pre" onlcick="return false;" href="#nogo">欢迎来访，</a>
+      <a id="lnk_login" class="lnk-login" target="_self" href="<%= new_user_session_path %>">
+        <span>请登录</span>
+      </a>
+      <span class="li-spacing"></span>
+      <a id="lnk_reg" class="lnk-reg" target="_self" 		href="https://account.aliyun.com/register/register.htm?oauth_callback=http%3A%2F%2Fwww.aliyun.com%2F">
+        <span>注册</span>
+      </a>
+    </div>
+  </div>
+</div>

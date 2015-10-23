@@ -1,0 +1,46 @@
+<%# provide(:title, 'All users') %>
+<h1 class="text-center"> 公司详细介绍 </h1>
+<div class="company_show">
+      <%## render 'shared/error_messages' %>
+    <div class="row">
+      <div class="col-sm-1 col-sm-offset-3 text-left">
+        <%= '公司简称:' %>
+      </div>
+      <div class="col-sm-8">
+        <%= @company.simple_name %>
+      </div>
+    </div>
+	</br>
+    <div class="row">
+      <div class="col-sm-1 col-sm-offset-3 text-left">
+        <%= '公司全称:' %>
+      </div>
+      <div class="col-sm-8">
+        <%= @company.full_name %>
+      </div>
+    </div>
+	</br>
+    <div class="row">
+      <div class="col-sm-1 col-sm-offset-3 text-left">
+        <%= '电话号码:' %>
+      </div>
+      <div class="col-sm-8">
+        <%= @company.phone %>
+      </div>
+    </div>
+	</br>
+    <div class="row">
+      <div class="col-sm-1 col-sm-offset-3 text-left">
+        <%= '公司地址:' %>
+      </div>
+      <div class="col-sm-8">
+        <%= @company.address %>
+      </div>
+    </div>
+	</br>
+	</br>
+    <div class="text-center">
+      <%= link_to '返回公司列表' ,sp_companies_path%>
+    </div>
+  </div>
+

@@ -1,0 +1,70 @@
+<br/>
+<%= form_tag prepare_link_to_general_product_supply_products_path, method: :get, id: 'create_link_p2p_form' do %>
+    <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
+    <%= hidden_field_tag 'product_id', @product_id %>
+    <div class="row">
+      <div class="col-sm-10 col-sm-offset-2">
+        <h4 style="color: red">
+          <% unless @general_product.blank? %>
+              已经关联到<%= @general_product.name %>
+          <% end %>
+        </h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2 text-right">
+        <label>待关联产品名称</label>
+      </div>
+      <div class="col-sm-2">
+        <%= text_field_tag 'name', @name %>
+      </div>
+      <div class="col-sm-2 text-left">
+        <%= link_to '查询', "javascript:query_submit()", class: 'btn btn-primary' %>
+      </div>
+    </div>
+    <br/>
+    <div class="row">
+      <div class="col-sm-2 text-right">
+        <label>选择要关联的产品</label>
+      </div>
+      <div class="col-sm-10">
+        <table class="table">
+          <thead>
+          <th>选择</th>
+          <th>通用产品ID</th>
+          <th>通用产品名称</th>
+          <th>卖货人</th>
+          </thead>
+          <tbody>
+          <% @general_products.each do |general_product| %>
+              <tr>
+                <td><%= radio_button_tag 'general_product_id', general_product.id, @general_product_id == general_product.id %></td>
+                <td><%= general_product.id rescue '' %></td>
+                <td><%= general_product.name rescue '' %></td>
+                <td><%= general_product.seller.name rescue '' %></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+        <%= will_paginate @general_products, :class => 'flickr_pagination', :previous_label => '上一页', :next_label => '下一页' %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2 col-sm-offset-2">
+        <%= link_to '关联', "javascript:do_link_p2p()", class: 'btn btn-primary' %>
+      </div>
+    </div>
+<% end %>
+
+<script language="javascript">
+    function query_submit() {
+        $("#create_link_p2p_form").attr('action', '<%= prepare_link_to_general_product_supply_products_path %>');
+        $("#create_link_p2p_form").attr('method', 'get');
+        $("#create_link_p2p_form").submit();
+    }
+    function do_link_p2p() {
+        $("#create_link_p2p_form").attr('action', '<%= do_link_to_general_product_supply_products_path %>');
+        $("#create_link_p2p_form").attr('method', 'post');
+        $("#create_link_p2p_form").submit();
+    }
+</script>

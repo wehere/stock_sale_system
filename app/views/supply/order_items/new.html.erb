@@ -1,0 +1,121 @@
+
+<% if @order_id.blank? %>
+    <br/>
+    <%= form_tag prices_search_supply_order_items_path, method: :get, id: 'order_item_form' do %>
+        <div class="row">
+          <div class="col-sm-2 text-right">
+            <label>单据ID</label>
+          </div>
+          <div class="col-sm-2">
+            <%= text_field_tag 'order_id' %>
+          </div>
+          <div class="col-sm-2">
+            <%= submit_tag '查询品项', class: 'btn btn-primary', id: "submit_button", disabled: 'disabled' %>
+          </div>
+        </div>
+    <% end %>
+<% else %>
+    <br/>
+    <%= form_tag prices_search_supply_order_items_path, method: :get, id: 'order_item_form' do %>
+        <%= tag(:input, :type => "hidden", :name =>request_forgery_protection_token.to_s, :value =>form_authenticity_token) %>
+        <%= hidden_field_tag 'order_id', @order_id %>
+        <div class="row">
+          <div class="col-sm-2 text-right">
+            <label>单据ID:</label>
+          </div>
+          <div class="col-sm-2 text-left">
+            <label><%= @order.id %></label>
+          </div>
+          <div class="col-sm-2 text-right">
+            <label>客户名称:</label>
+          </div>
+          <div class="col-sm-2 text-left">
+            <label><%= @order.customer.simple_name %></label>
+          </div>
+        </div>
+        <br/>
+        <div class="row">
+          <div class="col-sm-2 text-right">
+            <label>品名</label>
+          </div>
+          <div class="col-sm-2">
+            <%= text_field_tag 'product_name', @product_name %>
+          </div>
+          <div class="col-sm-2">
+            <%= link_to '查询', 'javascript:query_submit()', class: 'btn btn-primary' %>
+          </div>
+        </div>
+        <% unless @prices.blank? %>
+            <div class="row">
+              <div class="col-sm-2 text-right">
+                <label>选择产品与价格</label>
+              </div>
+              <div class="col-sm-10">
+                <table class="table">
+                  <thead>
+                    <th>选择</th><th>价格ID</th><th>产品ID</th><th>产品名称</th><th>价格</th><th>规格</th>
+                  </thead>
+                  <tbody>
+                    <% @prices.each do |price| %>
+                        <tr>
+                          <td><%= radio_button_tag 'price_id', price.id, @price_id == price.id %></td>
+                          <td><%= price.id rescue '' %></td>
+                          <td><%= price.product.id rescue '' %></td>
+                          <td><%= price.product.chinese_name rescue '' %></td>
+                          <td><%= price.price rescue '' %></td>
+                          <td><%= price.true_spec rescue '' %></td>
+                        </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <%= will_paginate @prices, :class => 'flickr_pagination' ,:previous_label => '上一页', :next_label => '下一页'%>
+            <div class="row">
+              <div class="col-sm-2 text-right">
+                <label>订货量</label>
+              </div>
+              <div class="col-sm-2">
+                <%= text_field_tag 'plan_weight', @plan_weight %>
+              </div>
+              <div class="col-sm-2 text-right">
+                <label>到货量</label>
+              </div>
+              <div class="col-sm-2">
+                <%= text_field_tag 'real_weight', @real_weight %>
+              </div>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="col-sm-2 col-sm-offset-2">
+                <%= link_to '提交', "javascript:order_item_create_submit()", class: "btn btn-primary" %>
+              </div>
+            </div>
+        <% end %>
+    <% end %>
+<% end %>
+
+<script language="javascript">
+    function query_submit(){
+        $('#order_item_form').attr('action', '<%= prices_search_supply_order_items_path %>');
+        $('#order_item_form').attr('method', 'get');
+        $('#order_item_form').submit();
+    }
+    function order_item_create_submit(){
+        $('#order_item_form').attr('action', '<%= supply_order_items_path %>');
+        $('#order_item_form').attr('method', 'post');
+        $('#order_item_form').submit();
+    }
+    $("#order_id").focusout(
+            function() {
+                var id = $("#order_id").val();
+                var re = /^[1-9]+[0-9]*]*$/;
+                if (re.test(id)) {
+                    $("#submit_button").removeAttr("disabled");
+                }
+                else {
+                    $("#submit_button").attr("disabled", 'disabled');
+                    alert("单据ID必须是正整数，请重新输入");
+                }
+            });
+</script>

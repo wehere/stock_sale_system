@@ -1,0 +1,12 @@
+<br/>
+<%= form_tag '/supply/customers/add_notice', method: :post do %>
+    供应商名称
+    <%= @supplier.simple_name %>
+    <%= hidden_field_tag :supplier_id, @supplier.id %>
+    客户名称：
+    <%= @customer.simple_name %>
+    <%= hidden_field_tag :customer_id, @customer.id %>
+    单据类型
+    <%= text_area_tag :notice, params[:notice] %>
+    <%= submit_tag '保存', class: "btn btn-primary" %>
+<% end %>

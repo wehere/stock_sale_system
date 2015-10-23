@@ -1,0 +1,50 @@
+<br/><br/>
+<%= form_tag "/supply/order_items/null_price", method: :get do %>
+  开始<%= date_field_tag :start_date, params[:start_date] %>
+  结束<%= date_field_tag :end_date, params[:end_date] %>
+  单位ID
+  <%= text_field_tag :customer_id, params[:customer_id] %>
+  排除单位ID
+  <%= text_field_tag :not_customer_id, params[:not_customer_id] %>
+  <%= submit_tag "查询未录入价格的品项", class: "btn btn-primary" %>
+<% end %>
+<table class="table">
+  <thead>
+    <th>ID</th><td>打单者</td><th>单据ID</th><th>到货日期</th><th>单位</th><th>单位ID</th>
+    <th>产品名称</th><th width="20">规格</th><th width="20">价格</th><th width="50">操作</th>
+  </thead>
+  <tbody>
+    <% @order_items.each do |order_item| %>
+        <tr id="order_item_<%= order_item.id %>">
+          <form accept-charset="UTF-8" action="/supply/prices/<%= order_item.price_id %>/true_update_price" method="post">
+              <td><%= order_item.id %></td>
+              <td><%= order_item.order.user.user_name %></td>
+              <td><%= order_item.order_id %></td>
+              <td><%= order_item.order.reach_order_date %></td>
+              <td><%= order_item.order.customer.simple_name %></td>
+              <td><%= order_item.order.customer.id %></td>
+              <td><%= order_item.product.chinese_name %></td>
+              <td><%= text_field_tag 'true_spec', order_item.price.true_spec, size: 10 %></td>
+              <td><%= text_field_tag 'price', order_item.price.price, size: 10 %></td>
+              <td><%= submit_tag '更新价格', class: 'btn btn-primary' %></td>
+              <td><%= link_to '废弃', "javascript:destroy_order_item(#{order_item.id})", class: 'btn btn-primary' %></td>
+          </form>
+        </tr>
+    <% end unless @order_items.blank? %>
+  </tbody>
+</table>
+
+<%= will_paginate @order_items, :class => 'flickr_pagination' ,:previous_label => '上一页', :next_label => '下一页' unless @order_items.blank? %>
+
+<script language="javascript">
+  function destroy_order_item(order_item_id){
+      $.ajax({
+        url: '/supply/order_items/' + order_item_id + '/change_delete_flag',
+        type: 'get',
+        async: false
+      }).done(
+              function(result){
+          $("#order_item_" + order_item_id).hide();
+      });
+  }
+</script>

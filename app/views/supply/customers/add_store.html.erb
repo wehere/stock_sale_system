@@ -1,0 +1,9 @@
+<br/>
+<%= form_tag '/supply/customers/add_store', method: :post do %>
+    客户名称：
+    <%= @customer.simple_name %>
+    <%= hidden_field_tag :company_id, @customer.id %>
+    门店名称
+    <%= text_field_tag :name, params[:name] %>
+    <%= submit_tag '保存', class: "btn btn-primary" %>
+<% end %>

@@ -1,0 +1,2 @@
+module Sp::PricesHelper
+end

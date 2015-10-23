@@ -1,0 +1,48 @@
+<h1 class="text-center">创建产品</h1>
+<%= form_for @product, url: purchase_products_path, method: :post do |f| %>
+    <div class="row">
+      <div class="col-sm-1 col-sm-offset-3 text-left">
+        中文首字母
+      </div>
+      <div class="col-sm-8">
+        <%= f.text_field :simple_abc %>
+      </div>
+    </div>
+    <br/>
+    <div class="row">
+      <div class="col-sm-1 col-sm-offset-3 text-left">
+        中文名称
+      </div>
+      <div class="col-sm-8">
+        <%= f.text_field :chinese_name %>
+      </div>
+    </div>
+    <br/>
+    <div class="row">
+      <div class="col-sm-1 col-sm-offset-3 text-left">
+        英文名称
+      </div>
+      <div class="col-sm-8">
+        <%= f.text_field :english_name %>
+      </div>
+    </div>
+    <br/>
+    <div class="row">
+      <div class="col-sm-1 col-sm-offset-3 text-left">
+        规格
+      </div>
+      <div class="col-sm-8">
+        <%= f.text_field :spec %>
+      </div>
+    </div>
+    <br/>
+    <div class="row">
+      <div class="col-sm-1 col-sm-offset-3 text-right">
+
+      </div>
+      <div class="col-sm-8">
+        <%= f.submit '创建', class: 'btn' %>
+      <%= link_to '返回公司列表' ,sp_companies_path%>
+      </div>
+    </div>
+<% end %>

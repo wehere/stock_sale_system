@@ -1,0 +1,35 @@
+<br/>
+<h3>导出客户月清单</h3>
+<%= form_tag export_order_total_for_specified_days_supply_sheets_path, method: :post do %>
+    <label>起始日期</label>
+    <%= date_field_tag 'start_date', @start_date %>
+    <label>结束日期</label>
+    <%= date_field_tag 'end_date', @end_date %>
+    <label>单位</label>
+    <%= select_tag 'customer_id', options_from_collection_for_select(@customers, 'id', 'simple_name', @customer_id), id: "customers_select" %>
+    <label>门店</label>
+    <div id="store_select"><%= select_tag 'store_id', options_from_collection_for_select(@stores, 'id', 'name', @store_id) %></div>
+
+    <%= submit_tag '导出', class: 'btn btn-primary' %>
+<% end %>
+
+<script>
+    $( "#customers_select")
+        .change(function(){
+            $.ajax({
+                type: 'POST',
+                url: "/supply/sheets/"+$(this).val()+"/change_stores/",
+                dataType: 'script'
+            });
+        }).change();
+</script>
+
+<br/>
+<h3>导出月汇总单</h3>
+<%= form_tag export_order_total_for_specified_month_supply_sheets_path, method: :post do %>
+    <label>起始日期</label>
+    <%= date_field_tag 'start_date', @start_date %>
+    <label>结束日期</label>
+    <%= date_field_tag 'end_date', @end_date %>
+    <%= submit_tag '导出', class: 'btn btn-primary' %>
+<% end %>

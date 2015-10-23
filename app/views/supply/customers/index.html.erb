@@ -1,0 +1,21 @@
+<br/>
+<%= link_to '创建客户', new_supply_customer_path, class: 'btn btn-primary' %>
+<br/>
+<table class="table">
+  <thead>
+    <th>客户简称</th><th>客户全称</th><th>联系电话</th><th>联系地址</th><th>门店</th><th>单据类型</th><th>注意信息</th>
+  </thead>
+  <tbody>
+    <% @customers.each do |customer| %>
+      <tr>
+        <td><%= customer.simple_name %></td>
+        <td><%= customer.full_name %></td>
+        <td><%= customer.phone %></td>
+        <td><%= customer.address %></td>
+        <td><%= customer.stores.collect{|s|s.name}.join(",") rescue '' %><%= link_to '添加', "/supply/customers/add_store?customer_id=#{customer.id}" %></td>
+        <td><%= OrderType.match_types(@supplier.id, customer.id).names.join(",") rescue '' %><%= link_to '添加', "/supply/customers/add_order_type?customer_id=#{customer.id}"  %></td>
+        <td><%= PrintOrderNotice.match_notices(@supplier.id, customer.id).notices.join("||") rescue '' %><%= link_to '添加', "/supply/customers/add_notice?customer_id=#{customer.id}"  %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

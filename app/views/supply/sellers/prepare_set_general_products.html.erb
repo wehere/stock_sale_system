@@ -1,0 +1,105 @@
+<br/>
+<%= link_to '通用产品一览', supply_general_products_path, class: 'btn btn-primary' %>
+<%= link_to '卖家一览', supply_sellers_path, class: 'btn btn-primary' %>
+<br/>
+<div class="row">
+  <div class="col-sm-10 col-sm-offset-2">
+    <h4>
+      <%= "#{@seller.name}   手机：#{@seller.phone}    店铺：#{@seller.shop_name}    地址：#{@seller.address}" unless @seller.blank? %>
+    </h4>
+  </div>
+</div>
+<%= form_tag prepare_set_general_products_supply_sellers_path, method: :get, id: 'set_general_products_form' do %>
+    <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
+    <%= hidden_field_tag 'seller_id', @seller_id %>
+
+    <div class="row">
+      <div class="col-sm-2 text-right">
+        <label>已有的通用产品</label>
+      </div>
+      <div class="col-sm-10">
+        <table class="table">
+          <thead>
+          <th>通用产品名称</th>
+          <th>通用产品ID</th>
+          <th>卖货人</th>
+          <th>操作</th>
+          </thead>
+          <tbody>
+          <% @linked_general_products.each do |linked_general_product| %>
+              <tr>
+                <td><%= linked_general_product.name rescue '' %></td>
+                <td><%= linked_general_product.id rescue '' %></td>
+                <td><%= linked_general_product.seller.name rescue '' %></td>
+                <td>
+                  <%= link_to '改变所属卖货人', "/supply/general_products/prepare_link_to_seller?general_product_id=#{linked_general_product.id}" %>
+                </td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row" style="border-bottom: 1px solid black">
+      <div class="col-sm-12">&nbsp;</div>
+    </div>
+    <br/>
+    <div class="row">
+      <div class="col-sm-2 text-right">
+        <label>通用产品名字</label>
+      </div>
+      <div class="col-sm-2">
+        <%= text_field_tag 'name', @name %>
+      </div>
+      <div class="col-sm-2 text-left">
+        <%= link_to '查询', "javascript:query_submit()", class: 'btn btn-primary' %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2 text-right">
+        <label>添加通用产品</label>
+      </div>
+      <div class="col-sm-10">
+        <table class="table">
+          <thead>
+          <th>勾选</th>
+          <th>通用产品名称</th>
+          <th>通用产品ID</th>
+          <th>卖货人</th>
+          </thead>
+          <tbody>
+          <% @general_products.each do |general_product| %>
+              <% next if @linked_general_products.include? general_product %>
+              <tr>
+                <td>
+                  <%= check_box_tag 'general_product_ids[]', general_product.id, @selected_general_products.include?(general_product) %>
+                </td>
+                <td><%= general_product.name rescue '' %></td>
+                <td><%= general_product.id rescue '' %></td>
+                <td><%= general_product.seller.name rescue '' %></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+        <%= will_paginate @general_products, :class => 'flickr_pagination', :previous_label => '<<上一页', :next_label => '下一页>>' %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2 col-sm-offset-2">
+        <%= link_to '关联', "javascript:do_set_general_products_submit()", class: 'btn btn-primary' %>
+      </div>
+    </div>
+<% end unless @seller_id.blank? %>
+
+<script language="javascript">
+  function query_submit(){
+      $("#set_general_products_form").attr('action', '<%= prepare_set_general_products_supply_sellers_path %>');
+      $("#set_general_products_form").attr('method', 'get');
+      $("#set_general_products_form").submit();
+  }
+  function do_set_general_products_submit(){
+      $("#set_general_products_form").attr('action', '<%= do_set_general_products_supply_sellers_path %>');
+      $("#set_general_products_form").attr('method', 'post');
+      $("#set_general_products_form").submit();
+  }
+</script>

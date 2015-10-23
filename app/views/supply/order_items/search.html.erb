@@ -1,0 +1,43 @@
+<br/>
+<%= form_tag search_supply_order_items_path, method: :post do %>
+<%= label_tag 'start_date', '起始日期' %>
+<%= date_field_tag 'start_date', @start_date %>
+<%= label_tag 'end_date', '结束日期' %>
+<%= date_field_tag 'end_date', @end_date %>
+<%= label_tag 'customer_id', '客户名称' %>
+<%= select_tag 'customer_id', options_from_collection_for_select( @customers, 'id', 'simple_name', @customer_id), include_blank: true %>
+<%= label_tag 'product_name', '产品名称' %>
+<%= text_field_tag 'product_name', @product_name %>
+<%= submit_tag '搜索', class: 'btn btn-primary' %>
+<% end %>
+<br/>
+<% if @order_items.blank? %>
+    无
+<% else %>
+    <table class="table">
+      <thead>
+        <th>到货日期</th>
+        <th>客户名称</th>
+        <th>客户门店</th>
+        <th>单据类型</th>
+        <th>产品名称</th>
+        <th>价格</th>
+        <th>规格</th>
+        <th>订货量</th>
+        <th>到货量</th>
+      </thead>
+      <% @order_items.each do |order_item| %>
+        <tr>
+          <td><%= order_item.order.reach_order_date %></td>
+          <td><%= order_item.order.customer.simple_name %></td>
+          <td><%= order_item.order.store.name %></td>
+          <td><%= order_item.order.order_type.name %></td>
+          <td><%= order_item.product.chinese_name %></td>
+          <td><%= order_item.price.price %></td>
+          <td><%= order_item.price.true_spec %></td>
+          <td><%= order_item.plan_weight %></td>
+          <td><%= order_item.real_weight %></td>
+        </tr>
+      <% end %>
+    </table>
+<% end %>

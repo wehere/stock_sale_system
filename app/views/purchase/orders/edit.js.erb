@@ -1,0 +1,4 @@
+
+$("#modal-body").html("<%= escape_javascript(render('order_items')) %>");
+$('#myModal').modal('show');
+$("#myModalLabel").html("<h1><%= escape_javascript(@reach_date.to_s) %></h1>");

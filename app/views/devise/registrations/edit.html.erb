@@ -1,0 +1,62 @@
+<div class="row">
+<div class="col-md-offset-2 col-md-2 text-center"><h2>编辑用户</h2></div>
+</div>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+    <div class="row">
+      <div class="col-md-offset-2 col-md-8 text-left">
+        <%= devise_error_messages! %>
+      </div>
+    </div>
+
+  <div class="row"><div class="col-md-offset-2 col-md-2 text-right"><%= f.label :邮箱 %>
+  </div>
+  <div class="col-md-2"> <%= f.email_field :email, autofocus: true, size: 30 %>
+  </div>
+  </div>
+<br/>
+  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-md-offset-2 col-md-2 text-right">
+      <%= f.label :密码 %>
+    </div>
+    <div class="col-md-6">
+      <%= f.password_field :password, autocomplete: "off", size: 30 %><i>&nbsp;&nbsp;&nbsp;(如果您不想更改密码，就让它空着)</i>
+    </div>
+    <div class="col-md-2">
+
+    </div>
+  </div>
+<br/>
+  <div class="row"><div class="col-md-offset-2 col-md-2 text-right"><%= f.label :密码确认 %>
+  </div>
+    <div class="col-md-2"><%= f.password_field :password_confirmation, autocomplete: "off", size: 30 %>
+    </div>
+  </div>
+<br/>
+  <div class="row">
+    <div class="col-md-offset-2 col-md-2 text-right">
+      <%= f.label :当前使用密码 %>
+    </div>
+    <div class="col-md-2">
+      <%= f.password_field :current_password, autocomplete: "off", size: 30 %>
+    </div>
+    <div class="col-md-6"><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(我们需要确认您当前使用的密码，才能更改密码)</i></div>
+  </div>
+<br/>
+
+  <div class="row"><div class="col-md-offset-2 col-md-2 text-right"><%= f.submit "更新", class: 'btn btn-primary' %></div></div>
+<% end %>
+
+<!--<h3>注销账户</h3>-->
+
+<!--<p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>-->
+<div class="row">
+  <div class="col-md-offset-2 ocl-md-2 text-left">
+      <%= link_to "返回", :back %>
+
+  </div>
+</div>

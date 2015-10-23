@@ -1,0 +1,19 @@
+<h1>新增价格</h1>
+<%= form_tag supply_prices_path, method: :post do %>
+    <%= hidden_field_tag 'product_id', @product_id %>
+    <%= hidden_field_tag 'supplier_id', @supplier_id %>
+    <%= label_tag 'year_month_id', '月份' %>
+    <%= select_tag 'year_month_id', options_from_collection_for_select(@year_months, 'id', 'val', @year_month_id) %>
+    <%= label_tag 'customer_id', '客户' %>
+    <%= select_tag 'customer_id', options_from_collection_for_select(@customers, 'id', 'simple_name', @customer_id) %>
+    <%= label_tag 'chinese_name', "中文名称" %>
+    <%= @chinese_name %>
+    <%= label_tag 'simple_abc', '首字母缩写' %>
+    <%= text_field_tag 'simple_abc' %>
+    <%= label_tag 'price', '价格' %>
+    <%= text_field_tag 'price' %>
+    <%= label_tag 'true_spec', '规格' %>
+    <%= text_field_tag 'true_spec' %>
+    <%= submit_tag '开始创建', class: 'btn' %>
+<% end %>
+

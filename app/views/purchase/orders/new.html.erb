@@ -1,0 +1,11 @@
+<h1>发起订单</h1>
+<%= form_tag send_message_purchase_orders_path, method: :post do %>
+    <%= hidden_field_tag 'customer_id', @customer_id %>
+    <%= label_tag 'supplier_id', '选择供应商' %>
+    <%= select_tag 'supplier_id', options_from_collection_for_select(@supplies, 'id', 'simple_name', @supplier_id) %>
+    <%= label_tag 'need_reach_date' %>
+    <%= date_field_tag 'need_reach_date' %>
+    <%= label_tag 'content', '内容' %>
+    <%= text_area_tag 'content' %>
+    <%= submit_tag '提交' %>
+<% end %>

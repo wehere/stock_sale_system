@@ -1,0 +1,17 @@
+<h1>从excel导入价格</h1>
+<div>
+  <h3>例</h3>
+  <table class="table">
+    <thead><th>no</th><th>name</th><th>price</th><th>true_spec</th></thead>
+    <tbody><tr><td>1</td><td>大番茄</td><td>4.8</td><td>斤</td></tr></tbody>
+  </table>
+</div>
+<h4>****************************************************************</h4>
+<%= form_tag import_prices_from_xls_supply_prices_path, method: :post, multipart: true  do %>
+    <%= label_tag 'year_month_id', '月份' %>
+    <%= select_tag 'year_month_id', options_from_collection_for_select(@year_months, 'id', 'val', @year_month_id) %>
+    <%= label_tag 'customer_id', '客户' %>
+    <%= select_tag 'customer_id', options_from_collection_for_select(@customers, 'id', 'simple_name', @customer_id) %>
+    <%= file_field_tag 'price_xls' %>
+    <%= submit_tag '开始导入价格' %>
+<% end %>

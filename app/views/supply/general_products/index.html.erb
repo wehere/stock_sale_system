@@ -1,0 +1,37 @@
+<br/>
+<%= link_to '创建通用产品', new_supply_general_product_path, class: 'btn btn-primary' %>
+<br/>
+<br/>
+<%= form_tag supply_general_products_path, method: :get do %>
+    <div class="row">
+      <div class="col-sm-2 text-right">
+        <label>通用产品名称</label>
+      </div>
+      <div class="col-sm-2">
+        <%= text_field_tag 'name', @name %>
+      </div>
+      <div class="col-sm-2">
+        <%= submit_tag '查询', class: 'btn btn-primary' %>
+      </div>
+    </div>
+    <table class="table">
+      <thead>
+      <th>通用产品ID</th>
+      <th>通用产品名称</th>
+      <th>卖货人</th>
+      <th>操作</th>
+      </thead>
+      <tbody>
+      <% @general_products.each do |general_product| %>
+          <tr>
+            <td><%= general_product.id %></td>
+            <td><%= general_product.name %></td>
+            <td><%= general_product.seller.name rescue '' %></td>
+            <td><%= link_to '编辑', edit_supply_general_product_path(general_product.id) %></td>
+            <td><%= link_to '关联卖货人', "/supply/general_products/prepare_link_to_seller?general_product_id=#{general_product.id}", target: '_blank' %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <%= will_paginate @general_products, :class => 'flickr_pagination', :previous_label => '上一页', :next_label => '下一页' %>
+<% end %>

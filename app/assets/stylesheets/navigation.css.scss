@@ -1,0 +1,35 @@
+.sx-global-topbar {
+  background: #008eb7!important;
+  font-family: "FAE8F6F96C59ED1","Microsoft Yahei","Hiragino Sans GB",tahoma,arial,"B8BF53";
+  min-width: 1000px;
+  position: relative;
+  height: 28px;
+  font-size: 12px;
+  zoom: 1;
+  z-index: 109;
+}
+
+.y-topbar-row {
+  min-width: 1000px;
+  max-height: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  zoom: 1;
+}
+
+.sx-global-topbar .sx-login .lnk-login-pre {
+  cursor: default;
+}
+
+.sx-global-topbar .sx-login .lnk-login-pre, .sx-global-topbar
+.sx-login .lnk-index, .sx-global-topbar .sx-login .lnk-reg,
+.sx-global-topbar .sx-login .li-spacing,
+.sx-global-topbar .sx-login .lnk-login {
+  float: left;
+}
+
+.sx-global-topbar a:link, .sx-global-topbar a:visited {
+  display: inline;
+  color: #fff;
+  text-decoration: none;
+}

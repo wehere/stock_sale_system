@@ -1,0 +1,24 @@
+<br/>
+<h4>第一步、选择月份：</h4>
+&nbsp&nbsp<%= select_tag 'year_month', options_from_collection_for_select( @year_months, 'id', 'val', @current_year_month_id )%>
+<h4>第二步、选择单位,点击即可导出：</h4>
+<% @customers.each_with_index do |customer, index| %>
+    <%= '<div class="row">'.html_safe if (index+1)%6 ==0 %>
+      <div class="col-sm-2">
+        <%= form_tag export_xls_of_prices_supply_price_path(customer.id), method: :post do %>
+            <%= hidden_field_tag 'year_month_id', @current_year_month_id, class: 't_year_month_id' %>
+            <%= submit_tag customer.simple_name, class: 'btn btn-primary' %>
+        <% end %>
+      </div>
+    </div>
+    <%= "<br/><br>".html_safe if (index+1)%6 == 0 %>
+<% end %>
+
+<script>
+    function replace_year_month_id(e) {
+        $(".t_year_month_id").val(e.value)
+    }
+    $("#year_month").on("change", function() {
+        $(".t_year_month_id").val($("#year_month").val())
+    });
+</script>

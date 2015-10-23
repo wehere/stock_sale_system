@@ -1,0 +1,6 @@
+<% c.get_order_types.each do |o_r| %>
+    <h6 id="show_name_<%= o_r.id %>">
+      <%= o_r.name %>
+      <%= link_to 'X', supply_order_type_path(o_r.id), method: :delete, remote: true, data: { confirm: "你确定删除吗？"} %>
+    </h6>
+<% end %>

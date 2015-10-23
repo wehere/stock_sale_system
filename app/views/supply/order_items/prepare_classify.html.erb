@@ -1,0 +1,14 @@
+<br/>
+<%= form_tag do_classify_supply_order_items_path, method: :post do %>
+    <div class="row">
+      <div class="col-sm-2 text-right">
+        <label>选择日期</label>
+      </div>
+      <div class="col-sm-2">
+        <%= date_field_tag 'specified_date', @specified_date rescue '' %>
+      </div>
+      <div class="col-sm-2 text-left">
+        <%= submit_tag '开始出分菜单', class: 'btn btn-primary' %>
+      </div>
+    </div>
+<% end %>

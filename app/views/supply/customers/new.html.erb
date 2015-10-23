@@ -1,0 +1,50 @@
+<h4>创建客户</h4>
+<%= form_for @customer, url: {action: :create} do |customer| %>
+
+<div class="row">
+  <div class="col-sm-1 text-right">
+    <%= customer.label :客户简称 %>
+  </div>
+  <div class="col-sm-1">
+    <%= customer.text_field :simple_name %>
+  </div>
+</div>
+<br/>
+<div class="row">
+  <div class="col-sm-1 text-right">
+    <%= customer.label :客户全称 %>
+  </div>
+  <div class="col-sm-1">
+    <%= customer.text_field :full_name %>
+  </div>
+</div>
+<br/>
+<div class="row">
+  <div class="col-sm-1 text-right">
+    <%= customer.label :联系电话 %>
+  </div>
+  <div class="col-sm-1">
+    <%= customer.text_field :phone %>
+  </div>
+</div>
+<br/>
+<div class="row">
+  <div class="col-sm-1 text-right">
+    <%= customer.label :联系地址 %>
+  </div>
+  <div class="col-sm-1">
+    <%= customer.text_field :address %>
+  </div>
+</div>
+<br/>
+<div class="row">
+  <div class="col-sm-1">
+
+  </div>
+  <div class="col-sm-1">
+    <%= customer.submit :提交 %>
+  </div>
+</div>
+
+<% end %>
+

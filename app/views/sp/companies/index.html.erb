@@ -1,0 +1,25 @@
+  <h1 class="text-center">公司</h1>
+  <div class="text-center">
+	<table border="1" cellpadding="3" cellspacing="0" style="width: 60%;margin:auto">
+		<tr>
+			<th class="col-sm-3  text-left">公司简称</th>
+			<th class="col-sm-5  text-left">公司全称</th>
+			<th></th>
+			<th></th>
+		</tr>
+			<% @companies.each do |company| %>
+				<tr>
+					<td class="col-sm-3  text-left"><%= link_to company.simple_name, sp_company_path(company.id) %></td>
+					<td class="col-sm-5  text-left"><%= company.full_name %></td>
+					<td><%= link_to "删除", sp_company_path(id: company.id),method:      :delete,data: { confirm: "真的要删除么?" } %></td>
+					<td><%= link_to "更新", edit_sp_company_path(id: company.id), method: :get %></td>
+				</tr>
+			<% end %>
+	</table>
+	</div>
+	<div>
+		<%= will_paginate @companies, :class => 'flickr_pagination' ,:previous_label => '<<上一页', :next_label => '下一页>>'%>
+	</div>
+	<div class='text-center'>
+		<%= link_to "注册公司",  new_sp_company_path %>
+	</div>

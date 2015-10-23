@@ -1,0 +1,95 @@
+<script type="text/javascript">
+    $(function(){
+//        document.getElementById("go").click();
+    });
+//    window.onbeforeunload = function(){
+//        return "必您确定要退出页面吗？";
+//
+//    }
+    $(document).ready(function(){
+        $(".price_text_field").keypress(function (e) {
+            var keyCode = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
+            if (keyCode == 13){
+                var i;
+                var collect_elements = $(".price_text_field");
+                for (i = 0; i < collect_elements.length; i++)
+                    if (this == collect_elements[i])
+                        break;
+//                if (i==collect_elements.length-1){
+//                    $("#order_items_form").submit();
+//                    return false;
+//                }
+
+                i = (i + 1) % collect_elements.length;
+                collect_elements[i].focus();
+                return false;
+            }
+            else
+                return true;
+        });
+    });
+</script>
+<!--<a id="go" href="#pos_<%= @pos_id %>">GO</a>-->
+<!--<br/><br/><br/>-->
+<%= form_tag search_supply_prices_path, method: :post do %>
+<%= label_tag 'year_month_id', '月份' %>
+<%= select_tag 'year_month_id', options_from_collection_for_select(@year_months, 'id', 'val', @year_month_id) %>
+<%= label_tag 'customer_id', '客户' %>
+<%= select_tag 'customer_id', options_from_collection_for_select(@customers, 'id', 'simple_name', @customer_id) %>
+<%= submit_tag '查询', class: 'btn btn-info' %>
+<% end %>
+<br/>
+<% if @search_results.blank? %>
+
+<% else %>
+    <table class="table table-striped table-hover">
+      <thead>
+        <th width="150">单位名称</th><th width="150">产品名称</th><th width="100">规格</th><th width="180">价格</th><th width="100"></th><th></th>
+      </thead>
+        <% @search_results.each_with_index do |price, index| %>
+          <tr id="pos_<%= index %>">
+            <%#= form_tag supply_price_path(price.id), method: :patch do %>
+                <td>
+                <%= price.customer.blank? ? '':  price.customer.simple_name %>
+                </td>
+                <td>
+                <%= price.product.blank? ? '' : price.product.chinese_name %>
+                </td>
+                <td>
+                <%= text_field_tag "submitted_spec", price.true_spec, onfocus: "select();", onchange: "update_spec(#{price.id},this.value);", size: 6 %>
+                </td>
+                <%= hidden_field_tag 'pos_id', index %>
+                <td>
+                <%= text_field_tag "submitted_price", price.price, size: 7, class: 'price_text_field', onclick: "select();", onchange: "update_price(#{price.id},this.value);", onfocus: "select();" %>
+                <%#= submit_tag '保存修改', class: 'btn btn-primary' %>
+                </td>
+                <td id="msg_<%= price.id %>" style="text-align: left">
+
+                </td>
+                <td></td>
+            <%# end %>
+          </tr>
+        <% end %>
+    </table>
+<% end %>
+<%= link_to '回到顶部', '#go', class: 'btn btn-lg btn-primary', style: "position: fixed;bottom:0;right:300px" %>
+
+<script language="javascript">
+  function update_price(id, new_price){
+      $.ajax({
+          type: 'post',
+          url: "/supply/prices/update_one_price",
+          dataType: 'text',
+          data: {id: id, price: new_price}
+      });
+  }
+
+  function update_spec(id, spec){
+      $.ajax({
+          type: 'post',
+          url: "/supply/prices/update_one_price",
+          dataType: 'text',
+          data: {id: id, spec: spec}
+      });
+  }
+</script>

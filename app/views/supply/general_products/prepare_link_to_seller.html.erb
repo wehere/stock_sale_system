@@ -1,0 +1,81 @@
+<br/>
+<div class="row">
+  <div class="col-sm-10 col-sm-offset-2">
+    <h4>
+      <%= GeneralProduct.find(@general_product_id).name rescue '' %>
+    </h4>
+  </div>
+</div>
+<%= form_tag prepare_link_to_seller_supply_general_products_path, method: :get, id: 'create_link_g2s_form' do %>
+    <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
+    <%= hidden_field_tag 'general_product_id', @general_product_id %>
+    <div class="row">
+      <div class="col-sm-10 col-sm-offset-2">
+        <h4 style="color: red">
+          <% unless @seller.blank? %>
+              已经关联到<%= @seller.name %>
+          <% end %>
+        </h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2 text-right">
+        <label>待关联卖货人</label>
+      </div>
+      <div class="col-sm-2">
+        <%= text_field_tag 'name', @name %>
+      </div>
+      <div class="col-sm-2 text-left">
+        <%= link_to '查询', "javascript:query_submit()", class: 'btn btn-primary' %>
+      </div>
+    </div>
+    <br/>
+    <div class="row">
+      <div class="col-sm-2 text-right">
+        <label>选择要关联的卖货人</label>
+      </div>
+      <div class="col-sm-10">
+        <table class="table">
+          <thead>
+          <th>选择</th>
+          <th>卖货人ID</th>
+          <th>卖货人名字</th>
+          <th>店铺</th>
+          <th>手机</th>
+          <th>地址</th>
+          </thead>
+          <tbody>
+          <% @sellers.each do |seller| %>
+              <tr>
+                <td><%= radio_button_tag 'seller_id', seller.id, @seller_id == seller.id %></td>
+                <td><%= seller.id rescue '' %></td>
+                <td><%= seller.name rescue '' %></td>
+                <td><%= seller.shop_name rescue '' %></td>
+                <td><%= seller.phone rescue '' %></td>
+                <td><%= seller.address rescue '' %></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+        <%= will_paginate @sellers, :class => 'flickr_pagination', :previous_label => '上一页', :next_label => '下一页' %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2 col-sm-offset-2">
+        <%= link_to '关联', "javascript:do_link_g2s()", class: 'btn btn-primary' %>
+      </div>
+    </div>
+<% end %>
+
+<script language="javascript">
+    function query_submit() {
+        $("#create_link_g2s_form").attr('action', '<%= prepare_link_to_seller_supply_general_products_path %>');
+        $("#create_link_g2s_form").attr('method', 'get');
+        $("#create_link_g2s_form").submit();
+    }
+    function do_link_g2s() {
+        $("#create_link_g2s_form").attr('action', '<%= do_link_to_seller_supply_general_products_path %>');
+        $("#create_link_g2s_form").attr('method', 'post');
+        $("#create_link_g2s_form").submit();
+    }
+</script>

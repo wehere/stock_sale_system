@@ -1,0 +1,62 @@
+<br/><br/>
+<%= form_tag '/supply/orders/not_return', method: :get do %>
+    开始
+    <%= date_field_tag :start_date, params[:start_date] %>
+    结束
+    <%= date_field_tag :end_date, params[:end_date] %>
+    单位ID
+    <%= text_field_tag :customer_id, params[:customer_id] %>
+    排除单位ID
+    <%= text_field_tag :not_customer_id, params[:not_customer_id] %>
+    <%= submit_tag '查询没有拿回来的单子', class: 'btn btn-primary' %>
+<% end %>
+
+<table class="table table-striped">
+  <thead><th>订单ID</th><th>单位ID</th><th>订货单位</th><th>门店</th><th>到货量未填个数</th><th>单据类型</th><th>到货日期</th><th>金额</th><th>操作</th></thead>
+  <% @orders.each do |order| %>
+      <tr id="order_<%= order.id %>">
+        <td>
+          <%= order.id %>
+        </td>
+        <td>
+          <%= order.customer.id %>
+        </td>
+        <td>
+          <%= order.customer.simple_name %>
+        </td>
+        <td>
+          <%= order.store.name %>
+        </td>
+        <td>
+          <%= order.not_input_number %>
+        </td>
+        <td>
+          <%= order.order_type.name %>
+        </td>
+        <td>
+          <%= order.reach_order_date %>
+        </td>
+        <td>
+          <%= order.sum_money %>
+        </td>
+        <td>
+          <%= link_to '回来了', "javascript:come_back(#{order.id})", class: "btn btn-primary", data: { confirm: "你确定#{order.customer.simple_name+order.store.name+order.order_type.name rescue ''}单子回来了？"} %>
+        </td>
+      </tr>
+  <% end unless @orders.blank? %>
+</table>
+
+<%= will_paginate @orders, :class => 'flickr_pagination' ,:previous_label => '上一页', :next_label => '下一页' unless @orders.blank? %>
+
+<script language="javascript">
+    function come_back(order_id){
+        $.ajax({
+            url: '/supply/orders/' + order_id + '/return',
+            type: 'get',
+            async: false
+        }).done(
+                function(result){
+                    $("#order_" + order_id).hide();
+                });
+    }
+</script>

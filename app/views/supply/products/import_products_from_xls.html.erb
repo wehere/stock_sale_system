@@ -1,0 +1,13 @@
+<h1>从excel导入产品</h1>
+<div>
+  <h3>例</h3>
+  <table class="table">
+    <thead><th>中文缩写</th><th>产品名称</th><th>规格</th></thead>
+    <tbody><tr><td>DFQ</td><td>大番茄</td><td>斤</td></tr></tbody>
+  </table>
+</div>
+<h4>****************************************************************</h4>
+<%= form_tag import_products_from_xls_supply_products_path, method: :post, multipart: true  do %>
+    <%= file_field_tag 'products_xls' %>
+    <%= submit_tag '开始导入产品' %>
+<% end %>

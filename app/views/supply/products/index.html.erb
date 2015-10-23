@@ -1,0 +1,31 @@
+<br/>
+<%= form_tag supply_products_path, method: :get do %>
+    <%= label_tag 'key', '关键词' %>
+    <%= text_field_tag 'key', @key_value %>
+    <%= submit_tag '查询', class: 'btn btn-primary' %>
+    (关键词可以是产品ID、中文名称、缩写)
+<% end %>
+<br/>
+<table class="table table-striped">
+  <thead>
+  <th>产品ID</th>
+  <th>中文名称</th>
+  <th>缩写</th>
+  <th>关联通用产品</th>
+  <th>操作</th>
+  </thead>
+  <% @products.each do |product| %>
+      <tr>
+        <td><%= product.id %></td>
+        <td><%= product.chinese_name %></td>
+        <td><%= product.simple_abc %></td>
+        <td><%= product.general_product.name rescue '' %></td>
+        <td>
+          <%= link_to '修改', edit_supply_product_path(product.id) %>
+          <%= link_to '新增价格', new_supply_price_path(product_id: product.id) %>
+          <%= link_to '关联通用产品', "/supply/products/prepare_link_to_general_product?product_id=#{product.id}", target: '_blank' %>
+        </td>
+      </tr>
+  <% end %>
+</table>
+<%= will_paginate @products, :class => 'flickr_pagination', :previous_label => '<<上一页', :next_label => '下一页>>' %>

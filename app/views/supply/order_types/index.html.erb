@@ -1,0 +1,16 @@
+<br/>
+
+<% @customers.each do |c| %>
+    <%= c.simple_name %>
+    <div id="customer_<%= c.id %>">
+      <%= render partial: 'order_types', locals: {c:c} %>
+    </div>
+    <%= link_to '+', new_supply_order_type_path(id: c.id), remote: true, class: "btn btn-primary show_add_#{c.id}" %>
+    <%= form_tag supply_order_types_path, method: :post, remote: true do %>
+        <%= hidden_field_tag 'customer_id', c.id %>
+        <br/>
+        <%= text_field_tag 'order_type_name', '', class: "order_type_name_#{c.id}", style: "display:none" %>
+        <%= submit_tag '+', class: "btn btn-primary btn_add_#{c.id}", style: "display:none" %>
+    <% end %>
+    <br/><br/>
+<% end %>

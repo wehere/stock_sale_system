@@ -1,0 +1,7 @@
+<%= form_tag generate_next_month_supply_prices_path, method: :post do %>
+    <%= label_tag 'origin_year_month_id', '把这个月份的价格' %>
+    <%= select_tag 'origin_year_month_id', options_from_collection_for_select(@year_months, 'id', 'val', @origin_year_month_id) %>
+    <%= label_tag 'target_year_month_id', '复制成这个月份价格' %>
+    <%= select_tag 'target_year_month_id', options_from_collection_for_select(@year_months, 'id', 'val', @target_year_month_id) %>
+    <%= submit_tag '一键生成指定月份价格' %>
+<% end %>
