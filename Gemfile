@@ -1,5 +1,5 @@
-# source 'https://rubygems.org'
-source 'https://ruby.taobao.org'
+source 'https://rubygems.org'
+#source 'https://ruby.taobao.org'
 ruby '2.0.0'
 #ruby-gemset=stock_sale
 
@@ -11,7 +11,7 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 gem 'devise'
-gem 'mysql2'
+gem 'mysql2', '= 0.3.18'
 gem 'will_paginate','3.0.7'
 gem 'bootstrap-will_paginate','0.0.10'
 gem 'therubyracer',  platforms: :ruby
