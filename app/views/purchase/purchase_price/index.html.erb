@@ -1,0 +1,77 @@
+
+
+
+<script language="javascript">
+    $.ready(function(){
+        alert('begin')
+    })
+
+</script>
+
+<%= form_tag '/purchase/purchase_price/', method: :get do %>
+    <%= label_tag 'product_name', '产品名称' %>
+    <%= text_field_tag 'product_name', params[:product_name] %>
+    <%= submit_tag '查询', class: 'btn btn-info' %>
+<% end %>
+<table class="table table-striped table-hover">
+  <thead>
+  <th>id</th>
+  <th>购方</th>
+  <th>卖方</th>
+  <th>产品名称</th>
+  <th>价格</th>
+  <th>规格</th>
+  <th>数量</th>
+  <th>标准规格</th>
+  <th>操作</th>
+  </thead>
+  <tbody>
+
+  <% @prices.each do |price| %>
+      <tr>
+        <td><%= price.id %></td>
+        <td><%= price.supplier.simple_name %></td>
+        <td><%= price.seller.name %></td>
+        <td><%= price.product.chinese_name %></td>
+        <td>
+          <span id="<%=price.id%>_price_show" onclick="alert($('#1_price_input').value);show_update('<%=price.id%>');"><%= price.price %></span>
+          <span id="<%=price.id%>_price_input_span" style="display: none">
+            <%= text_field_tag "#{price.id}_price_input", price.price%>
+          </span>
+        </td>
+        <td>
+          <span id="<%=price.id%>_true_spec_show" onclick="show_update('<%=price.id%>');"><%= price.true_spec %></span>
+          <span id="<%=price.id%>_true_spec_input_span" style="display: none">
+            <%= text_field_tag "#{price.id}_true_spec_input", price.true_spec%>
+          </span>
+        </td>
+        <td>
+          <span id="<%=price.id%>_ratio_show" onclick="show_update('<%=price.id%>');"><%= price.ratio %></span>
+          <span id="<%=price.id%>_ratio_input_span" style="display: none">
+            <%= text_field_tag "#{price.id}_ratio_input", price.true_spec%>
+          </span>
+        </td>
+        <td><%= price.product.general_product.mini_spec %></td>
+        <td><input type="button" value="保存" onclick="alert('aa'); "/></td>
+      </tr>
+  <% end unless @prices.blank? %>
+  </tbody>
+</table>
+<%= will_paginate @prices, :class => 'flickr_pagination', :previous_label => '上一页', :next_label => '下一页' unless @prices.blank? %>
+
+
+<script language="javascript">
+    $.ready(function(){
+        alert('begin')
+    })
+    function show_update(id){
+        $('#1_price_show').style.display = 'none';
+        $("#"+id+"_price_input_span").style.display = 'block';
+
+        $("#"+id+"_true_spec_show").style.display = 'none';
+        $("#"+id+"_true_spec_input_span").style.display = 'block';
+
+        $("#"+id+"_ratio_show").style.display = 'none';
+        $("#"+id+"_ratio_input_span").style.display = 'block';
+    }
+</script>
