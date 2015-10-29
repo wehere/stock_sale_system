@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151023125705) do
+ActiveRecord::Schema.define(version: 20151024143047) do
 
   create_table "comments", force: :cascade do |t|
     t.integer  "order_id",    limit: 4
@@ -173,12 +173,12 @@ ActiveRecord::Schema.define(version: 20151023125705) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "supplier_id",   limit: 4
-    t.integer  "from_id",       limit: 4
+    t.integer  "seller_id",     limit: 4
   end
 
   create_table "purchase_prices", force: :cascade do |t|
     t.integer  "supplier_id", limit: 4
-    t.integer  "from_id",     limit: 4
+    t.integer  "seller_id",   limit: 4
     t.boolean  "is_used"
     t.string   "true_spec",   limit: 255
     t.float    "price",       limit: 24
@@ -186,6 +186,7 @@ ActiveRecord::Schema.define(version: 20151023125705) do
     t.float    "ratio",       limit: 24
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "print_times", limit: 4
   end
 
   create_table "sellers", force: :cascade do |t|
@@ -197,6 +198,7 @@ ActiveRecord::Schema.define(version: 20151023125705) do
     t.datetime "updated_at"
     t.integer  "supplier_id", limit: 4
     t.integer  "sort_number", limit: 4,   default: 0
+    t.boolean  "delete_flag"
   end
 
   create_table "stocks", force: :cascade do |t|
