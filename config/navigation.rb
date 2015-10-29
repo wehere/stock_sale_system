@@ -71,6 +71,7 @@ SimpleNavigation::Configuration.run do |navigation|
       sub_nav.item :key_2_2, '导入产品', '/supply/products/import_products_from_xls'
       sub_nav.item :key_2_3, '通用产品一览', 'supply/general_products'
       sub_nav.item :key_2_4, '不使用某些产品', '/supply/prices'
+      sub_nav.item :key_2_5, '进货价格', '/purchase/purchase_price'
     end
 
     # You can also specify a condition-proc that needs to be fullfilled to display an item.

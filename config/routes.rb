@@ -121,7 +121,11 @@ Rails.application.routes.draw do
         post :search
       end
     end
-    resources :purchase_price
+    resources :purchase_price do
+      collection do
+        post :save_data
+      end
+    end
     resources :orders do
       collection do
         post :send_message

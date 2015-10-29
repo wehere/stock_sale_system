@@ -1,8 +1,5 @@
-
-
-
 <script language="javascript">
-    $.ready(function(){
+    $.ready(function () {
         alert('begin')
     })
 
@@ -31,28 +28,38 @@
       <tr>
         <td><%= price.id %></td>
         <td><%= price.supplier.simple_name %></td>
-        <td><%= price.seller.name %></td>
+        <td>
+          <span id="a<%= price.id %>_seller_show">
+            <%= price.seller.name %>
+          </span>
+          <span id="a<%= price.id %>_seller_input_span" style="display: none">
+            <%= select_tag "a#{price.id}_seller_input", options_from_collection_for_select(@seller, 'id', 'name', price.seller.id) %>
+          </span>
+
+        </td>
         <td><%= price.product.chinese_name %></td>
         <td>
-          <span id="<%=price.id%>_price_show" onclick="alert($('#1_price_input').value);show_update('<%=price.id%>');"><%= price.price %></span>
-          <span id="<%=price.id%>_price_input_span" style="display: none">
-            <%= text_field_tag "#{price.id}_price_input", price.price%>
+          <span id="a<%= price.id %>_price_show" onclick="show_update('<%=price.id%>');"><%= price.price %></span>
+          <span id="a<%= price.id %>_price_input_span" style="display: none">
+            <%= text_field_tag "a#{price.id}_price_input", price.price, :size => 8 %>
           </span>
         </td>
         <td>
-          <span id="<%=price.id%>_true_spec_show" onclick="show_update('<%=price.id%>');"><%= price.true_spec %></span>
-          <span id="<%=price.id%>_true_spec_input_span" style="display: none">
-            <%= text_field_tag "#{price.id}_true_spec_input", price.true_spec%>
+          <span id="a<%= price.id %>_true_spec_show" onclick="show_update('<%=price.id%>');"><%= price.true_spec %></span>
+          <span id="a<%= price.id %>_true_spec_input_span" style="display: none">
+            <%= text_field_tag "a#{price.id}_true_spec_input", price.true_spec, :size => 8 %>
           </span>
         </td>
         <td>
-          <span id="<%=price.id%>_ratio_show" onclick="show_update('<%=price.id%>');"><%= price.ratio %></span>
-          <span id="<%=price.id%>_ratio_input_span" style="display: none">
-            <%= text_field_tag "#{price.id}_ratio_input", price.true_spec%>
+          <span id="a<%= price.id %>_ratio_show" onclick="show_update('<%=price.id%>');"><%= price.ratio %></span>
+          <span id="a<%= price.id %>_ratio_input_span" style="display: none">
+            <%= text_field_tag "a#{price.id}_ratio_input", price.ratio, :size => 8 %>
           </span>
         </td>
         <td><%= price.product.general_product.mini_spec %></td>
-        <td><input type="button" value="保存" onclick="alert('aa'); "/></td>
+        <td>
+          <input id="a<%= price.id %>_commit" style="display: none" type="button" value="保存" onclick="save_data('<%= price.id %>') "/>
+        </td>
       </tr>
   <% end unless @prices.blank? %>
   </tbody>
@@ -61,17 +68,50 @@
 
 
 <script language="javascript">
-    $.ready(function(){
-        alert('begin')
-    })
-    function show_update(id){
-        $('#1_price_show').style.display = 'none';
-        $("#"+id+"_price_input_span").style.display = 'block';
+    function save_data(id) {
+        $.ajax({
+            url: "/purchase/purchase_price/save_data",
+            type: "post",
+            data: {
+                "p[seller_id]": $('#a' + id + '_seller_input').val(),
+                "p[price]": $('#a' + id + '_price_input').val(),
+                "p[ratio]": $('#a' + id + '_ratio_input').val(),
+                "p[true_spec]": $('#a' + id + '_true_spec_input').val(),
+                "id": id
+            },
+            async: false
+        }).done(
+                function (result) {
+                    if(result.code == 0){
+                        $('#a' + id + '_seller_show').html(result.seller_name);
+                        $('#a' + id + '_price_show').html(result.price);
+                        $("#a" + id + "_true_spec_show").html(result.true_spec);
+                        $("#a" + id + "_ratio_show").html(result.ratio);
+                        show_update(id);
+                    }
 
-        $("#"+id+"_true_spec_show").style.display = 'none';
-        $("#"+id+"_true_spec_input_span").style.display = 'block';
+                    else{
+                        alert(result.status);
+                    }
 
-        $("#"+id+"_ratio_show").style.display = 'none';
-        $("#"+id+"_ratio_input_span").style.display = 'block';
+                }
+        )
+    }
+
+    function show_update(id) {
+        $('#a' + id + '_seller_show').toggle();
+        $("#a" + id + "_seller_input_span").toggle();
+
+        $('#a' + id + '_price_show').toggle();
+        $("#a" + id + "_price_input_span").toggle();
+
+        $("#a" + id + "_true_spec_show").toggle();
+        $("#a" + id + "_true_spec_input_span").toggle();
+
+        $("#a" + id + "_ratio_show").toggle();
+        $("#a" + id + "_ratio_input_span").toggle();
+
+        $("#a" + id + "_commit").toggle();
+
     }
 </script>
