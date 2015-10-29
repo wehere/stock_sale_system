@@ -6,7 +6,8 @@ class PurchasePrice < ActiveRecord::Base
 
   scope :available, -> { where(is_used: true) }
 
-  validates_uniqueness_of :product_id, scope: :supplier_id, conditions: -> {where(is_used: true)}
+  validates_presence_of :supplier, :message => '供应商必填'
+  validates_uniqueness_of :product_id, scope: :supplier_id, conditions: -> { where(is_used: true) }
 
   # 查询入库价格（从批发市场购买的价格）
   # 1.根据产品名称进行查询  product_name
@@ -31,6 +32,37 @@ class PurchasePrice < ActiveRecord::Base
     price = price.paginate(per_page: options[:per_page]||10, page: options[:page]||1)
 
     price
+  end
+
+  def self.create_purchase_price options
+    pur_price = PurchasePrice.where supplier_id: options[:supplier_id],
+                                    product_id: options[:product_id],
+                                    is_used: true
+    if pur_price.blank?
+      p = PurchasePrice.new supplier_id: options[:supplier_id],
+                            seller_id: options[:seller_id],
+                            is_used: true,
+                            true_spec: options[:true_spec],
+                            price: options[:price],
+                            product_id: options[:product_id],
+                            ratio: options[:ratio]
+      p.save!
+    end
+
+  end
+
+  # PurchasePrice.create_purchase_price_batch
+  def self.create_purchase_price_batch
+    seller = Seller.first
+    Product.all.each do |p|
+      PurchasePrice.create_purchase_price supplier_id: p.supplier_id,
+                                          seller_id: seller.id,
+                                          true_spec: '斤',
+                                          price: 0,
+                                          product_id: p.id,
+                                          ratio: 500
+
+    end
   end
 
   def update_purchase_price options
