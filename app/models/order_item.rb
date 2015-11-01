@@ -57,7 +57,9 @@ class OrderItem < ActiveRecord::Base
               storage_id: storage.id,
               supplier_id: supplier.id
     current_weight = stock.real_weight || 0
-    out_weight = self.real_weight || 0
+    ratio = self.price.ratio
+    BusinessException.raise "id为#{self.price.id}的price对应的相对于标准单位比率为空或为0，不能做库存更新操作" if ratio.blank? || ratio == 0
+    out_weight = (self.real_weight || 0) * ratio
     stock.update_attribute :real_weight, current_weight - out_weight
     stock
   end
