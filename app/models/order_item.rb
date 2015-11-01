@@ -23,6 +23,45 @@ class OrderItem < ActiveRecord::Base
     self.update_attribute :money, (self.real_price*self.real_weight).round(2)
   end
 
+  def update_detail current_user
+    supplier = current_user.company
+    BusinessException.raise "#{current_user.user_name}还没关联给任何一个公司／供应商，不能做进出明细操作。" if supplier.blank?
+    order = self.order
+    BusinessException.raise "id为#{order_item.id}的品项没有对应的order抬头，不能做进出明细操作。" if order.blank?
+    order_detail = OrderDetail.new  supplier_id: supplier.id,
+                                    related_company_id: order.customer_id,
+                                    order_id: order.id,
+                                    detail_type: 2,
+                                    detail_date: order.reach_order_date,
+                                    item_id: self.id,
+                                    product_id: self.product.id,
+                                    price: self.price.price,
+                                    plan_weight: self.plan_weight,
+                                    real_weight: self.real_weight,
+                                    money: self.money,
+                                    delete_flag: 0
+    order_detail.save!
+    order_detail
+  end
+
+  def update_stock current_user
+    supplier = current_user.company
+    BusinessException.raise "#{current_user.user_name}还没关联给任何一个公司／供应商，不能做库存更新操作。" if supplier.blank?
+    store = current_user.store
+    BusinessException.raise "#{current_user.user_name}还没有权限处理任何一个仓库，不能做库存更新操作。" if store.blank?
+    storage = store.storage
+    BusinessException.raise "门店#{store.name}还没有关联到任何仓库，不能做库存更新操作。" if storage.blank?
+    general_product = self.product.general_product
+    BusinessException.raise "产品#{product.chinese_name}还没有关联任何通用产品，不能做库存更新操作。" if general_product.blank?
+    stock = Stock.find_or_create_by general_product_id: general_product.id,
+              storage_id: storage.id,
+              supplier_id: supplier.id
+    current_weight = stock.real_weight || 0
+    out_weight = self.real_weight || 0
+    stock.update_attribute :real_weight, current_weight - out_weight
+    stock
+  end
+
   def change_price new_price
     self.price.update_attribute :price, new_price
   end

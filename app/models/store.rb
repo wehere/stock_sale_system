@@ -1,6 +1,8 @@
 class Store < ActiveRecord::Base
   has_many :orders
   belongs_to :company
+  has_many :users
+  has_one :storage
   validates_presence_of :company, message: "没有指定门店属于哪个公司。"
   validates_presence_of :name, message: "门店名称不可以为空。"
   validates_uniqueness_of :name, scope: :company_id, message: "门店名称不能重复。"
