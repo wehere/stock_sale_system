@@ -16,9 +16,16 @@ class Supply::ProductsController < BaseController
 
   def create_one
     begin
-      product = Product.new product_params
-      product.supplier = current_user.company
-      product.save!
+      Product.transaction do
+        product = Product.new product_params
+        product.supplier = current_user.company
+        product.save!
+        options = {}
+        options[:name] = product.chinese_name
+        seller = Seller.find_or_create_by name: "其他", delete_flag: 0, supplier_id: product.supplier_id
+        options[:seller_id] = seller.id
+        GeneralProduct.create_general_product options, product.supplier_id
+      end
       flash[:notice] = "创建成功"
       redirect_to new_supply_product_path
     rescue Exception => e

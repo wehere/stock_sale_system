@@ -7,5 +7,6 @@ class User < ActiveRecord::Base
   has_many :comments
   has_many :users
   delegate :simple_name, to: :company, prefix: true, allow_nil: true
+  belongs_to :store
 
 end

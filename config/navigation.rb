@@ -58,7 +58,7 @@ SimpleNavigation::Configuration.run do |navigation|
     #
     primary.item :key_1, '价格', "/supply/prices" do |sub_nav|
       sub_nav.item :key_1_1, '给客户提供的价格', '/supply/prices/search'
-      sub_nav.item :key_1_2, '新增价格', '/supply/products'
+      sub_nav.item :key_1_2, '新增价格', '/supply/prices/prepare_create_price'
       sub_nav.item :key_1_3, '生成下一个月价格', '/supply/prices/generate_next_month'
       sub_nav.item :key_1_4, '用excel导入价格', '/supply/prices/import_prices_from_xls'
       sub_nav.item :key_1_5, '导出价格', '/supply/prices/export_xls_of_prices'

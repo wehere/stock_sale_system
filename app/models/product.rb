@@ -28,7 +28,15 @@ class Product < ActiveRecord::Base
         products = Product.where(chinese_name: product_name, supplier_id: supplier_id)
 
         if products.blank?
-          Product.create!(simple_abc: simple_abc, chinese_name: product_name, spec: spec, supplier_id: supplier_id)
+          product = Product.create!(simple_abc: simple_abc, chinese_name: product_name, spec: spec, supplier_id: supplier_id)
+          seller = Seller.find_or_create_by name: '其他', supplier_id: supplier_id, delete_flag: 0
+          general_product = GeneralProduct.find_or_create_by name: product_name, supplier_id: supplier_id
+          product.general_product = general_product
+          product.save!
+          if general_product.seller_id.blank?
+            general_product.seller_id = seller.id
+            general_product.save!
+          end
         else
           message += product_name + '已经存在！'
           next

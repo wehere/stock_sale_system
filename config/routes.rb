@@ -68,6 +68,7 @@ Rails.application.routes.draw do
         post :update_one_price
         get :show_price
         post :save_data
+        get :prepare_create_price
       end
       member do
         get :do_not_use

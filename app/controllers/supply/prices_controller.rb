@@ -44,6 +44,10 @@ class Supply::PricesController < BaseController
     end
   end
 
+  def prepare_create_price
+    redirect_to '/supply/products'
+  end
+
   def new
     puts params
     company = current_user.company

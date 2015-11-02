@@ -23,6 +23,7 @@ class Supply::OrdersController < BaseController
   end
 
   def update
+    begin
     hash = params[:order_item]
     Order.transaction do
       hash.each do |key,value|
@@ -30,10 +31,18 @@ class Supply::OrdersController < BaseController
 
           order_item.update_attribute :real_weight, value.blank? ? 0 : value
           order_item.update_money
+          # 更新进出明细
+          order_item.update_detail current_user
+          # 更新库存stocks
+          order_item.update_stock current_user
       end
     end
     Order.find(params[:order_id]).calculate_not_input_number
     redirect_to "/supply/orders/#{params[:order_id]}/edit?t=#{Time.now.to_i}"
+    rescue Exception=>e
+      flash[:alert] = dispose_exception e
+      redirect_to "/supply/orders/#{params[:order_id]}/edit?t=#{Time.now.to_i}"
+    end
   end
 
   def comment
