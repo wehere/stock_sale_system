@@ -105,4 +105,55 @@ class Price < ActiveRecord::Base
     EOF
     Price.find_by_sql(sql)
   end
+
+  def self.query_price options
+    price = Price.where "1=1"
+    price = unless options[:is_used].nil?
+              price.where is_used: options[:is_used]
+            end
+
+    price = unless options[:supplier_id].nil?
+              price.where supplier_id: options[:supplier_id]
+            end
+
+    unless options[:product_name].nil?
+      products = Product.where ['chinese_name like ? or simple_abc like ?', "%#{options[:product_name]}%", "%#{options[:product_name]}%"]
+      price = price.where product_id: products.collect(&:id)
+    end
+
+    unless options[:month].nil?
+      month = YearMonth.where val: options[:month]
+      month = month.first
+      price = price.where year_month_id: month.id
+    end
+
+    price = price.paginate(per_page: options[:per_page]||10, page: options[:page]||1)
+
+    price
+  end
+
+  def update_price options
+    PurchasePrice.transaction do
+
+      old_attributes = self.attributes
+      old_attributes.delete("id")
+
+      pps = Price.where year_month_id: self.year_month_id,
+                        product_id: self.product_id,
+                        is_used: true,
+                        customer_id:  self.customer_id,
+                        supplier_id: self.supplier_id
+      pps.each do |p|
+        p.is_used = false
+        p.save!
+      end
+      pur_p = Price.new old_attributes
+      pur_p.is_used = true
+      pur_p.save!
+
+
+      pur_p.update! options
+      pur_p
+    end
+  end
 end

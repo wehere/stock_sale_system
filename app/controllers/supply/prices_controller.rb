@@ -1,6 +1,7 @@
 require 'spreadsheet'
 class Supply::PricesController < BaseController
   before_filter :need_login
+
   def index
     @customers = current_user.company.customers
     @year_months = YearMonth.all
@@ -38,7 +39,7 @@ class Supply::PricesController < BaseController
         @year_month_id = YearMonth.current_year_month.id
         @search_results = nil
       end
-    rescue Exception=>e
+    rescue Exception => e
       flash[:alert] = '查询失败，' + dispose_exception(e)
     end
   end
@@ -92,7 +93,7 @@ class Supply::PricesController < BaseController
       end
 
     end
-    render :text=>'ok'
+    render :text => 'ok'
   end
 
   def update
@@ -107,7 +108,7 @@ class Supply::PricesController < BaseController
         @old_price.update_attribute :true_spec, params[:submitted_spec]
         flash[:notice] = '更新成功'
       end
-    rescue Exception=>e
+    rescue Exception => e
       flash[:notice] = dispose_exception e
     end
     company = current_user.company
@@ -126,7 +127,7 @@ class Supply::PricesController < BaseController
       true_price.update_attributes! price: params[:price].to_f, true_spec: params[:true_spec]
       flash[:notice] = '更新成功'
       redirect_to null_price_supply_order_items_path
-    rescue Exception=>e
+    rescue Exception => e
       flash[:alert] = dispose_exception e
       redirect_to null_price_supply_order_items_path
     end
@@ -145,7 +146,7 @@ class Supply::PricesController < BaseController
         @target_year_month_id = YearMonth.next_year_month.id
         @origin_year_month_id = YearMonth.current_year_month.id
       end
-    rescue Exception=>e
+    rescue Exception => e
       flash[:alert] = dispose_exception e
       redirect_to generate_next_month_supply_prices_path
     end
@@ -191,8 +192,43 @@ class Supply::PricesController < BaseController
     end
   end
 
-private
+#################################
+  def show_price
+    month = "#{Time.now.year}年#{Time.now.month}月"
+    @prices = Price.query_price is_used: true,
+                                product_name: params[:product_name],
+                                supplier_id: current_user.company.id,
+                                per_page: 10,
+                                month: month,
+                                page: params[:page]
+
+
+  end
+
+  def save_data
+    permitted = params.permit(p: [:price, :ratio, :true_spec])
+    params.permit(:id)
+    price = Price.find params[:id]
+    # result = begin
+    new_price = price.update_price permitted[:p]
+
+    result = {
+        :code => 0,
+        :status => '存储数据成功',
+        :price => new_price.price,
+        :true_spec => new_price.true_spec,
+        :ratio => new_price.ratio
+    }
+    # rescue Exception => e
+    #   {:code => 1,
+    #    :status => '失败'}
+    # end
+    render :json => result.to_json
+  end
+
+
+  private
   def price_params
-    params.permit([:year_month_id,:customer_id,:product_id,:price,:true_spec,:supplier_id])
+    params.permit([:year_month_id, :customer_id, :product_id, :price, :true_spec, :supplier_id])
   end
 end
