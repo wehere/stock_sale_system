@@ -62,6 +62,8 @@ SimpleNavigation::Configuration.run do |navigation|
       sub_nav.item :key_1_3, '生成下一个月价格', '/supply/prices/generate_next_month'
       sub_nav.item :key_1_4, '用excel导入价格', '/supply/prices/import_prices_from_xls'
       sub_nav.item :key_1_5, '导出价格', '/supply/prices/export_xls_of_prices'
+      sub_nav.item :key_1_6, '进货价格', '/purchase/purchase_price'
+      sub_nav.item :key_1_7, '售出价格', '/purchase/prices'
     end
 
     # Add an item which has a sub navigation (same params, but with block)
@@ -69,9 +71,8 @@ SimpleNavigation::Configuration.run do |navigation|
       # Add an item to the sub navigation (same params again)
       sub_nav.item :key_2_1, '新增产品', "/supply/products/new"
       sub_nav.item :key_2_2, '导入产品', '/supply/products/import_products_from_xls'
-      sub_nav.item :key_2_3, '通用产品一览', 'supply/general_products'
-      sub_nav.item :key_2_4, '不使用某些产品', '/supply/prices'
-      sub_nav.item :key_2_5, '进货价格', '/purchase/purchase_price'
+      sub_nav.item :key_2_3, '通用产品一览', '/supply/general_products'
+
     end
 
     # You can also specify a condition-proc that needs to be fullfilled to display an item.

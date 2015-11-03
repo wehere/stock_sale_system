@@ -18,6 +18,7 @@ class GeneralProduct < ActiveRecord::Base
     GeneralProduct.transaction do
       self.update_attribute :name, params[:name] unless params[:name].blank?
       self.update_attribute :seller_id, params[:seller_id] unless params[:seller_id].blank?
+      self.update_attribute :mini_spec, params[:mini_spec] unless params[:mini_spec].blank?
       self
     end
   end

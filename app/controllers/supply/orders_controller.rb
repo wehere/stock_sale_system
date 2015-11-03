@@ -17,8 +17,8 @@ class Supply::OrdersController < BaseController
 
   def edit
     @order = Order.find(params[:id])
-    @pre_order = @order.previous @order.order_type.previous
-    @next_order = @order.next @order.order_type.next
+    # @pre_order = @order.previous @order.order_type.previous
+    # @next_order = @order.next @order.order_type.next
     @order_items = @order.order_items
   end
 

@@ -17,6 +17,15 @@
 </div>
 <br/>
 <div class="row">
+  <div class="col-sm-1 text-right">
+    <label>标准单位</label>
+  </div>
+  <div class="col-sm-11">
+    <%= text_field_tag 'mini_spec', params[:mini_spec] %>
+  </div>
+</div>
+<br/>
+<div class="row">
   <div class="col-sm-2 text-left end">
     <%= submit_tag '保存&继续创建', class: 'btn btn-primary' %>
   </div>
