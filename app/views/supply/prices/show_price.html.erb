@@ -1,4 +1,4 @@
-<%= form_tag '/purchase/purchase_price/', method: :get do %>
+<%= form_tag '/supply/prices/show_price', method: :get do %>
     <%= label_tag 'product_name', '产品名称' %>
     <%= text_field_tag 'product_name', params[:product_name] %>
     <%= submit_tag '查询', class: 'btn btn-info' %>
@@ -6,49 +6,51 @@
 <table class="table table-striped table-hover">
   <thead>
   <th>id</th>
-  <th>购方</th>
-  <th>卖方</th>
+  <th>月份</th>
+  <th>客户名称</th>
+  <th>供应商名称</th>
   <th>产品名称</th>
   <th>价格</th>
   <th>规格</th>
-  <th>数量</th>
-  <th>标准规格</th>
-  <th>操作</th>
+
+  <th>规格比例</th>
+  <th>标准单位</th>
   </thead>
   <tbody>
+
+
+
 
   <% @prices.each do |price| %>
       <tr>
         <td><%= price.id %></td>
+        <td><%= price.year_month.val %></td>
+        <td><%= price.customer.simple_name %></td>
         <td><%= price.supplier.simple_name %></td>
-        <td>
-          <span id="a<%= price.id %>_seller_show">
-            <%= price.seller.name %>
-          </span>
-          <span id="a<%= price.id %>_seller_input_span" style="display: none">
-            <%= select_tag "a#{price.id}_seller_input", options_from_collection_for_select(@seller, 'id', 'name', price.seller.id) %>
-          </span>
-
-        </td>
         <td><%= price.product.chinese_name %></td>
+
         <td>
-          <span id="a<%= price.id %>_price_show" onclick="show_update('<%=price.id%>');"><%= price.price %></span>
+          <span id="a<%= price.id %>_price_show" onclick="show_update('<%=price.id%>');"><%= price.price || '没有' %> </span>
           <span id="a<%= price.id %>_price_input_span" style="display: none">
             <%= text_field_tag "a#{price.id}_price_input", price.price, :size => 8 %>
           </span>
         </td>
+
+
         <td>
           <span id="a<%= price.id %>_true_spec_show" onclick="show_update('<%=price.id%>');"><%= price.true_spec %></span>
           <span id="a<%= price.id %>_true_spec_input_span" style="display: none">
             <%= text_field_tag "a#{price.id}_true_spec_input", price.true_spec, :size => 8 %>
           </span>
         </td>
+
         <td>
           <span id="a<%= price.id %>_ratio_show" onclick="show_update('<%=price.id%>');"><%= price.ratio %></span>
           <span id="a<%= price.id %>_ratio_input_span" style="display: none">
             <%= text_field_tag "a#{price.id}_ratio_input", price.ratio, :size => 8 %>
           </span>
         </td>
+
         <td><%= price.product.general_product.mini_spec %></td>
         <td>
           <input id="a<%= price.id %>_commit" style="display: none" type="button" value="保存" onclick="save_data('<%= price.id %>') "/>
@@ -63,10 +65,9 @@
 <script language="javascript">
     function save_data(id) {
         $.ajax({
-            url: "/purchase/purchase_price/save_data",
+            url: "/supply/prices/save_data",
             type: "post",
             data: {
-                "p[seller_id]": $('#a' + id + '_seller_input').val(),
                 "p[price]": $('#a' + id + '_price_input').val(),
                 "p[ratio]": $('#a' + id + '_ratio_input').val(),
                 "p[true_spec]": $('#a' + id + '_true_spec_input').val(),
@@ -76,13 +77,11 @@
         }).done(
                 function (result) {
                     if(result.code == 0){
-                        $('#a' + id + '_seller_show').html(result.seller_name);
                         $('#a' + id + '_price_show').html(result.price);
                         $("#a" + id + "_true_spec_show").html(result.true_spec);
                         $("#a" + id + "_ratio_show").html(result.ratio);
                         show_update(id);
                     }
-
                     else{
                         alert(result.status);
                     }
@@ -92,8 +91,6 @@
     }
 
     function show_update(id) {
-        $('#a' + id + '_seller_show').toggle();
-        $("#a" + id + "_seller_input_span").toggle();
 
         $('#a' + id + '_price_show').toggle();
         $("#a" + id + "_price_input_span").toggle();

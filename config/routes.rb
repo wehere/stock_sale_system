@@ -66,6 +66,8 @@ Rails.application.routes.draw do
         post :import_prices_from_xls
         get :export_xls_of_prices
         post :update_one_price
+        get :show_price
+        post :save_data
         get :prepare_create_price
       end
       member do
@@ -120,6 +122,7 @@ Rails.application.routes.draw do
       collection do
         get :search
         post :search
+
       end
     end
     resources :purchase_price do
