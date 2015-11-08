@@ -63,7 +63,7 @@ SimpleNavigation::Configuration.run do |navigation|
       sub_nav.item :key_1_4, '用excel导入价格', '/supply/prices/import_prices_from_xls'
       sub_nav.item :key_1_5, '导出价格', '/supply/prices/export_xls_of_prices'
       sub_nav.item :key_1_6, '进货价格', '/purchase/purchase_price'
-      sub_nav.item :key_1_7, '售出价格', '/purchase/prices'
+      sub_nav.item :key_1_7, '售出价格', '/supply/prices/show_price'
     end
 
     # Add an item which has a sub navigation (same params, but with block)

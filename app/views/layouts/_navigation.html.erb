@@ -22,13 +22,14 @@
   <div class="y-topbar-row" style="position: static; opacity: 1;">
     <div class="aliyun-login">
       <a class="lnk-login-pre" onlcick="return false;" href="#nogo">欢迎来访，</a>
-      <a id="lnk_login" class="lnk-login" target="_self" href="<%= new_user_session_path %>">
-        <span>请登录</span>
-      </a>
-      <span class="li-spacing"></span>
-      <a id="lnk_reg" class="lnk-reg" target="_self" 		href="https://account.aliyun.com/register/register.htm?oauth_callback=http%3A%2F%2Fwww.aliyun.com%2F">
-        <span>注册</span>
-      </a>
+      <% if user_signed_in? %>
+          <%= current_user.user_name %>
+      <% else %>
+          <a id="lnk_login" class="lnk-login" target="_self" href="<%= new_user_session_path %>">
+            <span>请登录</span>
+          </a>
+          <span class="li-spacing"></span>
+      <% end %>
     </div>
   </div>
 </div>
