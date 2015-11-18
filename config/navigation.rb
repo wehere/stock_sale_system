@@ -31,7 +31,7 @@ SimpleNavigation::Configuration.run do |navigation|
   
   # Specifies whether auto highlight should ignore query params and/or anchors when 
   # comparing the navigation items with the current URL. Defaults to true 
-  #navigation.ignore_query_params_on_auto_highlight = true
+  navigation.ignore_query_params_on_auto_highlight = false
   #navigation.ignore_anchors_on_auto_highlight = true
   
   # If this option is set to true, all item names will be considered as safe (passed through html_safe). Defaults to false.
