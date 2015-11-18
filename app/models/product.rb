@@ -3,12 +3,9 @@ class Product < ActiveRecord::Base
   has_many :prices
   belongs_to :supplier, foreign_key: :supplier_id, class_name: :Company
   validates_presence_of :simple_abc, :message => '中文缩写不可以为空！'
-  validate :validate
+  validates_uniqueness_of :chinese_name, scope: [:supplier_id], message: "产品名称已经存在，请选用其他产品名称"
   has_one :purchase_price, -> { where is_used: true }
 
-  def validate
-    errors.add(:product_id, "产品名称已经存在，请选用其他产品名称！") if Product.where(supplier_id: supplier_id, chinese_name: chinese_name).count >= 1
-  end
 
   def self.import_products_from_xls supplier_id, file_io
     message = '导入产品开始于' + Time.now.to_s + '             '
