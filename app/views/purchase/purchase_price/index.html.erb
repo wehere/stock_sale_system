@@ -49,7 +49,7 @@
             <%= text_field_tag "a#{price.id}_ratio_input", price.ratio, :size => 8 %>
           </span>
         </td>
-        <td><%= price.product.general_product.mini_spec %></td>
+        <td><%= price.product.general_product.mini_spec rescue "缺少对应的通用产品，请添加" %></td>
         <td>
           <input id="a<%= price.id %>_commit" style="display: none" type="button" value="保存" onclick="save_data('<%= price.id %>') "/>
         </td>
