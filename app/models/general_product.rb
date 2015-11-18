@@ -8,9 +8,14 @@ class GeneralProduct < ActiveRecord::Base
 
   def self.create_general_product params, supplier_id
     self.transaction do
-      general_product = self.new name: params[:name], seller_id: params[:seller_id], supplier_id: supplier_id
-      general_product.save!
-      general_product
+      g_p = self.where(name: params[:name], supplier_id: supplier_id)
+      if g_p.blank?
+        general_product = self.new name: params[:name], seller_id: params[:seller_id], supplier_id: supplier_id
+        general_product.save!
+        general_product
+      else
+        g_p
+      end
     end
   end
 
