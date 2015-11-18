@@ -93,7 +93,8 @@ SimpleNavigation::Configuration.run do |navigation|
     primary.item :key_5, '报表', "/supply/sheets" do |sub_nav|
       sub_nav.item :key_5_1, '分菜', '/supply/order_items/prepare_classify'
     end
-
+    primary.item :key_6, '库存', "/supply/stocks" do |sub_nav|
+    end
     # you can also specify html attributes to attach to this particular level
     # works for all levels of the menu
     #primary.dom_attributes = {id: 'menu-id', class: 'menu-class'}

@@ -1,0 +1,16 @@
+<h3>库存状况</h3>
+<table>
+  <thead>
+    <th>产品名称</th><th>仓库</th><th>单位</th><th>库存量</th>
+  </thead>
+  <tbody>
+    <% @stocks.each do |stock| %>
+        <tr>
+          <td><%= stock.general_product.name %></td>
+          <td><%= stock.storage.name %></td>
+          <td><%= stock.purchase_price.true_spec %></td>
+          <td><%= stock.real_weight/stock.purchase_price.ratio %></td>
+        </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -2,6 +2,7 @@ class GeneralProduct < ActiveRecord::Base
   belongs_to :seller
   belongs_to :company, foreign_key: :supplier_id
   has_many :products
+  has_one :stock
 
   validates_presence_of :name, message: '名称不可以为空。'
   validates_uniqueness_of :name, message: '该通用产品已经存在。'

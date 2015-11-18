@@ -17,6 +17,7 @@ class Company < ActiveRecord::Base
   has_one :vip_info, foreign_key: :company_id
   has_many :sellers, foreign_key: :supplier_id
   has_many :general_products, foreign_key: :supplier_id
+  has_many :stocks, foreign_key: :supplier_id
 
   #由eric添加
   has_many :purchase_prices, foreign_key: :supplier_id
