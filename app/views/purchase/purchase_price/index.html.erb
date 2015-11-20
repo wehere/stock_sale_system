@@ -11,7 +11,7 @@
   <th>产品名称</th>
   <th>价格</th>
   <th>规格</th>
-  <th>数量</th>
+  <th>换算率</th>
   <th>标准规格</th>
   <th>操作</th>
   </thead>
@@ -49,7 +49,18 @@
             <%= text_field_tag "a#{price.id}_ratio_input", price.ratio, :size => 8 %>
           </span>
         </td>
-        <td><%= price.product.general_product.mini_spec rescue "缺少对应的通用产品，请添加" %></td>
+        <td>
+          <%=
+             if price.product.general_product.blank?
+                "缺少对应的通用产品，请添加"
+             elsif price.product.general_product.mini_spec.blank?
+                link_to '补充标准单位', "/supply/general_products/#{price.product.general_product.id}/edit", target: "_blank"
+             else
+                price.product.general_product.mini_spec
+             end
+          %>
+
+        </td>
         <td>
           <input id="a<%= price.id %>_commit" style="display: none" type="button" value="保存" onclick="save_data('<%= price.id %>') "/>
         </td>
