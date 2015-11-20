@@ -27,6 +27,13 @@ class Supply::ProductsController < BaseController
         general_product = GeneralProduct.create_general_product options, product.supplier_id
         product.general_product = general_product
         product.save!
+        PurchasePrice.create_purchase_price supplier_id: product.supplier_id,
+                                            seller_id: seller.id,
+                                            is_used: true,
+                                            true_spec: '斤',
+                                            price: nil,
+                                            product_id: product.id,
+                                            ratio: 500
       end
       flash[:notice] = "创建成功"
       redirect_to new_supply_product_path
