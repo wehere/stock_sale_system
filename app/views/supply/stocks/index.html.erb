@@ -1,4 +1,8 @@
 <h3>库存状况</h3>
+<%= form_tag '/supply/stocks', method: :get do %>
+    <%= text_field_tag 'product_name', params[:product_name] %>
+    <%= submit_tag '查询', class: "btn btn-primary" %>
+<% end %>
 <table class="table">
   <thead>
     <th>产品名称</th><th>仓库</th><th>单位</th><th>库存量</th><th>最后一次进货价格</th>
@@ -24,4 +28,4 @@
     <% end %>
   </tbody>
 </table>
-<h2>总价值:<%= sum_money %></h2>
+<h2>以上库存总价值:<%= sum_money %></h2>
