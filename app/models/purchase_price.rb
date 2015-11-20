@@ -53,8 +53,9 @@ class PurchasePrice < ActiveRecord::Base
 
   # PurchasePrice.create_purchase_price_batch
   def self.create_purchase_price_batch supplier_id
+    supplier = Company.find_by_id(supplier_id)
     seller = Seller.find_or_create_by name: "其他", delete_flag: 0, supplier_id: supplier_id
-    Product.all.each do |p|
+    supplier.products.each do |p|
       PurchasePrice.create_purchase_price supplier_id: p.supplier_id,
                                           seller_id: seller.id,
                                           true_spec: '斤',

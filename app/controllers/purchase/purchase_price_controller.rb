@@ -8,8 +8,16 @@ class Purchase::PurchasePriceController < BaseController
                                                  supplier_id: current_user.company.id,
                                                  per_page: 10,
                                                  page: params[:page]
-
+    @prices = @prices.order(id: :desc)
     @seller = current_user.company.sellers.where(delete_flag: false).order(sort_number: :desc)
+  end
+
+  def pre_update_price
+
+  end
+
+  def update_price
+    PurchasePrice.create_purchase_price_batch current_user.company.id
   end
 
   def save_data

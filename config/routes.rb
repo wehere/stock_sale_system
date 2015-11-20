@@ -129,6 +129,8 @@ Rails.application.routes.draw do
     resources :purchase_price do
       collection do
         post :save_data
+        get :pre_update_price
+        get :update_price
       end
     end
     resources :orders do
