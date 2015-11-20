@@ -4,7 +4,7 @@
     <th>产品名称</th><th>仓库</th><th>单位</th><th>库存量</th><th>最后一次进货价格</th>
   </thead>
   <tbody>
-    <%= sum_money = 0.0 %>
+    <% sum_money = 0.0 %>
     <% @stocks.each do |stock| %>
         <tr>
           <td><%= stock.general_product.name %></td>
