@@ -14,12 +14,12 @@
           <td><%= stock.general_product.name %></td>
           <td><%= stock.storage.name %></td>
           <td><%= stock.purchase_price.true_spec %></td>
-          <td><%= stock.real_weight/stock.purchase_price.ratio %></td>
+          <td><%= stock.real_weight/stock.purchase_price.ratio rescue 'error' %></td>
           <td><%= stock.last_purchase_price %></td>
 
 
           <%
-             weight = stock.real_weight/stock.purchase_price.ratio
+             weight = stock.real_weight/stock.purchase_price.ratio rescue 0
              price = stock.last_purchase_price || 0
              sum_money += price*weight
           %>

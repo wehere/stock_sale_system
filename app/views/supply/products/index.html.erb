@@ -6,14 +6,19 @@
     (关键词可以是产品ID、中文名称、缩写)
 <% end %>
 <br/>
-<table class="table table-striped">
-  <thead>
-  <th>产品ID</th>
-  <th>中文名称</th>
-  <th>缩写</th>
-  <th>关联通用产品</th>
-  <th>操作</th>
-  </thead>
+
+  <% if @products.blank? %>
+      <%= "没有找到该产品，是否创建一个新的产品？" %>
+      <%= link_to '创建', "/supply/products/new", class: 'btn btn-primary' %>
+  <% else %>
+    <table class="table table-striped">
+      <thead>
+      <th>产品ID</th>
+      <th>中文名称</th>
+      <th>缩写</th>
+      <th>关联通用产品</th>
+      <th>操作</th>
+      </thead>
   <% @products.each do |product| %>
       <tr>
         <td><%= product.id %></td>
@@ -27,5 +32,7 @@
         </td>
       </tr>
   <% end %>
-</table>
-<%= will_paginate @products, :class => 'flickr_pagination', :previous_label => '<<上一页', :next_label => '下一页>>' %>
+    </table>
+    <%= will_paginate @products, :class => 'flickr_pagination', :previous_label => '<<上一页', :next_label => '下一页>>' %>
+  <% end %>
+
