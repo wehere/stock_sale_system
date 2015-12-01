@@ -24,7 +24,7 @@ class Supply::GeneralProductsController < BaseController
       end
     rescue Exception=>e
       flash[:alert] = dispose_exception e
-      @general_product = GeneralProduct.new name: params[:name], seller_id: params[:seller_id], supplier_id: current_user.company.id
+      @general_product = GeneralProduct.new name: params[:name], another_seller_id: params[:seller_id], supplier_id: current_user.company.id
       @sellers = current_user.company.sellers
       @seller = @general_product.seller
       render :new

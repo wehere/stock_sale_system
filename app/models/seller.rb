@@ -1,5 +1,5 @@
 class Seller < ActiveRecord::Base
-  has_many :general_products
+  has_many :general_products, foreign_key: 'another_seller_id'
   belongs_to :company, foreign_key: :supplier_id
 
   validates_presence_of :name, message: '卖家名字不能为空。'
@@ -44,7 +44,7 @@ class Seller < ActiveRecord::Base
     puts general_product_ids
     self.transaction do
       general_product_ids.to_a.each do |g_p_id|
-        GeneralProduct.find(g_p_id).update_attribute :seller_id, seller_id
+        GeneralProduct.find(g_p_id).update_attribute :another_seller_id, seller_id
       end
     end
   end
