@@ -24,6 +24,10 @@
       <a class="lnk-login-pre" onlcick="return false;" href="#nogo">欢迎来访，</a>
       <% if user_signed_in? %>
           <%= current_user.user_name %>
+          <a id="lnk_login" class="lnk-login" target="_self" rel="nofollow" data-method="delete" href="/users/sign_out">
+            <span>退出</span>
+          </a>
+          <span class="li-spacing"></span>
       <% else %>
           <a id="lnk_login" class="lnk-login" target="_self" href="<%= new_user_session_path %>">
             <span>请登录</span>
