@@ -1,4 +1,5 @@
 class Supply::StocksController < BaseController
+  before_filter :need_login
   def index
     @stocks = current_user.company.stocks
     unless params[:product_name].blank?
