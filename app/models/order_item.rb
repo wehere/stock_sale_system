@@ -23,6 +23,42 @@ class OrderItem < ActiveRecord::Base
     self.update_attribute :money, (self.real_price*self.real_weight).round(2)
   end
 
+  def change_detail_and_stock current_user
+    supplier = current_user.company
+    BusinessException.raise "#{current_user.user_name}还没关联给任何一个公司／供应商，不能做进出明细操作。" if supplier.blank?
+    order = self.order
+    BusinessException.raise "id为#{order_item.id}的品项没有对应的order抬头，不能做进出明细操作。" if order.blank?
+    if !order.is_confirm
+
+    else
+      order_detail = OrderDetail.where(supplier_id: supplier.id,
+                                       related_company_id: order.customer_id,
+                                       order_id: order.id,
+                                       item_id: self.id
+      ).first
+      if order_detail.blank?
+        # BusinessException.raise "order id is #{order.id}, it's confirmed,order_item id is #{self.id}, but has no order_detail, it's error"
+        self.update_detail current_user
+        self.update_stock current_user
+      else
+        store = current_user.store
+        BusinessException.raise "#{current_user.user_name}还没有权限处理任何一个仓库，不能做库存更新操作。" if store.blank?
+        storage = store.storage
+        BusinessException.raise "门店#{store.name}还没有关联到任何仓库，不能做库存更新操作。" if storage.blank?
+        general_product = self.product.general_product
+        BusinessException.raise "产品#{product.chinese_name}还没有关联任何通用产品，不能做库存更新操作。" if general_product.blank?
+        stock = Stock.find_or_create_by general_product_id: general_product.id,
+                                        storage_id: storage.id,
+                                        supplier_id: supplier.id
+        current_weight = stock.real_weight || 0
+        ratio = self.price.ratio
+        BusinessException.raise "id为#{self.price.id}的price，产品名为#{self.product.chinese_name},对应的相对于标准单位比率为空或为0，不能做库存更新操作" if ratio.blank? || ratio == 0
+        stock.update_attributes real_weight: current_weight + (self.real_weight - order_detail.real_weight)*ratio
+        order_detail.update_attributes real_weight: self.real_weight
+      end
+    end
+  end
+
   def update_detail current_user
     supplier = current_user.company
     BusinessException.raise "#{current_user.user_name}还没关联给任何一个公司／供应商，不能做进出明细操作。" if supplier.blank?
@@ -58,7 +94,7 @@ class OrderItem < ActiveRecord::Base
               supplier_id: supplier.id
     current_weight = stock.real_weight || 0
     ratio = self.price.ratio
-    BusinessException.raise "id为#{self.price.id}的price对应的相对于标准单位比率为空或为0，不能做库存更新操作" if ratio.blank? || ratio == 0
+    BusinessException.raise "id为#{self.price.id}的price，产品名为#{self.product.chinese_name},对应的相对于标准单位比率为空或为0，不能做库存更新操作" if ratio.blank? || ratio == 0
     out_weight = (self.real_weight || 0) * ratio
     stock.update_attribute :real_weight, current_weight - out_weight
     stock

@@ -16,7 +16,12 @@ class Supply::OrdersController < BaseController
   end
 
   def edit
-    @order = Order.find(params[:id])
+    if params[:id] == "0"
+      @order = Order.first
+    else
+      @order = Order.find(params[:id])
+    end
+
     # @pre_order = @order.previous @order.order_type.previous
     # @next_order = @order.next @order.order_type.next
     @order_items = @order.order_items
@@ -24,21 +29,28 @@ class Supply::OrdersController < BaseController
 
   def update
     begin
-    hash = params[:order_item]
-    Order.transaction do
-      hash.each do |key,value|
-        order_item = OrderItem.find(key)
+      order = Order.find(params[:order_id])
+      hash = params[:order_item]
+      Order.transaction do
+        hash.each do |key,value|
+          order_item = OrderItem.find(key)
 
-          order_item.update_attribute :real_weight, value.blank? ? 0 : value
-          order_item.update_money
-          # 更新进出明细
-          order_item.update_detail current_user
-          # 更新库存stocks
-          order_item.update_stock current_user
+            order_item.update_attribute :real_weight, value.blank? ? 0 : value
+            order_item.update_money
+            if !order.is_confirm
+              # 更新进出明细
+              order_item.update_detail current_user
+              # 更新库存stocks
+              order_item.update_stock current_user
+            else
+              order_item.change_detail_and_stock current_user
+            end
+        end
       end
-    end
-    Order.find(params[:order_id]).calculate_not_input_number
-    redirect_to "/supply/orders/#{params[:order_id]}/edit?t=#{Time.now.to_i}"
+
+      order.update_attributes is_confirm: true unless order.is_confirm
+      order.calculate_not_input_number
+      redirect_to "/supply/orders/#{params[:order_id]}/edit?t=#{Time.now.to_i}"
     rescue Exception=>e
       flash[:alert] = dispose_exception e
       redirect_to "/supply/orders/#{params[:order_id]}/edit?t=#{Time.now.to_i}"

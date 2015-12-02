@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151201083606) do
+ActiveRecord::Schema.define(version: 20151202042527) do
 
   create_table "comments", force: :cascade do |t|
     t.integer  "order_id",    limit: 4
@@ -109,6 +109,7 @@ ActiveRecord::Schema.define(version: 20151201083606) do
     t.integer  "supplier_id",      limit: 4
     t.integer  "not_input_number", limit: 4
     t.boolean  "return_flag"
+    t.boolean  "is_confirm"
   end
 
   create_table "price_change_histories", force: :cascade do |t|
