@@ -23,7 +23,7 @@
           <%= order.store.name rescue 'error' %>
         </td>
         <td>
-          <%= order.order_type.name %>
+          <%= order.order_type.name rescue 'error' %>
         </td>
         <td>
           <%= order.reach_order_date %>
