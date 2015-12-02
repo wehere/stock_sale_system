@@ -195,7 +195,7 @@ class OrderItem < ActiveRecord::Base
       LEFT JOIN `orders` ON `orders`.`id` = `order_items`.`order_id`
       LEFT JOIN `products` ON `products`.`id` = `order_items`.`product_id`
       LEFT JOIN `general_products` ON `general_products`.`id` = `products`.`general_product_id`
-      LEFT JOIN `sellers` ON `sellers`.`id` = `general_products`.`seller_id`
+      LEFT JOIN `sellers` ON `sellers`.`id` = `general_products`.`another_seller_id`
       WHERE ((orders.delete_flag is null or orders.delete_flag = 0) and orders.supplier_id = #{supplier_id} and orders.reach_order_date = '#{specified_date}')
       order by `sellers`.`sort_number`, `general_products`.id
     EOF
