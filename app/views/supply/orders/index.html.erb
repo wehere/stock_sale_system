@@ -20,7 +20,7 @@
           <%= order.customer.simple_name %>
         </td>
         <td>
-          <%= order.store.name %>
+          <%= order.store.name rescue 'error' %>
         </td>
         <td>
           <%= order.order_type.name %>
