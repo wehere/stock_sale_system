@@ -1,6 +1,6 @@
 class Product < ActiveRecord::Base
   belongs_to :general_product
-  has_many :prices
+  has_many :prices, -> { where is_used: true }
   belongs_to :supplier, foreign_key: :supplier_id, class_name: :Company
   validates_presence_of :simple_abc, :message => '中文缩写不可以为空！'
   validates_uniqueness_of :chinese_name, scope: [:supplier_id], message: "产品名称已经存在，请选用其他产品名称"

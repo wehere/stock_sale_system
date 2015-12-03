@@ -50,7 +50,7 @@ class Supply::GeneralProductsController < BaseController
       redirect_to supply_general_products_path
     rescue Exception=>e
       flash[:alert] = dispose_exception e
-      @general_product = GeneralProduct.new params
+      @general_product = GeneralProduct.find(params[:id])
       @sellers = current_user.company.sellers
       @seller = @general_product.seller
       render :edit

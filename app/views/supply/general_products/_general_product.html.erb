@@ -3,7 +3,7 @@
     <label>通用产品名称</label>
   </div>
   <div class="col-sm-11">
-    <%= text_field_tag 'name', @general_product.name %>
+    <%= text_field_tag 'name', params[:name]||@general_product.name %>
   </div>
 </div>
 <br/>
@@ -12,7 +12,7 @@
     <label>选择卖货人</label>
   </div>
   <div class="col-sm-11">
-    <%= select_tag 'seller_id', options_from_collection_for_select( @sellers, 'id', 'name', (@seller.id rescue '')) %>
+    <%= select_tag 'seller_id', options_from_collection_for_select( @sellers, 'id', 'name', (params[:seller_id]||@seller.id rescue '')) %>
   </div>
 </div>
 <br/>
@@ -21,7 +21,7 @@
     <label>标准单位</label>
   </div>
   <div class="col-sm-11">
-    <%= text_field_tag 'mini_spec', params[:mini_spec] %>
+    <%= text_field_tag 'mini_spec', params[:mini_spec]||@general_product.mini_spec %>
   </div>
 </div>
 <br/>

@@ -3,15 +3,37 @@ class GeneralProduct < ActiveRecord::Base
   belongs_to :company, foreign_key: :supplier_id
   has_many :products
   has_one :stock
-
+  attr_accessor :skip_mini_spec_check
   validates_presence_of :name, message: '名称不可以为空。'
   validates_uniqueness_of :name, message: '该通用产品已经存在。'
+  validate :mini_spec_check
+
+  def mini_spec_check
+    if mini_spec_changed? && persisted? && !skip_mini_spec_check
+      used = false
+      self.products.each do |product|
+        p_p = product.purchase_price
+        if !p_p.blank? && !p_p.ratio.blank?
+          used = true
+          break
+        end
+        product.prices.each do |price|
+          if !price.ratio.blank?
+            used = true
+            break
+          end
+        end
+      end
+      errors.add(:general_product, "本通用产品已经关联一些价格，并且换算比率已经有了，本通用产品不可以再改动了") if used
+    end
+  end
 
   def self.create_general_product params, supplier_id
     self.transaction do
       g_p = self.where(name: params[:name], supplier_id: supplier_id)
       if g_p.blank?
-        general_product = self.new name: params[:name], another_seller_id: params[:seller_id], supplier_id: supplier_id
+        another_seller = Seller.find_or_create_by name: "其他东西", delete_flag: 1, supplier_id: supplier_id
+        general_product = self.new name: params[:name], seller_id: params[:seller_id], another_seller_id: another_seller.id, supplier_id: supplier_id
         general_product.save!
         general_product
       else
@@ -22,9 +44,10 @@ class GeneralProduct < ActiveRecord::Base
 
   def update_general_product params
     GeneralProduct.transaction do
-      self.update_attribute :name, params[:name] unless params[:name].blank?
-      self.update_attribute :another_seller_id, params[:seller_id] unless params[:seller_id].blank?
-      self.update_attribute :mini_spec, params[:mini_spec] unless params[:mini_spec].blank?
+      self.update_attributes! name: params[:name],
+                              another_seller_id: params[:seller_id],
+                              mini_spec: params[:mini_spec],
+                              skip_mini_spec_check: self.mini_spec.blank?
       self
     end
   end
