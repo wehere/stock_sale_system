@@ -1,11 +1,18 @@
 
 <%= form_tag '/supply/general_products/complex', method: :get do %>
 <div class="row">
-  <div class="col-sm-2">
+  <div class="col-sm-2 text-right">
     <label class="inline text-right">产品名称</label>
   </div>
   <div class="columns col-sm-2">
     <%= text_field_tag 'name', params[:name] %>
+  </div>
+  <div class="col-sm-2 text-right">
+    <label class="inline text-right">状态</label>
+  </div>
+  <div class="col-sm-2">
+    <% p_s = {-1=>"所有",0=>"没看过",1=>"看过"} %>
+    <%= select_tag 'pass_status', options_from_collection_for_select(p_s, 'first','second', (params[:pass_status]||-1).to_i) %>
   </div>
   <div class="col-sm-2 text-right end">
     <%= submit_tag '查询', class: 'btn btn-primary' %>
@@ -31,7 +38,7 @@
     %>
 
 <tr>
-  <td rowspan="<%= max_count %>" style="text-align:center;vertical-align:middle;">
+  <td id="g_p_<%= g_p.id %>_name_td" rowspan="<%= max_count %>" style="text-align:center;vertical-align:middle;background-color: <%= g_p.pass ? 'green' : 'red' %>" ondblclick="change_pass_status(<%= g_p.id %>)">
     <%= g_p.name %>
   </td>
   <td id="g_p_<%= g_p.id %>_mini_spec_td" rowspan="<%= max_count %>" ondblclick="click_mini_spec(<%= g_p.id %>)" style="text-align:center;vertical-align:middle;">
@@ -216,6 +223,21 @@
                       alert(result);
                   }else{
                       $("#purchase_price_"+purchase_price_id+"_ratio_td").html(result);
+                  }
+              }
+      )
+  }
+
+  function change_pass_status(g_p_id){
+      $.ajax({
+          url: "/supply/general_products/change_pass_status?g_p_id="+g_p_id,
+          type: 'post'
+      }).done(
+              function(result){
+                  if (result=="1"){
+                      $("#g_p_"+g_p_id+"_name_td").css('background-color','green');
+                  } else {
+                      $("#g_p_"+g_p_id+"_name_td").css('background-color','red');
                   }
               }
       )
