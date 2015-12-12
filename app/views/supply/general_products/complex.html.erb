@@ -29,7 +29,7 @@
        product_ids = g_p.products.ids
        prices = Price.where(product_id: product_ids, supplier_id: g_p.supplier_id).order(:customer_id)
        prices = prices.select{|x| x.is_used || (!x.is_used&&x.valid_order_items_count>0)}
-       purchase_prices = PurchasePrice.where(product_id: product_ids, supplier_id: g_p.supplier_id)
+       purchase_prices = PurchasePrice.where(product_id: product_ids, supplier_id: g_p.supplier_id, is_used: 1)
        max_count = prices.count
        max_count = purchase_prices.count if purchase_prices.count > max_count
        first_price = prices.first
