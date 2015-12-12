@@ -7,8 +7,35 @@ class Supply::GeneralProductsController < BaseController
   end
 
   def complex
-    @general_products = current_user.company.general_products.where("name like ?", "%#{params[:name]}%")
+    if params[:password]=="cxp"
+      @general_products = current_user.company.general_products
+      @general_products = @general_products.where("name like ?", "%#{params[:name]}%")
+      @general_products = @general_products.paginate(per_page: params[:per_page]||5, page: params[:page]||1)
+    end
 
+  end
+
+  def common_complex
+    @general_products = current_user.company.general_products
+    @general_products = @general_products.where("name like ?", "%#{params[:name]}%") unless params[:name].blank?
+    arr = []
+    @general_products.each do |g_p|
+      if g_p.mini_spec.blank?
+        arr<<g_p
+      else
+        need_make_up = false
+        products = g_p.products
+        products.each do |product|
+          next if need_make_up
+          prices = Price.where(product_id: product.id)
+          prices.each do |price|
+            need_make_up = true if price.true_spec.blank? || price.ratio.blank?
+          end
+        end
+        arr << g_p if need_make_up
+      end
+    end
+    @general_products = GeneralProduct.where(id: arr.collect{|x|x.id})
     @general_products = @general_products.paginate(per_page: params[:per_page]||5, page: params[:page]||1)
   end
 

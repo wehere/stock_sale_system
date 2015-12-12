@@ -31,6 +31,7 @@ Rails.application.routes.draw do
         post :save_price_ratio
         post :save_purchase_price_true_spec
         post :save_purchase_price_ratio
+        get :common_complex
       end
     end
     resources :customers do
