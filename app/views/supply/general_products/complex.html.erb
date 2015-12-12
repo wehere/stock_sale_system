@@ -95,6 +95,7 @@
       input_str = '<input type="text" name="g_p_'+g_p_id+'_mini_spec_text" size="5" id="g_p_'+g_p_id+'_mini_spec_text">';
       input_str += '<input type="button" name="button" value="保存" onclick="save_g_p_mini_spec('+g_p_id+')">';
       $("#g_p_"+g_p_id+"_mini_spec_td").html(input_str)
+      $("#g_p_"+g_p_id+"_mini_spec_text").focus();
   }
 
   function save_g_p_mini_spec(g_p_id){
@@ -120,6 +121,7 @@
       input_str = '<input type="text" name="price_'+price_id+'_true_spec_text" size="5" id="price_'+price_id+'_true_spec_text">';
       input_str += '<input type="button" name="button" value="保存" onclick="save_price_true_spec('+price_id+')">';
       $("#price_"+price_id+"_true_spec_td").html(input_str)
+      $("#price_"+price_id+"_true_spec_text").focus();
   }
 
   function save_price_true_spec(price_id){
@@ -144,7 +146,8 @@
   function click_price_ratio(price_id){
       input_str = '<input type="text" name="price_'+price_id+'_ratio_text" size="5" id="price_'+price_id+'_ratio_text">';
       input_str += '<input type="button" name="button" value="保存" onclick="save_price_ratio('+price_id+')">';
-      $("#price_"+price_id+"_ratio_td").html(input_str)
+      $("#price_"+price_id+"_ratio_td").html(input_str);
+      $("#price_"+price_id+"_ratio_text").focus();
   }
 
   function save_price_ratio(price_id){
@@ -169,7 +172,8 @@
   function click_purchase_price_true_spec(purchase_price_id){
       input_str = '<input type="text" name="purchase_price_'+purchase_price_id+'_true_spec_text" size="5" id="purchase_price_'+purchase_price_id+'_true_spec_text">';
       input_str += '<input type="button" name="button" value="保存" onclick="save_purchase_price_true_spec('+purchase_price_id+')">';
-      $("#purchase_price_"+purchase_price_id+"_true_spec_td").html(input_str)
+      $("#purchase_price_"+purchase_price_id+"_true_spec_td").html(input_str);
+      $("#purchase_price_"+purchase_price_id+"_true_spec_text").focus();
   }
 
   function save_purchase_price_true_spec(purchase_price_id){
@@ -194,7 +198,8 @@
   function click_purchase_price_ratio(purchase_price_id){
       input_str = '<input type="text" name="purchase_price_'+purchase_price_id+'_ratio_text" size="5" id="purchase_price_'+purchase_price_id+'_ratio_text">';
       input_str += '<input type="button" name="button" value="保存" onclick="save_purchase_price_ratio('+purchase_price_id+')">';
-      $("#purchase_price_"+purchase_price_id+"_ratio_td").html(input_str)
+      $("#purchase_price_"+purchase_price_id+"_ratio_td").html(input_str);
+      $("#purchase_price_"+purchase_price_id+"_ratio_text").focus();
   }
 
   function save_purchase_price_ratio(purchase_price_id){
