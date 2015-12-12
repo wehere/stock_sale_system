@@ -9,8 +9,8 @@ class Supply::GeneralProductsController < BaseController
   def complex
     if params[:password]=="cxp"
       @general_products = current_user.company.general_products
-      @general_products = @general_products.where("name like ?", "%#{params[:name]}%")
-      @general_products = @general_products.wehre(pass: true) if params[:pass_status] == '1'
+      @general_products = @general_products.where("name like ?", "%#{params[:name]}%") unless params[:name].blank?
+      @general_products = @general_products.where(pass: true) if params[:pass_status] == '1'
       @general_products = @general_products.where("pass is null or pass = 0") if params[:pass_status] == "0"
       @general_products = @general_products.paginate(per_page: params[:per_page]||5, page: params[:page]||1)
     end
