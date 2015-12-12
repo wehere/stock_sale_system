@@ -22,7 +22,7 @@
 <br/>
 <table class="table">
   <thead>
-  <th>产品名</th><th>标准单位</th><th>售价月份</th><th>客户名称</th><th>售价单位</th><th>售价单位/标准单位</th><th>进价单位</th><th>进价单位/标准单位</th>
+  <th>产品名</th><th>标准单位</th><th>售价月份</th><th>客户名称</th><th>价格</th><th>售价单位</th><th>售价单位/标准单位</th><th>进价单位</th><th>进价单位/标准单位</th>
   </thead>
 <% @general_products.each do |g_p| %>
     <%
@@ -50,6 +50,9 @@
   <td style="background-color: chartreuse">
     <%= first_price.customer.simple_name rescue '' %>
   </td>
+  <td style="background-color: chartreuse">
+    <%= first_price.price rescue '' %>
+  </td>
   <td style="background-color: chartreuse" id="price_<%= first_price.id rescue '0' %>_true_spec_td" ondblclick="click_price_true_spec(<%= first_price.id rescue '0' %>)">
     <%= first_price.true_spec rescue '' %>
   </td>
@@ -69,8 +72,11 @@
 <tr>
   <td style="background-color: chartreuse"><%= prices[i].year_month.val rescue '' %></td>
   <td style="background-color: chartreuse"><%= prices[i].customer.simple_name rescue '' %></td>
+  <td style="background-color: chartreuse">
+    <%= prices[i].customer.simple_name rescue '' %>
+  </td>
   <td style="background-color: chartreuse" id="price_<%= prices[i].id rescue '0' %>_true_spec_td" ondblclick="click_price_true_spec(<%= prices[i].id rescue '0' %>)">
-    <%= prices[i].true_spec rescue '' %>
+    <%= prices[i].price rescue '' %>
   </td>
   <td style="background-color: chartreuse" id="price_<%= prices[i].id rescue '0' %>_ratio_td" ondblclick="click_price_ratio(<%= prices[i].id rescue '0' %>)">
     <%= prices[i].ratio rescue '' %>
