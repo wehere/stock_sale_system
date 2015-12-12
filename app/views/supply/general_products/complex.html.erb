@@ -45,10 +45,10 @@
     <%= g_p.mini_spec %>
   </td>
   <td  style="background-color: chartreuse">
-    <%= first_price.year_month.val %>
+    <%= first_price.year_month.val rescue '' %>
   </td>
   <td style="background-color: chartreuse">
-    <%= first_price.customer.simple_name %>
+    <%= first_price.customer.simple_name rescue '' %>
   </td>
   <td style="background-color: chartreuse" id="price_<%= first_price.id rescue '0' %>_true_spec_td" ondblclick="click_price_true_spec(<%= first_price.id rescue '0' %>)">
     <%= first_price.true_spec rescue '' %>
