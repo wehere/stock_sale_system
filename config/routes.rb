@@ -25,6 +25,12 @@ Rails.application.routes.draw do
       collection do
         get :prepare_link_to_seller
         post :do_link_to_seller
+        get :complex
+        post :save_g_p_mini_spec
+        post :save_price_true_spec
+        post :save_price_ratio
+        post :save_purchase_price_true_spec
+        post :save_purchase_price_ratio
       end
     end
     resources :customers do

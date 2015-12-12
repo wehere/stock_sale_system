@@ -18,6 +18,12 @@ class Price < ActiveRecord::Base
     self.price
   end
 
+  def valid_order_items_count
+    order_items = self.order_items
+    order_items = order_items.select{|oi|oi.order.delete_flag!=true}
+    order_items.count
+  end
+
   def generate_next_month next_month_id
     return nil if Price.exists? year_month_id: next_month_id, customer_id: self.customer_id, product_id: self.product_id, supplier_id: self.supplier_id, is_used: true
     new_price = self.dup

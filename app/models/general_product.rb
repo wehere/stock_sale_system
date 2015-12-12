@@ -5,7 +5,7 @@ class GeneralProduct < ActiveRecord::Base
   has_one :stock
   attr_accessor :skip_mini_spec_check
   validates_presence_of :name, message: '名称不可以为空。'
-  validates_uniqueness_of :name, message: '该通用产品已经存在。'
+  validates_uniqueness_of :name, message: '该通用产品已经存在。', scope: [:supplier_id]
   validate :mini_spec_check
 
   def mini_spec_check

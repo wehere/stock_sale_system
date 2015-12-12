@@ -6,6 +6,57 @@ class Supply::GeneralProductsController < BaseController
     @general_products = current_user.company.general_products.order(id: :desc).where("name like ?", "%#{params[:name]}%").paginate(page: params[:page], per_page: 10)
   end
 
+  def complex
+    @general_products = current_user.company.general_products.where("name like ?", "%#{params[:name]}%")
+
+    @general_products = @general_products.paginate(per_page: params[:per_page]||5, page: params[:page]||1)
+  end
+
+  def save_g_p_mini_spec
+    if params[:mini_spec].blank?
+      render text: 'error'
+    else
+      GeneralProduct.find(params[:g_p_id]).update_attribute :mini_spec, params[:mini_spec]
+      render text: params[:mini_spec]
+    end
+  end
+
+  def save_price_true_spec
+    if params[:true_spec].blank?
+      render text: 'error'
+    else
+      Price.find(params[:price_id]).update_attribute :true_spec, params[:true_spec]
+      render text: params[:true_spec]
+    end
+  end
+
+  def save_price_ratio
+    if params[:ratio].blank?
+      render text: 'error'
+    else
+      Price.find(params[:price_id]).update_attribute :ratio, params[:ratio]
+      render text: params[:ratio]
+    end
+  end
+
+  def save_purchase_price_true_spec
+    if params[:true_spec].blank?
+      render text: 'error'
+    else
+      PurchasePrice.find(params[:purchase_price_id]).update_attribute :true_spec, params[:true_spec]
+      render text: params[:true_spec]
+    end
+  end
+
+  def save_purchase_price_ratio
+    if params[:ratio].blank?
+      render text: 'error'
+    else
+      PurchasePrice.find(params[:purchase_price_id]).update_attribute :ratio, params[:ratio]
+      render text: params[:ratio]
+    end
+  end
+
   def new
     @general_product = GeneralProduct.new
     @sellers = current_user.company.sellers
