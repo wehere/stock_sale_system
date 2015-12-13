@@ -21,6 +21,7 @@ Rails.application.routes.draw do
         get :down
       end
     end
+    resources :purchase_orders
     resources :general_products do
       collection do
         get :prepare_link_to_seller
@@ -87,6 +88,7 @@ Rails.application.routes.draw do
     end
     resources :orders do
       collection do
+        post :save_real_price
         post :comment
         get :not_input
         post :not_input

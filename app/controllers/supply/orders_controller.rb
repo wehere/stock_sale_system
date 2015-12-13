@@ -15,6 +15,21 @@ class Supply::OrdersController < BaseController
     @orders = @orders.paginate(page: params[:page], per_page: 10)
   end
 
+  def save_real_price
+    begin
+      order_item = OrderItem.find(params[:order_item_id])
+      price = order_item.price
+      price.update_attribute :price, params[:real_price] if price.price.blank? || price.price == 0.0
+      g_price = price.dup
+      g_price.update_attribute :is_used, false
+      order_item.update_attribute :price_id, g_price.id
+      order_item.update_money
+      render text: g_price.price.to_s
+    rescue Exception=>e
+      render text: dispose_exception(e)
+    end
+  end
+
   def edit
     if params[:id] == "0"
       @order = Order.first
@@ -50,6 +65,7 @@ class Supply::OrdersController < BaseController
 
       order.update_attributes is_confirm: true unless order.is_confirm
       order.calculate_not_input_number
+      flash[:notice] = "更新成功"
       redirect_to "/supply/orders/#{params[:order_id]}/edit?t=#{Time.now.to_i}"
     rescue Exception=>e
       flash[:alert] = dispose_exception e

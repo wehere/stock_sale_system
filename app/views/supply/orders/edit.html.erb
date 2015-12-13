@@ -101,11 +101,35 @@
                 return true;
         });
     });
+
+    function chang_real_price(order_item_id) {
+        input_str = '<input type="text" name="real_price_oi_text_'+order_item_id+'" size="3" id="real_price_oi_text_'+order_item_id+'">';
+        input_str += '<input type="button" name="button" value="保存" size="3" onclick="save_real_price('+order_item_id+')">';
+        $("#real_price_oi_"+order_item_id).html(input_str);
+    }
+    function save_real_price(order_item_id) {
+        $.ajax({
+            url: "/supply/orders/save_real_price",
+            type: "post",
+            data: {
+                "order_item_id": order_item_id,
+                "real_price": $("#real_price_oi_text_"+order_item_id).val()
+            }
+        }).done(
+                function(result){
+                    if(result == "error"){
+                        alert(result)
+                    } else {
+                        $("#real_price_oi_"+order_item_id).html(result);
+                    }
+                }
+        )
+    }
 </script>
 <br/>
 <div class="row">
   <div class="col-sm-7">
-    <%= render partial: 'link_edit_order' %>
+    <%#= render partial: 'link_edit_order' %>
     <div class="row">
       <div class="col-sm-1 text-right">
         <h5>ID</h5>
@@ -155,7 +179,7 @@
                   <td>
                     <%= text_field_tag "order_item[#{order_item.id}]", order_item.real_weight == 0 ? '' : order_item.real_weight, class: 'special_text_field text-right', size: 10 %>
                   </td>
-                  <td id="real_price_oi_<%= order_item.id %>">
+                  <td id="real_price_oi_<%= order_item.id %>" ondblclick="chang_real_price(<%= order_item.id %>)">
                     <%= order_item.real_price %>
                   </td>
                   <td id="money_oi_<%= order_item.id %>">
@@ -205,7 +229,7 @@
         </div>
     </div>
     <br/>
-    <%= render partial: 'link_edit_order' %>
+    <%#= render partial: 'link_edit_order' %>
   </div>
   <div class="col-sm-5">
     <% unless @order.comments.valid.blank? %>
@@ -239,6 +263,15 @@
           <div class="col-sm-1"></div>
         </div>
     <% end %>
+    <br/>
+    <i style="color: red;">* 双击价格，可以修改价格</i><br/>
+    <i style="color: red;">* 价格修改后要记得点击［确认&提交］哦！</i>
+    <br/>
+    <br/>
+    <h5>温馨tips</h5>
+    <i style="color: red;">* 在ID中输入单据ID，按下Enter(回车键),可以直接到达该单据。</i><br/>
+    <i style="color: red;">* 输入到货量时，输完一个后，按下Enter键，光标会自动到下一个。</i><br/>
+    <i style="color: red;">* 输入到货量时，输完最后一个品项的到货量，按下Enter键，就提交了，相当于点击了“确定&提交”。</i>
   </div>
 </div>
 
