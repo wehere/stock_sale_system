@@ -186,7 +186,7 @@
                     <%= order_item.money %>
                   </td>
                   <td>
-                    <%= link_to '', edit_supply_order_item_path(order_item.id), remote: true, class: 'btn glyphicon glyphicon-pencil', style: 'padding:0px;margin:0px' %>
+                    <%= link_to '', "javascript:chang_real_price(#{order_item.id})", class: 'btn glyphicon glyphicon-pencil', style: 'padding:0px;margin:0px' %>
                   </td>
             </tr>
         <% end %>
