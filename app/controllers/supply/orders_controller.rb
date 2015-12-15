@@ -21,6 +21,7 @@ class Supply::OrdersController < BaseController
       price = order_item.price
       price.update_attribute :price, params[:real_price] if price.price.blank? || price.price == 0.0
       g_price = price.dup
+      g_price.update_attribute :price, params[:real_price]
       g_price.update_attribute :is_used, false
       order_item.update_attribute :price_id, g_price.id
       order_item.update_money
