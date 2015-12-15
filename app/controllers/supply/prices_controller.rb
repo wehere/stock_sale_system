@@ -17,6 +17,18 @@ class Supply::PricesController < BaseController
     @prices = @prices.paginate(per_page: 6, page: params[:page]||1)
   end
 
+  def need_make_up
+    prices = Price.where("ratio is null or ratio = 0 or true_spec is null or true_spec = ''")
+    purchase_prices = PurchasePrice.where("ratio is null or ratio =0 or true_spec is null or true_spec = ''")
+    a = prices.collect{|x| x.product.general_product.id rescue 0 }
+    b = purchase_prices.collect { |x| x.product.general_product.id rescue 0 }
+    b.each do |x|
+      a << x unless a.include? x
+    end
+    @general_products = GeneralProduct.where("id in (?) ", a)
+    @general_products = @general_products.paginate(page: params[:page]||1, per_page: params[:per_page]||5)
+  end
+
   def do_not_use
     price = Price.find(params[:id])
     price.update_attribute :is_used, false

@@ -67,6 +67,7 @@ Rails.application.routes.draw do
     end
     resources :prices do
       collection do
+        get :need_make_up
         get :index
         get :search
         post :search

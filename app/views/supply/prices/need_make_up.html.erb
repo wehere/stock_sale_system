@@ -1,0 +1,232 @@
+<%= will_paginate @general_products, :class => 'flickr_pagination', :previous_label => '上一页', :next_label => '下一页' unless @general_products.blank? %>
+
+<table class="table">
+  <thead>
+  <th style="padding: 0">产品名</th><th style="padding: 0">标准单位</th><th style="padding: 0;width: 100px;">售价月份</th><th style="padding: 0;width: 75px;">客户名称</th><th style="padding: 0;width: 15px;">价格</th><th style="padding: 0">售价单位</th><th style="padding: 0">售价单位/标准单位</th><th style="padding: 0">进价单位</th><th style="padding: 0">进价单位/标准单位</th>
+  </thead>
+  <% @general_products.each do |g_p| %>
+      <%
+         product_ids = g_p.products.ids
+         prices = Price.where(product_id: product_ids, supplier_id: g_p.supplier_id).where("ratio is null or ratio = 0 or true_spec is null or true_spec = ''").order(:customer_id)
+         # prices = prices.select{|x| x.is_used || (!x.is_used&&x.valid_order_items_count>0)}
+         purchase_prices = PurchasePrice.where(product_id: product_ids, supplier_id: g_p.supplier_id).where("ratio is null or ratio =0 or true_spec is null or true_spec = ''")
+         max_count = prices.count
+         max_count = purchase_prices.count if purchase_prices.count > max_count
+         first_price = prices.first
+         first_purchase_price = purchase_prices.first
+         # is_used ＝ 0 && order_items数目为0 的不展示
+      %>
+
+      <tr>
+        <td id="g_p_<%= g_p.id %>_name_td" rowspan="<%= max_count %>" style="text-align:center;vertical-align:middle;background-color: <%= g_p.pass ? 'green' : 'red' %>" ondblclick="change_pass_status(<%= g_p.id %>)">
+          <%= g_p.name %>
+        </td>
+        <td id="g_p_<%= g_p.id %>_mini_spec_td" rowspan="<%= max_count %>" ondblclick="click_mini_spec(<%= g_p.id %>)" style="text-align:center;vertical-align:middle;">
+          <%= g_p.mini_spec %>
+        </td>
+        <td  style="background-color: chartreuse">
+          <%= first_price.year_month.val rescue '' %>
+        </td>
+        <td style="background-color: chartreuse">
+          <%= first_price.customer.simple_name rescue '' %>
+        </td>
+        <td style="background-color: chartreuse">
+          <%= first_price.price rescue '' %>
+        </td>
+        <td style="background-color: chartreuse" id="price_<%= first_price.id rescue '0' %>_true_spec_td" ondblclick="click_price_true_spec(<%= first_price.id rescue '0' %>)">
+          <%= first_price.true_spec rescue '' %>
+        </td>
+        <td style="background-color: chartreuse" id="price_<%= first_price.id rescue '0' %>_ratio_td" ondblclick="click_price_ratio(<%= first_price.id rescue '0' %>)">
+          <%= first_price.ratio rescue '' %>
+        </td>
+        <td style="background-color: gold" id="purchase_price_<%= first_purchase_price.id rescue '0' %>_true_spec_td" ondblclick="click_purchase_price_true_spec(<%= first_purchase_price.id rescue '0' %>)">
+          <%= first_purchase_price.true_spec rescue '' %>
+        </td>
+        <td style="background-color: gold" id="purchase_price_<%= first_purchase_price.id rescue '0' %>_ratio_td" ondblclick="click_purchase_price_ratio(<%= first_purchase_price.id rescue '0' %>)">
+          <%= first_purchase_price.ratio rescue '' %>
+        </td>
+
+      </tr>
+      <% for i in 1..max_count - 1 %>
+
+          <tr>
+            <td style="background-color: chartreuse"><%= prices[i].year_month.val rescue '' %></td>
+            <td style="background-color: chartreuse"><%= prices[i].customer.simple_name rescue '' %></td>
+            <td style="background-color: chartreuse">
+              <%= prices[i].price rescue '' %>
+            </td>
+            <td style="background-color: chartreuse" id="price_<%= prices[i].id rescue '0' %>_true_spec_td" ondblclick="click_price_true_spec(<%= prices[i].id rescue '0' %>)">
+              <%= prices[i].true_spec rescue '' %>
+            </td>
+            <td style="background-color: chartreuse" id="price_<%= prices[i].id rescue '0' %>_ratio_td" ondblclick="click_price_ratio(<%= prices[i].id rescue '0' %>)">
+              <%= prices[i].ratio rescue '' %>
+            </td>
+            <td style="background-color: gold" id="purchase_price_<%= purchase_prices[i].id rescue '0' %>_true_spec_td" ondblclick="click_purchase_price_true_spec(<%= purchase_prices[i].id rescue '0' %>)">
+              <%= purchase_prices[i].true_spec rescue '' %>
+            </td>
+            <td style="background-color: gold" id="purchase_price_<%= purchase_prices[i].id rescue '0' %>_ratio_td" ondblclick="click_purchase_price_ratio(<%= purchase_prices[i].id rescue '0' %>)">
+              <%= purchase_prices[i].ratio rescue '' %>
+            </td>
+          </tr>
+      <% end %>
+      <tr><td colspan="9">----------------------------------------------------------------------------------------------------------------------</td></tr>
+  <% end %>
+</table>
+
+
+
+<%= will_paginate @general_products, :class => 'flickr_pagination', :previous_label => '上一页', :next_label => '下一页' unless @general_products.blank? %>
+
+<style>
+    table{border-collapse:collapse;border-spacing:0;border-left:1px solid #888;border-top:1px solid #888;background:#efefef;}
+    th,td{border-right:1px solid #888;border-bottom:1px solid #888;padding:5px 15px;}
+    th{font-size:5px;}
+    th{font-weight:bold;background:#ccc;}
+</style>
+
+<script language="javascript">
+    function click_mini_spec(g_p_id){
+        input_str = '<input type="text" name="g_p_'+g_p_id+'_mini_spec_text" size="3" id="g_p_'+g_p_id+'_mini_spec_text">';
+        input_str += '<input type="button" name="button" value="保存" size="3" onclick="save_g_p_mini_spec('+g_p_id+')">';
+        $("#g_p_"+g_p_id+"_mini_spec_td").html(input_str)
+        $("#g_p_"+g_p_id+"_mini_spec_text").focus();
+    }
+
+    function save_g_p_mini_spec(g_p_id){
+        $.ajax({
+            url: ("/supply/general_products/save_g_p_mini_spec"),
+            type: 'post',
+            data: {
+                "g_p_id": g_p_id,
+                "mini_spec": $("#g_p_"+g_p_id+"_mini_spec_text").val()
+            }
+        }).done(
+                function(result){
+                    if (result == "error" ){
+                        alert(result);
+                    } else {
+                        $("#g_p_"+g_p_id+"_mini_spec_td").html(result)
+                    }
+                }
+        )
+    }
+
+    function click_price_true_spec(price_id){
+        input_str = '<input type="text" name="price_'+price_id+'_true_spec_text" size="3" id="price_'+price_id+'_true_spec_text">';
+        input_str += '<input type="button" name="button" value="保存" size="3" onclick="save_price_true_spec('+price_id+')">';
+        $("#price_"+price_id+"_true_spec_td").html(input_str)
+        $("#price_"+price_id+"_true_spec_text").focus();
+    }
+
+    function save_price_true_spec(price_id){
+        $.ajax({
+            url: "/supply/general_products/save_price_true_spec",
+            type: "post",
+            data: {
+                "price_id": price_id,
+                "true_spec": $("#price_"+price_id+"_true_spec_text").val()
+            }
+        }).done(
+                function(result){
+                    if(result=="error"){
+                        alert(result);
+                    }else{
+                        $("#price_"+price_id+"_true_spec_td").html(result);
+                    }
+                }
+        )
+    }
+
+    function click_price_ratio(price_id){
+        input_str = '<input type="text" name="price_'+price_id+'_ratio_text" size="3" id="price_'+price_id+'_ratio_text">';
+        input_str += '<input type="button" name="button" value="保存" size="3" onclick="save_price_ratio('+price_id+')">';
+        $("#price_"+price_id+"_ratio_td").html(input_str);
+        $("#price_"+price_id+"_ratio_text").focus();
+    }
+
+    function save_price_ratio(price_id){
+        $.ajax({
+            url: "/supply/general_products/save_price_ratio",
+            type: "post",
+            data: {
+                "price_id": price_id,
+                "ratio": $("#price_"+price_id+"_ratio_text").val()
+            }
+        }).done(
+                function(result){
+                    if(result=="error"){
+                        alert(result);
+                    }else{
+                        $("#price_"+price_id+"_ratio_td").html(result);
+                    }
+                }
+        )
+    }
+
+    function click_purchase_price_true_spec(purchase_price_id){
+        input_str = '<input type="text" name="purchase_price_'+purchase_price_id+'_true_spec_text" size="3" id="purchase_price_'+purchase_price_id+'_true_spec_text">';
+        input_str += '<input type="button" name="button" value="保存" size="3" onclick="save_purchase_price_true_spec('+purchase_price_id+')">';
+        $("#purchase_price_"+purchase_price_id+"_true_spec_td").html(input_str);
+        $("#purchase_price_"+purchase_price_id+"_true_spec_text").focus();
+    }
+
+    function save_purchase_price_true_spec(purchase_price_id){
+        $.ajax({
+            url: "/supply/general_products/save_purchase_price_true_spec",
+            type: "post",
+            data: {
+                "purchase_price_id": purchase_price_id,
+                "true_spec": $("#purchase_price_"+purchase_price_id+"_true_spec_text").val()
+            }
+        }).done(
+                function(result){
+                    if(result=="error"){
+                        alert(result);
+                    }else{
+                        $("#purchase_price_"+purchase_price_id+"_true_spec_td").html(result);
+                    }
+                }
+        )
+    }
+
+    function click_purchase_price_ratio(purchase_price_id){
+        input_str = '<input type="text" name="purchase_price_'+purchase_price_id+'_ratio_text" size="3" id="purchase_price_'+purchase_price_id+'_ratio_text">';
+        input_str += '<input type="button" name="button" value="保存" size="3" onclick="save_purchase_price_ratio('+purchase_price_id+')">';
+        $("#purchase_price_"+purchase_price_id+"_ratio_td").html(input_str);
+        $("#purchase_price_"+purchase_price_id+"_ratio_text").focus();
+    }
+
+    function save_purchase_price_ratio(purchase_price_id){
+        $.ajax({
+            url: "/supply/general_products/save_purchase_price_ratio",
+            type: "post",
+            data: {
+                "purchase_price_id": purchase_price_id,
+                "ratio": $("#purchase_price_"+purchase_price_id+"_ratio_text").val()
+            }
+        }).done(
+                function(result){
+                    if(result=="error"){
+                        alert(result);
+                    }else{
+                        $("#purchase_price_"+purchase_price_id+"_ratio_td").html(result);
+                    }
+                }
+        )
+    }
+
+    function change_pass_status(g_p_id){
+        $.ajax({
+            url: "/supply/general_products/change_pass_status?g_p_id="+g_p_id,
+            type: 'post'
+        }).done(
+                function(result){
+                    if (result=="1"){
+                        $("#g_p_"+g_p_id+"_name_td").css('background-color','green');
+                    } else {
+                        $("#g_p_"+g_p_id+"_name_td").css('background-color','red');
+                    }
+                }
+        )
+    }
+</script>

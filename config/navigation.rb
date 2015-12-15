@@ -65,6 +65,7 @@ SimpleNavigation::Configuration.run do |navigation|
       sub_nav.item :key_1_6, '进货价格', '/purchase/purchase_price'
       sub_nav.item :key_1_7, '更新进货价格', '/purchase/purchase_price/pre_update_price'
       sub_nav.item :key_1_8, '售出价格', '/supply/prices/show_price'
+      sub_nav.item :key_1_9, '价格比率补充', '/supply/prices/need_make_up'
     end
 
     # Add an item which has a sub navigation (same params, but with block)
