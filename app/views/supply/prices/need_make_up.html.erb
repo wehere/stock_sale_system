@@ -18,10 +18,12 @@
       %>
 
       <tr>
-        <td id="g_p_<%= g_p.id %>_name_td" rowspan="<%= max_count %>" style="text-align:center;vertical-align:middle;background-color: <%= g_p.pass ? 'green' : 'red' %>" ondblclick="change_pass_status(<%= g_p.id %>)">
+        <!--ondblclick="change_pass_status(<%= g_p.id %>)"-->
+        <td id="g_p_<%= g_p.id %>_name_td" rowspan="<%= max_count %>" style="text-align:center;vertical-align:middle;background-color: <%= g_p.pass ? 'green' : 'red' %>" >
           <%= g_p.name %>
         </td>
-        <td id="g_p_<%= g_p.id %>_mini_spec_td" rowspan="<%= max_count %>" ondblclick="click_mini_spec(<%= g_p.id %>)" style="text-align:center;vertical-align:middle;">
+        <!--ondblclick="click_mini_spec(<%= g_p.id %>)"-->
+        <td id="g_p_<%= g_p.id %>_mini_spec_td" rowspan="<%= max_count %>"  style="text-align:center;vertical-align:middle;">
           <%= g_p.mini_spec %>
         </td>
         <td  style="background-color: chartreuse">
