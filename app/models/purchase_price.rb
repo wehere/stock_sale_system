@@ -3,6 +3,7 @@ class PurchasePrice < ActiveRecord::Base
   belongs_to :supplier, class_name: 'Company', foreign_key: 'supplier_id'
   belongs_to :seller
   belongs_to :product
+  has_many :purchase_order_items
 
   scope :available, -> { where(is_used: true) }
 

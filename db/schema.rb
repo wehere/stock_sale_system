@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151212145814) do
+ActiveRecord::Schema.define(version: 20151218084508) do
 
   create_table "comments", force: :cascade do |t|
     t.integer  "order_id",    limit: 4
@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(version: 20151212145814) do
     t.boolean  "delete_flag"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "true_spec",          limit: 255
   end
 
   create_table "order_items", force: :cascade do |t|
@@ -166,6 +167,7 @@ ActiveRecord::Schema.define(version: 20151212145814) do
     t.datetime "updated_at"
     t.string   "plan_weight",       limit: 255
     t.integer  "purchase_price_id", limit: 4
+    t.string   "true_spec",         limit: 255
   end
 
   create_table "purchase_orders", force: :cascade do |t|
