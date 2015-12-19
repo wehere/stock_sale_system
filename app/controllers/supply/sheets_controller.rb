@@ -51,4 +51,9 @@ class Supply::SheetsController < BaseController
     end
   end
 
+  def export_purchase_order
+    supplier_id = current_user.company.id
+    file_name = PurchaseOrder.export_purchase_order params[:start_date], params[:end_date], supplier_id
+    send_file file_name
+  end
 end

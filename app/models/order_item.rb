@@ -4,6 +4,7 @@ class OrderItem < ActiveRecord::Base
   belongs_to :price
   delegate :chinese_name, to: :product, prefix: true, allow_nil: true
   delegate :real_price, to: :price, prefix: false, allow_nil: false
+  delegate :true_spec, to: :price, prefix: false, allow_nil: false
 
   scope :valid_order_items, -> { where("order_items.delete_flag is null or order_items.delete_flag = 0") }
 
@@ -27,7 +28,7 @@ class OrderItem < ActiveRecord::Base
     supplier = current_user.company
     BusinessException.raise "#{current_user.user_name}还没关联给任何一个公司／供应商，不能做进出明细操作。" if supplier.blank?
     order = self.order
-    BusinessException.raise "id为#{order_item.id}的品项没有对应的order抬头，不能做进出明细操作。" if order.blank?
+    BusinessException.raise "id为#{self.id}的品项没有对应的order抬头，不能做进出明细操作。" if order.blank?
     if !order.is_confirm
 
     else
@@ -54,7 +55,7 @@ class OrderItem < ActiveRecord::Base
         ratio = self.price.ratio
         BusinessException.raise "id为#{self.price.id}的price，产品名为#{self.product.chinese_name},对应的相对于标准单位比率为空或为0，不能做库存更新操作" if ratio.blank? || ratio == 0
         stock.update_attributes real_weight: current_weight + (self.real_weight - order_detail.real_weight)*ratio
-        order_detail.update_attributes real_weight: self.real_weight
+        order_detail.update_attributes real_weight: self.real_weight, money: self.money
       end
     end
   end

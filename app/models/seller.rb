@@ -1,6 +1,7 @@
 class Seller < ActiveRecord::Base
   has_many :general_products, foreign_key: 'another_seller_id'
   belongs_to :company, foreign_key: :supplier_id
+  has_many :purchase_orders
 
   validates_presence_of :name, message: '卖家名字不能为空。'
   validates_presence_of :sort_number, message: "排序号不能为空。"

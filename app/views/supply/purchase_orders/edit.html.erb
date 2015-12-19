@@ -1,0 +1,77 @@
+<div class="text-center">
+    <h3>
+      <%= "ID #{@purchase_order.id} #{@purchase_order.purchase_date.strftime("%Y年%m月%d日")} 单据明细" %>
+    </h3>
+</div>
+<br>
+<table class="table">
+  <thead>
+  <th>ItemID</th>
+  <th>产品名</th>
+  <th>到货量</th>
+  <th>规格</th>
+  <th>价格</th>
+  <th>金额</th>
+  <th>操作</th>
+  </thead>
+  <tbody>
+  <% @purchase_order_items.each do |poi| %>
+    <tr ondblclick="edit_poi(<%= poi.id %>)">
+      <td><%= poi.id %></td>
+      <td><%= poi.product.chinese_name rescue 'error' %></td>
+      <td id="td_poi_real_weight_<%= poi.id %>"><%= poi.real_weight rescue 'error' %></td>
+      <td><%= poi.true_spec rescue 'error' %></td>
+      <td id="td_poi_price_<%= poi.id %>"><%= poi.price rescue 'error' %></td>
+      <td id="td_poi_money_<%= poi.id %>"><%= poi.money rescue 'error' %></td>
+      <td id="td_poi_operation_<%= poi.id %>">#</td>
+    </tr>
+  <% end %>
+  <tr>
+    <td>合计</td>
+    <% 4.times do %>
+       <td></td>
+    <% end %>
+    <td id="td_sum_money"><%= @purchase_order.sum_money %></td>
+    <td></td>
+  </tr>
+  </tbody>
+</table>
+
+<script language="javascript">
+  function edit_poi(poi_id){
+      real_weight = $("#td_poi_real_weight_"+poi_id)[0].innerHTML;
+      $("#td_poi_real_weight_"+poi_id).html('<input name="text_poi_real_weight_'+poi_id+'" id="text_poi_real_weight_'+poi_id+'" type="text" size=3 value="'+real_weight+'" />');
+      price = $("#td_poi_price_"+poi_id)[0].innerHTML;
+      $("#td_poi_price_"+poi_id).html('<input name="text_poi_price_'+poi_id+'" id="text_poi_price_'+poi_id+'" type="text" size=3 value="'+price+'" />');
+      $("#td_poi_operation_"+poi_id).html('<input type="button" name="button" value="保存" size=3 onclick="save_poi('+poi_id+')" />');
+  }
+
+  function save_poi(poi_id){
+      $.ajax({
+          url: '/supply/purchase_orders/change_order_item',
+          type: 'get',
+          data: {
+              'purchase_order_item_id': poi_id,
+              'real_weight': $("#text_poi_real_weight_"+poi_id).val(),
+              'price': $("#text_poi_price_"+poi_id).val()
+          }
+      }).done(
+              function(result){
+                  if(result=='error'){
+                        alert(result);
+                  }else{
+                      real_weight = $("#text_poi_real_weight_"+poi_id).val();
+                      price = $("#text_poi_price_"+poi_id).val();
+                      $("#td_poi_real_weight_"+poi_id).html(real_weight);
+                      $("#td_poi_price_"+poi_id).html(price);
+                      current_money = $("#td_poi_money_"+poi_id)[0].innerHTML;
+                      new_money = parseFloat(real_weight)*parseFloat(price);
+                      $("#td_poi_money_"+poi_id).html(new_money.toFixed(2));
+                      $("#td_poi_operation_"+poi_id).html("#");
+                      current_sum_money = $("#td_sum_money")[0].innerHTML;
+                      $("#td_sum_money").html((parseFloat(current_sum_money) + (parseFloat(new_money)-parseFloat(current_money))).toFixed(2) );
+                  }
+              }
+      )
+  }
+</script>

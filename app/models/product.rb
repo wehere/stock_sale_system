@@ -5,7 +5,7 @@ class Product < ActiveRecord::Base
   validates_presence_of :simple_abc, :message => '中文缩写不可以为空！'
   validates_uniqueness_of :chinese_name, scope: [:supplier_id], message: "产品名称已经存在，请选用其他产品名称"
   has_one :purchase_price, -> { where is_used: true }
-
+  has_many :purchase_order_items
 
   def self.import_products_from_xls supplier_id, file_io
     message = '导入产品开始于' + Time.now.to_s + '             '

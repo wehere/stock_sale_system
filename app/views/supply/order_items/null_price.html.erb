@@ -18,16 +18,20 @@
         <tr id="order_item_<%= order_item.id %>">
           <form accept-charset="UTF-8" action="/supply/prices/<%= order_item.price_id %>/true_update_price" method="post">
               <td><%= order_item.id %></td>
-              <td><%= order_item.order.user.user_name %></td>
+              <td><%= order_item.order.user.user_name rescue 'error' %></td>
               <td><%= order_item.order_id %></td>
-              <td><%= order_item.order.reach_order_date %></td>
-              <td><%= order_item.order.customer.simple_name %></td>
-              <td><%= order_item.order.customer.id %></td>
-              <td><%= order_item.product.chinese_name %></td>
-              <td><%= text_field_tag 'true_spec', order_item.price.true_spec, size: 10 %></td>
-              <td><%= text_field_tag 'price', order_item.price.price, size: 10 %></td>
-              <td><%= submit_tag '更新价格', class: 'btn btn-primary' %></td>
-              <td><%= link_to '废弃', "javascript:destroy_order_item(#{order_item.id})", class: 'btn btn-primary' %></td>
+              <td><%= order_item.order.reach_order_date rescue 'error' %></td>
+              <td><%= order_item.order.customer.simple_name  rescue 'error' %></td>
+              <td><%= order_item.order.customer.id  rescue 'error' %></td>
+              <td><%= order_item.product.chinese_name rescue 'error' %></td>
+              <td><%= order_item.price.true_spec %></td>
+              <td id="real_price_oi_<%= order_item.id %>" ondblclick="chang_real_price(<%= order_item.id %>)">
+                <%= order_item.real_price %>
+              </td>
+              <td>
+                <%= link_to '', "javascript:chang_real_price(#{order_item.id})", class: 'btn glyphicon glyphicon-pencil', style: 'padding:0px;margin:0px' %>
+              </td>
+              <!--<td><%#= link_to '废弃', "javascript:destroy_order_item(#{order_item.id})", class: 'btn btn-primary' %></td>-->
           </form>
         </tr>
     <% end unless @order_items.blank? %>
@@ -37,14 +41,38 @@
 <%= will_paginate @order_items, :class => 'flickr_pagination' ,:previous_label => '上一页', :next_label => '下一页' unless @order_items.blank? %>
 
 <script language="javascript">
-  function destroy_order_item(order_item_id){
+//  function destroy_order_item(order_item_id){
+//      $.ajax({
+//        url: '/supply/order_items/' + order_item_id + '/change_delete_flag',
+//        type: 'get',
+//        async: false
+//      }).done(
+//              function(result){
+//          $("#order_item_" + order_item_id).hide();
+//      });
+//  }
+
+  function chang_real_price(order_item_id) {
+      input_str = '<input type="text" name="real_price_oi_text_'+order_item_id+'" size="3" id="real_price_oi_text_'+order_item_id+'">';
+      input_str += '<input type="button" name="button" value="保存" size="3" onclick="save_real_price('+order_item_id+')">';
+      $("#real_price_oi_"+order_item_id).html(input_str);
+  }
+  function save_real_price(order_item_id) {
       $.ajax({
-        url: '/supply/order_items/' + order_item_id + '/change_delete_flag',
-        type: 'get',
-        async: false
+          url: "/supply/orders/save_real_price",
+          type: "post",
+          data: {
+              "order_item_id": order_item_id,
+              "real_price": $("#real_price_oi_text_"+order_item_id).val()
+          }
       }).done(
               function(result){
-          $("#order_item_" + order_item_id).hide();
-      });
+                  if(result == "error"){
+                      alert(result)
+                  } else {
+                      $("#real_price_oi_"+order_item_id).html(result);
+                  }
+              }
+      )
   }
 </script>

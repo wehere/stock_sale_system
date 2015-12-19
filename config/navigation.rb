@@ -80,22 +80,25 @@ SimpleNavigation::Configuration.run do |navigation|
     # You can also specify a condition-proc that needs to be fullfilled to display an item.
     # Conditions are part of the options. They are evaluated in the context of the views,
     # thus you can use all the methods and vars you have available in the views.
-    primary.item :key_3, '订单', "/supply/orders", class: 'special' do |sub_nav|#, if: -> { current_user.admin? }
+    primary.item :key_3, '出货单', "/supply/orders", class: 'special' do |sub_nav|#, if: -> { current_user.admin? }
       sub_nav.item :key_3_1, '没回来的单子', "/supply/orders/not_return"
       sub_nav.item :key_3_2, '查询未录入数据单据', "/supply/orders/not_input"
       sub_nav.item :key_3_3, '开始录入到货量', "/supply/orders/0/edit"
       sub_nav.item :key_3_4, '搜索已送品项', '/supply/order_items/search'
       sub_nav.item :key_3_5, '补充未输入价格的品项', '/supply/order_items/null_price'
     end
-    primary.item :key_4, '客户', "/supply/customers" do |sub_nav| #, unless: -> { logged_in? }
-      sub_nav.item :key_4_1, '单据类型管理', '/supply/order_types'
-      sub_nav.item :key_4_2, '卖家一览', '/supply/sellers'
+    primary.item :key_4, '进货单', "/supply/purchase_orders", class: 'special' do |sub_nav|
+
+    end
+    primary.item :key_5, '客户', "/supply/customers" do |sub_nav| #, unless: -> { logged_in? }
+      sub_nav.item :key_5_1, '单据类型管理', '/supply/order_types'
+      sub_nav.item :key_5_2, '卖家一览', '/supply/sellers'
     end
 
-    primary.item :key_5, '报表', "/supply/sheets" do |sub_nav|
-      sub_nav.item :key_5_1, '分菜', '/supply/order_items/prepare_classify'
+    primary.item :key_6, '报表', "/supply/sheets" do |sub_nav|
+      sub_nav.item :key_6_1, '分菜', '/supply/order_items/prepare_classify'
     end
-    primary.item :key_6, '库存', "/supply/stocks" do |sub_nav|
+    primary.item :key_7, '库存', "/supply/stocks" do |sub_nav|
     end
     # you can also specify html attributes to attach to this particular level
     # works for all levels of the menu

@@ -21,7 +21,11 @@ Rails.application.routes.draw do
         get :down
       end
     end
-    resources :purchase_orders
+    resources :purchase_orders do
+      collection do
+        get :change_order_item
+      end
+    end
     resources :general_products do
       collection do
         get :prepare_link_to_seller
@@ -50,6 +54,7 @@ Rails.application.routes.draw do
       collection do
         post :export_order_total_for_specified_days
         post :export_order_total_for_specified_month
+        post :export_purchase_order
       end
       member do
         post :change_stores

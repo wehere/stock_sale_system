@@ -164,7 +164,7 @@
     <%= hidden_field_tag 'order_id', @order.id %>
     <table class="table table-striped table-condensed table-hover">
       <thead>
-        <th width="150">品名</th><th width="80">订货量</th><th width="100">到货量</th><th width="80">价格</th><th width="50">金额小计</th><th></th>
+        <th width="150">品名</th><th width="80">订货量</th><th width="100">到货量</th><th width="60">规格</th><th width="80">价格</th><th width="50">金额小计</th><th></th>
       </thead>
       <tbody>
         <% @order_items.each do |order_item| %>
@@ -179,6 +179,7 @@
                   <td>
                     <%= text_field_tag "order_item[#{order_item.id}]", order_item.real_weight == 0 ? '' : order_item.real_weight, class: 'special_text_field text-right', size: 10 %>
                   </td>
+                  <td><%= order_item.true_spec %></td>
                   <td id="real_price_oi_<%= order_item.id %>" ondblclick="chang_real_price(<%= order_item.id %>)">
                     <%= order_item.real_price %>
                   </td>
