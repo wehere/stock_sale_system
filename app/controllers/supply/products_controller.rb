@@ -30,10 +30,10 @@ class Supply::ProductsController < BaseController
         PurchasePrice.create_purchase_price supplier_id: product.supplier_id,
                                             seller_id: seller.id,
                                             is_used: true,
-                                            true_spec: '斤',
+                                            true_spec: '',
                                             price: nil,
                                             product_id: product.id,
-                                            ratio: 500
+                                            ratio: 0
       end
       flash[:notice] = "创建成功"
       redirect_to new_supply_product_path

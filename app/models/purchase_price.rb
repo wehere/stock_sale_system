@@ -59,10 +59,10 @@ class PurchasePrice < ActiveRecord::Base
     supplier.products.each do |p|
       PurchasePrice.create_purchase_price supplier_id: p.supplier_id,
                                           seller_id: seller.id,
-                                          true_spec: '斤',
+                                          true_spec: '',
                                           price: 0,
                                           product_id: p.id,
-                                          ratio: 500
+                                          ratio: 0
 
     end
   end
