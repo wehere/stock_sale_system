@@ -1,4 +1,5 @@
 class Product < ActiveRecord::Base
+  has_many :order_details
   belongs_to :general_product
   has_many :prices, -> { where is_used: true }
   belongs_to :supplier, foreign_key: :supplier_id, class_name: :Company
