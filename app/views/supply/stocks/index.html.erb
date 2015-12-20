@@ -14,7 +14,7 @@
           <td><%= stock.general_product.name %></td>
           <td><%= stock.storage.name %></td>
           <td><%= stock.purchase_price.true_spec rescue 'error' %></td>
-          <td><%= stock.real_weight/stock.purchase_price.ratio rescue 'error' %></td>
+          <td><%= (stock.real_weight/stock.purchase_price.ratio).round(2) rescue 'error' %></td>
           <td><%= stock.last_purchase_price %></td>
 
 
