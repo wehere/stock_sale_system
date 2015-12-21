@@ -100,6 +100,8 @@ Rails.application.routes.draw do
         post :not_input
         get :return
         get :not_return
+        get :pre_confirm_back_order
+        post :confirm_back_order
       end
       member do
         get :return

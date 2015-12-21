@@ -1,0 +1,53 @@
+<div class="text-center">
+  <h3>快捷确认单据回来了</h3>
+</div>
+<div class="text-center">
+  <h3 style="color: red" id="message_panel">
+    <br/>
+  </h3>
+</div>
+<div class="row">
+  <div class="col-sm-6 text-right">
+    <label class="inline">单据ID</label>
+  </div>
+  <div class="col-sm-2 text-left">
+    <%= text_field_tag :order_id, '', size: '10' %>
+  </div>
+  <div class="col-sm-2 end">
+    <%= link_to '确认回来了', 'javascript:confirm_come_back()', class: 'btn btn-primary' %>
+  </div>
+</div>
+<br/>
+<div class="text-center">
+  <h5>温馨提示：Enter键(回车键)直接可以“确认回来了”</h5>
+</div>
+<script language="javascript">
+  function confirm_come_back(){
+      order_id = $("#order_id").val();
+      $.ajax({
+          url: '/supply/orders/confirm_back_order',
+          type: 'post',
+          data: {
+              'order_id': order_id
+          },
+          dataType: 'text'
+      }).done(
+
+              function(result){
+                $("#message_panel").html(result);
+                $("#order_id").val("");
+                $("#order_id").focus();
+              }
+      )
+  }
+
+  $("#order_id").keypress(
+          function(e){
+              var keyCode = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
+              if (keyCode == 13){
+                  confirm_come_back();
+              }
+          }
+  );
+</script>
+

@@ -103,6 +103,20 @@ class Supply::OrdersController < BaseController
     @orders = @orders.paginate(page: params[:page], per_page: 10)
   end
 
+  def pre_confirm_back_order
+
+  end
+
+  def confirm_back_order
+    order = Order.find_by_id(params[:order_id])
+    if order.blank?
+      render text: '找不到对应的单据。'
+    else
+      order.return
+      render text: "单据#{params[:order_id]} 更新成功"
+    end
+  end
+
 end
 
 # Parameters: {"order_id"=>"80",

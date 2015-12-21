@@ -82,10 +82,11 @@ SimpleNavigation::Configuration.run do |navigation|
     # thus you can use all the methods and vars you have available in the views.
     primary.item :key_3, '出货单', "/supply/orders", class: 'special' do |sub_nav|#, if: -> { current_user.admin? }
       sub_nav.item :key_3_1, '没回来的单子', "/supply/orders/not_return"
-      sub_nav.item :key_3_2, '查询未录入数据单据', "/supply/orders/not_input"
-      sub_nav.item :key_3_3, '开始录入到货量', "/supply/orders/0/edit"
-      sub_nav.item :key_3_4, '搜索已送品项', '/supply/order_items/search'
-      sub_nav.item :key_3_5, '补充未输入价格的品项', '/supply/order_items/null_price'
+      sub_nav.item :key_3_2, '单据回来－快捷', "/supply/orders/pre_confirm_back_order"
+      sub_nav.item :key_3_3, '查询未录入数据单据', "/supply/orders/not_input"
+      sub_nav.item :key_3_4, '开始录入到货量', "/supply/orders/0/edit"
+      sub_nav.item :key_3_5, '搜索已送品项', '/supply/order_items/search'
+      sub_nav.item :key_3_6, '补充未输入价格的品项', '/supply/order_items/null_price'
     end
     primary.item :key_4, '进货单', "/supply/purchase_orders", class: 'special' do |sub_nav|
 
