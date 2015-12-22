@@ -3,9 +3,9 @@ class OrderDetail < ActiveRecord::Base
 
   scope :valid, ->{where("delete_flag is null or delete_flag = 0")}
 
-  def self.write_stock_from_start_to_end storage_id, supplier_id
+  def self.write_stock_from_start_to_end storage_id, supplier_id, start_id, end_id
     self.transaction do
-      self.valid.each do |order_detail|
+      self.valid.where("id between ? and ?", start_id, end_id).each do |order_detail|
         general_product = order_detail.product.general_product
         real_weight = order_detail.real_weight
         price = order_detail.price
