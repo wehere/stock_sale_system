@@ -18,13 +18,15 @@ class OrderDetail < ActiveRecord::Base
           ratio = purchase_order_item.purchase_price.ratio
           BusinessException.raise "purchase_price_id: #{purchase_order_item.purchase_price.id} ,换算率为空或0" if ratio.blank? or ratio == 0
           stock.last_purchase_price = price
+          c_weight = stock.real_weight||0.0
+          stock.real_weight = (c_weight + real_weight * ratio).round(2)
         elsif order_detail.detail_type == 2
           order_item = OrderItem.find_by_id(order_detail.item_id)
           ratio = order_item.price.ratio
           BusinessException.raise "price_id: #{order_item.price.id} ,换算率为空或0" if ratio.blank? or ratio == 0
+          c_weight = stock.real_weight||0.0
+          stock.real_weight = (c_weight - real_weight * ratio).round(2)
         end
-        c_weight = stock.real_weight||0.0
-        stock.real_weight = (c_weight + real_weight * ratio).round(2)
         stock.save!
       end
     end
