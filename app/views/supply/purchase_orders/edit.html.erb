@@ -1,6 +1,7 @@
 <div class="text-center">
     <h3>
-      <%= "ID #{@purchase_order.id} #{@purchase_order.purchase_date.strftime("%Y年%m月%d日")} 单据明细" %>
+      <%= "ID #{@purchase_order.id} #{@purchase_order.purchase_date.strftime("%Y年%m月%d日")} 单据明细    "    %>
+      <%= link_to("删除", "/supply/purchase_orders/#{@purchase_order.id}", method: :delete, data: {confirm: "确定删除本单据吗？"} )%>
     </h3>
 </div>
 <br>

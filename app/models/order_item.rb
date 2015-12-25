@@ -36,7 +36,7 @@ class OrderItem < ActiveRecord::Base
                                        related_company_id: order.customer_id,
                                        order_id: order.id,
                                        item_id: self.id
-      ).first
+      ).where("delete_flag is null or delete_flag = 0").first
       if order_detail.blank?
         # BusinessException.raise "order id is #{order.id}, it's confirmed,order_item id is #{self.id}, but has no order_detail, it's error"
         self.update_detail current_user

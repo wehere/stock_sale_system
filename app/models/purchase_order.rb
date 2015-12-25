@@ -37,4 +37,13 @@ class PurchaseOrder < ActiveRecord::Base
     PurchaseOrder.joins(:purchase_order_items).where(id: self.id).sum("purchase_order_items.money").round(2)
   end
 
+  def delete_self current_user
+    PurchaseOrder.transaction do
+      self.purchase_order_items.each do |poi|
+        poi.delete_self current_user, false
+      end
+      self.update_attributes delete_flag: 1
+    end
+  end
+
 end
