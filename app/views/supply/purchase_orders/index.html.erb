@@ -5,6 +5,7 @@
     <%= date_field_tag 'end_date', params[:end_date] %>
     <label>包含产品</label>
     <%= text_field_tag 'product_name', params[:product_name] %>
+    <br/>
     <label>备注包含</label>
     <%= text_field_tag 'memo', params[:memo] %>
     <%= submit_tag '查询', class: 'btn btn-primary' %>
