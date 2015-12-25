@@ -4,6 +4,9 @@
       <%= link_to("删除", "/supply/purchase_orders/#{@purchase_order.id}", method: :delete, data: {confirm: "确定删除本单据吗？"} )%>
     </h3>
 </div>
+<div class="text-left">
+  <h4><%= "备注：#{@purchase_order.memo}" %></h4>
+</div>
 <br>
 <table class="table">
   <thead>

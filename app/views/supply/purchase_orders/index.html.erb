@@ -5,6 +5,8 @@
     <%= date_field_tag 'end_date', params[:end_date] %>
     <label>包含产品</label>
     <%= text_field_tag 'product_name', params[:product_name] %>
+    <label>备注包含</label>
+    <%= text_field_tag 'memo', params[:memo] %>
     <%= submit_tag '查询', class: 'btn btn-primary' %>
 <% end %>
 <br/>
@@ -14,6 +16,7 @@
 <th>卖家</th>
 <th>进货日期</th>
 <th>进货金额</th>
+<th>备注</th>
 <th>操作</th>
 </thead>
 <% @purchase_orders.each do |purchase_order| %>
@@ -22,6 +25,7 @@
   <td><%= purchase_order.seller.name rescue 'error' %></td>
   <td><%= purchase_order.purchase_date.strftime("%Y年%m月%d日") %></td>
   <td><%= purchase_order.sum_money %></td>
+  <td><%= purchase_order.memo %></td>
   <td><%= link_to '查看&编辑', "/supply/purchase_orders/#{purchase_order.id}/edit" %></td>
 </tr>
 <% end %>

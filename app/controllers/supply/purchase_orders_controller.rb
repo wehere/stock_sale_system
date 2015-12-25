@@ -4,8 +4,8 @@ class Supply::PurchaseOrdersController < BaseController
   def index
     supplier_id = current_user.company.id
     @purchase_orders = PurchaseOrder.where("purchase_orders.supplier_id = ? and (purchase_orders.delete_flag is null or purchase_orders.delete_flag = 0)", supplier_id)
-    params[:start_date] ||= Time.now.to_date - 10.days
-    params[:end_date] ||= Time.now.to_date
+    # params[:start_date] ||= Time.now.to_date - 10.days
+    # params[:end_date] ||= Time.now.to_date
     unless params[:start_date].blank?
       start_date = params[:start_date].to_time.change(hour:0, min:0, sec:0)
       @purchase_orders = @purchase_orders.where("purchase_orders.purchase_date >= ?", start_date)
@@ -17,7 +17,10 @@ class Supply::PurchaseOrdersController < BaseController
     unless params[:product_name].blank?
       @purchase_orders = @purchase_orders.joins(purchase_order_items: :product).where("products.chinese_name like ?", "%#{params[:product_name]}%")
     end
-    @purchase_orders = @purchase_orders.order(:purchase_date).paginate(page: params[:page]||1, per_page: params[:per_page]||10)
+    unless params[:memo].blank?
+      @purchase_orders = @purchase_orders.where("purchase_orders.memo like ? ", "%#{params[:memo]}%")
+    end
+    @purchase_orders = @purchase_orders.order(purchase_date: :desc).paginate(page: params[:page]||1, per_page: params[:per_page]||10)
   end
 
   def edit
