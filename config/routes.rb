@@ -68,6 +68,8 @@ Rails.application.routes.draw do
         post :create_one
         get :import_products_from_xls
         post :import_products_from_xls
+        get :strict_new
+        post :strict_create
       end
     end
     resources :prices do

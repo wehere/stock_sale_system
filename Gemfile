@@ -46,3 +46,4 @@ group :production do
 
 end
 gem "simple-navigation"
+gem 'chinese_pinyin', '~> 1.0'

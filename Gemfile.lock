@@ -64,6 +64,7 @@ GEM
       capistrano (~> 3.0)
       sshkit (~> 1.2)
     capistrano-stats (1.1.1)
+    chinese_pinyin (1.0.0)
     climate_control (0.0.3)
       activesupport (>= 3.0)
     cocaine (0.5.7)
@@ -238,6 +239,7 @@ DEPENDENCIES
   capistrano-puma
   capistrano-rails (~> 1.1)
   capistrano-rvm (~> 0.1)
+  chinese_pinyin (~> 1.0)
   coffee-rails (~> 4.0.0)
   database_cleaner
   devise

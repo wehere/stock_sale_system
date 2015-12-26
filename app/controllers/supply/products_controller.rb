@@ -45,8 +45,57 @@ class Supply::ProductsController < BaseController
   end
 
   def new
-    @product = Product.new
-    @product.supplier = current_user.company
+    # @product = Product.new
+    # @product.supplier = current_user.company
+    redirect_to action: :strict_new
+  end
+
+  def strict_new
+
+  end
+
+  def strict_create
+    begin
+      Product.transaction do
+        params[:brand].gsub!("？", "?")
+        params[:number].gsub!("？", "?")
+        BusinessException.raise '［品牌名］不可以空着' if params[:brand].blank?
+        BusinessException.raise '［品名］不可以空着' if params[:name].blank?
+        BusinessException.raise '［品名］不可以包含数字和括号' if params[:name].match /[\d()（）]/
+        BusinessException.raise '［大小］只可以是数字' if !params[:number].match /^[0-9]+$/ && params[:number] != "?"
+        BusinessException.raise '请选择［单位］' if params[:min_spec].blank?
+        BusinessException.raise '请选择［大小的单位］' if params[:sub_spec].blank?
+        if params[:check] == "1"
+          products = Product.where("chinese_name like ? ", "%#{params[:name]}%")
+          unless products.blank?
+            render text: "1|#{products.pluck(:chinese_name).join("^")}"
+            return
+          end
+        end
+        supplier_id = current_user.company.id
+        c_name = "#{params[:brand]}-#{params[:name]}-#{params[:min_spec]}(#{params[:number]}#{params[:sub_spec]})"
+        abc = Pinyin.t(c_name) { |letters| letters[0].upcase }
+        g_p = GeneralProduct.where(name: c_name).first
+        if g_p.blank?
+          seller = Seller.find_or_create_by name: "其他", delete_flag: 0, supplier_id: supplier_id
+          g_p = GeneralProduct.new name: c_name,
+                                   seller_id: seller.id,
+                                   supplier_id: supplier_id
+          g_p.save!
+        end
+
+        product = Product.new chinese_name: c_name,
+                    simple_abc: abc.gsub(" ",""),
+                    spec: params[:min_spec],
+                    supplier_id: supplier_id,
+                    general_product_id: g_p.id
+        product.save!
+
+        render text: "0|#{c_name}"
+      end
+    rescue Exception=>e
+      render text: "2|" + dispose_exception(e)
+    end
   end
 
   def edit
