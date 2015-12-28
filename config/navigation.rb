@@ -71,7 +71,7 @@ SimpleNavigation::Configuration.run do |navigation|
     # Add an item which has a sub navigation (same params, but with block)
     primary.item :key_2, '产品', "/supply/products" do |sub_nav|
       # Add an item to the sub navigation (same params again)
-      sub_nav.item :key_2_1, '新增产品', "/supply/products/new"
+      sub_nav.item :key_2_1, '新增产品', "/supply/products/strict_new"
       sub_nav.item :key_2_2, '导入产品', '/supply/products/import_products_from_xls'
       sub_nav.item :key_2_3, '通用产品一览', '/supply/general_products'
 
