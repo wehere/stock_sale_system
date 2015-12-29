@@ -62,7 +62,9 @@ class Supply::ProductsController < BaseController
         BusinessException.raise '［品牌名］不可以空着' if params[:brand].blank?
         BusinessException.raise '［品名］不可以空着' if params[:name].blank?
         BusinessException.raise '［品名］不可以包含数字和括号' if params[:name].match /[\d()（）]/
-        BusinessException.raise '［大小］只可以是数字' if !params[:number].match /^[0-9]+$/ && params[:number] != "?"
+        if params[:number] != "?"
+          BusinessException.raise '［大小］只可以是数字' if !params[:number].match /^[0-9]+$/
+        end
         BusinessException.raise '请选择［单位］' if params[:min_spec].blank?
         BusinessException.raise '请选择［大小的单位］' if params[:sub_spec].blank?
         if params[:check] == "1"
