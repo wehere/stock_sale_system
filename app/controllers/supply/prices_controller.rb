@@ -151,7 +151,7 @@ class Supply::PricesController < BaseController
   end
 
   def generate_next_month
-    # begin
+    begin
       YearMonth.generate_recent_year_months
       if request.post?
         prices = Price.where(is_used: true, year_month_id: params[:origin_year_month_id], supplier_id: current_user.company.id)
@@ -163,10 +163,10 @@ class Supply::PricesController < BaseController
         @target_year_month_id = YearMonth.next_year_month.id
         @origin_year_month_id = YearMonth.current_year_month.id
       end
-    # rescue Exception => e
-    #   flash[:alert] = dispose_exception e
-    #   redirect_to generate_next_month_supply_prices_path
-    # end
+    rescue Exception => e
+      flash[:alert] = dispose_exception e
+      redirect_to generate_next_month_supply_prices_path
+    end
   end
 
   def import_prices_from_xls
