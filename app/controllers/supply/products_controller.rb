@@ -93,7 +93,8 @@ class Supply::ProductsController < BaseController
                     simple_abc: abc.gsub(" ",""),
                     spec: params[:min_spec],
                     supplier_id: supplier_id,
-                    general_product_id: g_p.id
+                    general_product_id: g_p.id,
+                    is_valid: 1
         product.save!
         # 产生进货价格
         purchase_price = PurchasePrice.new supplier_id: supplier_id,
