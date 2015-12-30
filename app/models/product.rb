@@ -8,6 +8,8 @@ class Product < ActiveRecord::Base
   has_one :purchase_price, -> { where is_used: true }
   has_many :purchase_order_items
 
+  scope :is_valid, ->{where(is_valid: true)}
+
   MIN_SPEC = %w(斤 块 个 瓶 把 包 桶 根 箱 盒 米 公斤 袋 罐 双 卷 听 条 套 台 张 支 只)
   SUB_SPEC = %w(斤 块 个 瓶 把 包 桶 根 箱 盒 米 公斤 袋 罐 双 卷 听 条 套 台 毫升 克 张 只 支)
 
