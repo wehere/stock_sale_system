@@ -81,8 +81,8 @@ class Supply::ProductsController < BaseController
         c_name = "#{params[:brand]}-#{params[:name]}-#{params[:min_spec]}(#{params[:number]}#{params[:sub_spec]})"
         abc = Pinyin.t(c_name) { |letters| letters[0].upcase }
         g_p = GeneralProduct.where(name: c_name).first
+        seller = Seller.find_or_create_by name: "其他", delete_flag: 0, supplier_id: supplier_id
         if g_p.blank?
-          seller = Seller.find_or_create_by name: "其他", delete_flag: 0, supplier_id: supplier_id
           g_p = GeneralProduct.new name: c_name,
                                    seller_id: seller.id,
                                    supplier_id: supplier_id
@@ -96,7 +96,39 @@ class Supply::ProductsController < BaseController
                     general_product_id: g_p.id
         product.save!
         # 产生进货价格
-
+        purchase_price = PurchasePrice.new supplier_id: supplier_id,
+                          seller_id: seller.id,
+                          is_used: 1,
+                          true_spec: params[:purchase_spec],
+                          price: 0,
+                          product_id: product.id,
+                          ratio: params[:purchase_ratio],
+                          print_times: 1
+        purchase_price.save!
+        # 产生出货价格
+        current_year_month = YearMonth.current_year_month
+        next_year_month = YearMonth.next_year_month
+        customers = current_user.company.customers
+        customers.each do |customer|
+          current_year_month_price = Price.new year_month_id: current_year_month.id,
+                            customer_id: customer.id,
+                            product_id: product.id,
+                            is_used: 1,
+                            true_spec: params[:min_spec],
+                            supplier_id: supplier_id,
+                            print_times: 1,
+                            ratio: 1
+          current_year_month_price.save!
+          next_year_month_price = Price.new year_month_id: next_year_month.id,
+                            customer_id: customer.id,
+                            product_id: product.id,
+                            is_used: 1,
+                            true_spec: params[:min_spec],
+                            supplier_id: supplier_id,
+                            print_times: 1,
+                            ratio: 1
+          next_year_month_price.save!
+        end
         render text: "0|#{c_name}"
       end
     rescue Exception=>e
