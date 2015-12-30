@@ -3,7 +3,7 @@ class Supply::GeneralProductsController < BaseController
 
   def index
     @name = params[:name]
-    @general_products = current_user.company.general_products.order(id: :desc).where("name like ?", "%#{params[:name]}%").paginate(page: params[:page], per_page: 10)
+    @general_products = current_user.company.general_products.is_valid.order(id: :desc).where("name like ?", "%#{params[:name]}%").paginate(page: params[:page], per_page: 10)
   end
 
   def complex
