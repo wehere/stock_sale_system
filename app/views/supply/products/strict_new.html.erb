@@ -29,7 +29,7 @@
 <br/>
 <div class="row">
   <div class="col-sm-2 text-right">
-    <label class="inline">单位</label>
+    <label class="inline">出货最小单位</label>
   </div>
   <div class="col-sm-3">
     <%= select_tag :min_spec, options_from_collection_for_select(Product::MIN_SPEC, "to_s", "to_s", params[:min_spec]), prompt: "请选择", onchange: "change_pro()" %>
@@ -78,6 +78,32 @@
   <label class="inline" id="existed_product_name"></label>
 </div>
 <div class="row">
+  <div class="col-sm-2 text-right">
+    <label class="inline">进货单位</label>
+  </div>
+  <div class="col-sm-3">
+    <%= select_tag :purchase_spec, options_from_collection_for_select(Product::MIN_SPEC, "to_s", "to_s", params[:purchase_spec]), prompt: "请选择", onchange: "change_pro()" %>
+  </div>
+  <div class="col-sm-4 text-left">
+    <label id="explain_ratio">相对出货最小单位的比率</label>
+  </div>
+  <div class="col-sm-3 end">
+    <%= text_field_tag :purchase_ratio, params[:purchase_ratio], onchange: "change_pro()" %>
+  </div>
+</div>
+<br/>
+<div class="row" style="background-color: greenyellow">
+  <br/>
+  <div class="col-sm-2 text-right">
+    <label class="inline">解释：</label>
+  </div>
+  <div class="col-sm-10 text-left">
+    <label class="inline" style="color: red;" id="explain_panel"></label>
+  </div>
+  <br/>&nbsp;
+</div>
+<br/>
+<div class="row">
   <div class="col-sm-2 col-sm-offset-1" id="create_button_div">
     <%= link_to '创建', 'javascript:create_product("1")', class: 'btn btn-primary' %>
   </div>
@@ -86,6 +112,8 @@
 <script language="javascript">
   function change_pro(){
       $("#preview_product_name").html($("#brand").val()+'-'+$("#name").val()+'-'+$("#min_spec").val()+'('+$("#number").val()+$("#sub_spec").val()+')');
+      $("#explain_panel").html($("#brand").val()+'-'+$("#name").val()+'-'+$("#min_spec").val()+'('+$("#number").val()+$("#sub_spec").val()+')，进货时以 '+$("#purchase_spec").val()+' 为单位进货，1'+$("#purchase_spec").val()+'='+$("#purchase_ratio").val()+$("#min_spec").val()+", 出货时最小最小是以"+$("#min_spec").val()+"出货的。");
+      $("#explain_ratio").html('相对出货最小单位的比率(即1'+$("#purchase_spec").val()+'有多少'+$("#min_spec").val()+')');
   }
   function create_product(check){
       change_pro();

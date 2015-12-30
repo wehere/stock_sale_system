@@ -61,7 +61,10 @@ class Supply::ProductsController < BaseController
         params[:number].gsub!("？", "?")
         BusinessException.raise '［品牌名］不可以空着' if params[:brand].blank?
         BusinessException.raise '［品名］不可以空着' if params[:name].blank?
-        BusinessException.raise '［品名］不可以包含数字和括号' if params[:name].match /[\d()（）]/
+        BusinessException.raise '［品名］不可以包含数字和括号' if params[:name].match /[()（）]/
+        BusinessException.raise '请选择［进货单位］' if params[:purchase_spec].blank?
+        BusinessException.raise '［相对出货最小单位的比率］不可以空着' if params[:purchase_ratio].blank?
+        BusinessException.raise '［相对出货最小单位的比率］只可以是数字' if !params[:purchase_ratio].match /^[0-9]+$/
         if params[:number] != "?"
           BusinessException.raise '［大小］只可以是数字' if !params[:number].match /^[0-9]+$/
         end
@@ -92,6 +95,7 @@ class Supply::ProductsController < BaseController
                     supplier_id: supplier_id,
                     general_product_id: g_p.id
         product.save!
+        # 产生进货价格
 
         render text: "0|#{c_name}"
       end

@@ -18,14 +18,15 @@ class Supply::PricesController < BaseController
   end
 
   def need_make_up
-    prices = Price.where("ratio is null or ratio = 0 or true_spec is null or true_spec = ''")
-    purchase_prices = PurchasePrice.where("ratio is null or ratio =0 or true_spec is null or true_spec = ''")
+    supplier_id = current_user.company.id
+    prices = Price.where("ratio is null or ratio = 0 or true_spec is null or true_spec = '' and supplier_id = ?", supplier_id)
+    purchase_prices = PurchasePrice.where("ratio is null or ratio =0 or true_spec is null or true_spec = '' and supplier_id = ?", supplier_id)
     a = prices.collect{|x| x.product.general_product.id rescue 0 }
     b = purchase_prices.collect { |x| x.product.general_product.id rescue 0 }
     b.each do |x|
       a << x unless a.include? x
     end
-    @general_products = GeneralProduct.where("id in (?) ", a)
+    @general_products = GeneralProduct.where("id in (?) and supplier_id = ?", a, supplier_id)
     @general_products = @general_products.paginate(page: params[:page]||1, per_page: params[:per_page]||5)
   end
 
