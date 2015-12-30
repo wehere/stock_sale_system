@@ -17,6 +17,7 @@
       <th>中文名称</th>
       <th>缩写</th>
       <th>关联通用产品</th>
+      <th>分类</th>
       <th>操作</th>
       </thead>
   <% @products.each do |product| %>
@@ -25,10 +26,11 @@
         <td><%= product.chinese_name %></td>
         <td><%= product.simple_abc %></td>
         <td><%= product.general_product.name rescue '' %></td>
+        <td><%= select_tag "mark_#{product.id}", options_from_collection_for_select(Product::MARK, 'to_s', 'to_s', product.mark), onchange: "change_mark(#{product.id})" %></td>
         <td>
           <%= link_to '修改', edit_supply_product_path(product.id) %>
           <%= link_to '新增价格', new_supply_price_path(product_id: product.id) %>
-          <%= link_to '关联通用产品', "/supply/products/prepare_link_to_general_product?product_id=#{product.id}", target: '_blank' %>
+          <%= link_to '关联通用', "/supply/products/prepare_link_to_general_product?product_id=#{product.id}", target: '_blank' %>
         </td>
       </tr>
   <% end %>
@@ -36,3 +38,17 @@
     <%= will_paginate @products, :class => 'flickr_pagination', :previous_label => '<<上一页', :next_label => '下一页>>' %>
   <% end %>
 
+<script language="javascript">
+    function change_mark(product_id){
+        new_mark = $("#mark_"+product_id).val();
+        $.ajax({
+            url: "/supply/products/mark",
+            type: "post",
+            data: {
+                "product_id": product_id,
+                "mark": new_mark
+            }
+
+        })
+    }
+</script>

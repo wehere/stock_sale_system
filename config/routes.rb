@@ -70,6 +70,7 @@ Rails.application.routes.draw do
         post :import_products_from_xls
         get :strict_new
         post :strict_create
+        post :mark
       end
     end
     resources :prices do

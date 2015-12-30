@@ -166,6 +166,11 @@ class Supply::ProductsController < BaseController
     end
   end
 
+  def mark
+    product = Product.find_by_id(params[:product_id])
+    product.update_attribute :mark, params[:mark]
+  end
+
   def prepare_link_to_general_product
     show_link_to_general_product_params
   end
