@@ -48,3 +48,4 @@ end
 gem "simple-navigation"
 gem 'chinese_pinyin', '~> 1.0'
 gem 'delayed_job_active_record'
+gem "daemons"
