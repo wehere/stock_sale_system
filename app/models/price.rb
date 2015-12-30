@@ -33,7 +33,7 @@ class Price < ActiveRecord::Base
   def self.generate_next_month_batch prices, next_month_id
     self.transaction do
       prices.order(:customer_id).each do |price|
-        price.generate_next_month next_month_id
+        price.delay.generate_next_month next_month_id
       end
     end
   end
