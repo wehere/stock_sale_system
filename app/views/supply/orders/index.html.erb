@@ -33,6 +33,7 @@
         </td>
         <td>
           <%= link_to '输入到货量', edit_supply_order_path(order.id), target: '_blank' %>
+          <%= link_to '废除', "/supply/orders/#{order.id}", method: :delete, data: {confirm: '确定删除此单据吗？'} %>
         </td>
       </tr>
     <% end %>

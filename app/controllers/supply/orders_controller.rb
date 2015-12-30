@@ -15,6 +15,17 @@ class Supply::OrdersController < BaseController
     @orders = @orders.paginate(page: params[:page], per_page: 10)
   end
 
+  def destroy
+    order = Order.find_by_id(params[:id])
+    if order.is_confirm
+      flash[:alert] = '该单据已经出库确认了，不可以删除。'
+    else
+      order.update_attribute :delete_flag, 1
+      flash[:notice] = '删除成功'
+    end
+    redirect_to action: :index
+  end
+
   def save_real_price
     begin
       order_item = OrderItem.find(params[:order_item_id])
