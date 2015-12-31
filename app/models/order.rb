@@ -105,7 +105,7 @@ class Order < ActiveRecord::Base
     end
     sheet1.row(current_row)[0] = '总金额'
     sheet1.row(current_row)[1] = all_total_money
-    file_path = "#{Rails.root}/public/downloads/#{start_date.to_date.to_s(:db)}至#{end_date.to_date.to_s(:db)}#{customer.simple_name}#{store.name}_#{Time.now.to_i}_单据明细.xls"
+    file_path = "#{Rails.root}/public/downloads/#{supplier_id}/#{start_date.to_date.to_s(:db)}至#{end_date.to_date.to_s(:db)}#{customer.simple_name}#{store.name}_#{Time.now.to_i}_单据明细.xls"
     book.write file_path
     file_path
   end
@@ -177,7 +177,7 @@ class Order < ActiveRecord::Base
       sheet1.row(current_row+1).set_format(x, in_center)
     end
     sheet1.row(current_row+1)[0] = "#{start_date}至#{end_date}汇总:#{sum_money_of_all.round(2)}"
-    file_path = "#{Rails.root}/public/downloads/#{start_date.to_date.to_s(:db)}至#{end_date.to_date.to_s(:db)}_#{Time.now.to_i}_汇总单据明细.xls"
+    file_path = "#{Rails.root}/public/downloads/#{supplier_id}/#{start_date.to_date.to_s(:db)}至#{end_date.to_date.to_s(:db)}_#{Time.now.to_i}_汇总单据明细.xls"
     book.write file_path
     file_path
   end

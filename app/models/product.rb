@@ -46,7 +46,7 @@ class Product < ActiveRecord::Base
       current_row += 1
     end
 
-    file_path = "#{Rails.root}/public/downloads/#{supplier.simple_name}_#{customer.simple_name}_#{year_month.val}_#{Time.now.to_i}_货品清单.xls"
+    file_path = "#{Rails.root}/public/downloads/#{supplier_id}/#{supplier.simple_name}_#{customer.simple_name}_#{year_month.val}_#{Time.now.to_i}_货品清单.xls"
     book.write file_path
     file_path
 

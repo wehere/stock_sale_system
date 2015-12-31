@@ -1,7 +1,8 @@
 class Supply::DownloadsController < BaseController
-
+  before_filter :need_login
   def index
-    @files = Dir.glob('public/downloads/*.*')
+    id = current_user.company.id
+    @files = Dir.glob("public/downloads/#{id}/*.*")
   end
 
   def download
@@ -9,12 +10,6 @@ class Supply::DownloadsController < BaseController
     io.binmode
     send_data io.read, filename: params[:file], disposition: 'inline'
     io.close
-  end
-
-  def delete_file
-    # if params[:file].match
-    File.delete params[:file]
-    render text: 'ok'
   end
 
 end

@@ -27,8 +27,8 @@ class PurchaseOrder < ActiveRecord::Base
         sheet.row(y).set_format(x, in_center)
       end
     end
-    file_path = Rails.root.join("public",'downloads', "#{start_date.to_date.to_s(:db)}至#{end_date.to_date.to_s(:db)}进货单据明细.xls")
-    Dir.mkdir Rails.root.join("public",'downloads') unless Dir.exist? Rails.root.join("public",'downloads')
+    file_path = Rails.root.join("public","downloads/#{supplier_id}/", "#{start_date.to_date.to_s(:db)}至#{end_date.to_date.to_s(:db)}进货单据明细.xls")
+    Dir.mkdir Rails.root.join("public","downloads/#{supplier_id}/") unless Dir.exist? Rails.root.join("public","downloads/#{supplier_id}/")
     book.write file_path
     file_path
   end

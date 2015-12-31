@@ -98,7 +98,7 @@ class Price < ActiveRecord::Base
       5.times { |i| sheet1.row(index+2).set_format(i,format) }
       sheet1.row(index+2).push price.product.id, price.product.chinese_name.to_s, price.true_spec, price.price, ''
     end
-    file_path = "#{Rails.root}/public/downloads/"+YearMonth.find(year_month_id).val + Company.find(supplier_id).simple_name +
+    file_path = "#{Rails.root}/public/downloads/#{supplier_id}/"+YearMonth.find(year_month_id).val + Company.find(supplier_id).simple_name +
         '_to_' + Company.find(customer_id).simple_name+ '的报价表' + "_#{Time.now.to_i}"+ ".xls"
     book.write file_path
     file_path
