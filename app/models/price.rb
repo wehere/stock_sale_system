@@ -138,7 +138,7 @@ class Price < ActiveRecord::Base
     #   price = price.where year_month_id: month.id
     # end
 
-    price = price.paginate(per_page: options[:per_page]||10, page: options[:page]||1)
+    price = price.order(:customer_id).paginate(per_page: options[:per_page]||10, page: options[:page]||1)
 
     price
   end
