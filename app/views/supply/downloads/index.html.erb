@@ -4,7 +4,7 @@
 <% @files.each do |file| %>
       <tr>
         <td width="80%">
-        <label><%= file.gsub("public/downloads/", "") %></label>
+        <label><%= file.gsub("public/downloads/", "").split("/")[1] %></label>
         </td>
         <td>
         <%= link_to '下载', "/supply/downloads/download?file=#{file}" %>
