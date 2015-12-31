@@ -26,7 +26,7 @@
         <td><%= product.chinese_name %></td>
         <td><%= product.simple_abc %></td>
         <td><%= product.general_product.name rescue '' %></td>
-        <td><%= select_tag "mark_#{product.id}", options_from_collection_for_select(Product::MARK, 'to_s', 'to_s', product.mark), onchange: "change_mark(#{product.id})" %></td>
+        <td><%= select_tag "mark_#{product.id}", options_from_collection_for_select(@marks, 'to_s', 'to_s', product.mark), onchange: "change_mark(#{product.id})" %></td>
         <td>
           <%= link_to '修改', edit_supply_product_path(product.id) %>
           <%= link_to '新增价格', new_supply_price_path(product_id: product.id) %>
