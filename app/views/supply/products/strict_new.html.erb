@@ -104,6 +104,20 @@
 </div>
 <br/>
 <div class="row">
+  <div class="col-sm-2 text-right">
+    <label class="inline">属于哪个分类</label>
+  </div>
+  <div class="col-sm-3">
+    <%= select_tag :mark, options_from_collection_for_select(@marks, "to_s", "to_s", @marks.first) %>
+  </div>
+  <div class="col-sm-2 text-left">
+    <label id="explain_ratio">从哪里购买</label>
+  </div>
+  <div class="col-sm-3 end">
+    <%= select_tag "vendor", options_from_collection_for_select(@vendors, 'to_s', 'to_s', @vendors.first) %>
+  </div>
+</div>
+<div class="row">
   <div class="col-sm-2 col-sm-offset-1" id="create_button_div">
     <%= link_to '创建', 'javascript:create_product("1")', class: 'btn btn-primary' %>
   </div>
@@ -128,7 +142,9 @@
               "sub_spec": $("#sub_spec").val(),
               "check": check,
               "purchase_spec": $("#purchase_spec").val(),
-              "purchase_ratio": $("#purchase_ratio").val()
+              "purchase_ratio": $("#purchase_ratio").val(),
+              "mark": $("#mark").val(),
+              "vendor": $("#vendor").val()
           },
           dataType: 'text'
       }).done(

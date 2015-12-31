@@ -12,6 +12,15 @@ Rails.application.routes.draw do
 
   # 供应方
   namespace :supply do
+    resources :i do
+      collection do
+        get :config_
+        post :delete_mark
+        post :add_mark
+        post :delete_vendor
+        post :add_vendor
+      end
+    end
     resources :stocks
     resources :sellers do
       collection do
