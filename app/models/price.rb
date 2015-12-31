@@ -132,11 +132,11 @@ class Price < ActiveRecord::Base
       price = price.where product_id: products.collect(&:id)
     end
 
-    unless options[:month].nil?
-      month = YearMonth.where val: options[:month]
-      month = month.first
-      price = price.where year_month_id: month.id
-    end
+    # unless options[:month].nil?
+    #   month = YearMonth.where val: options[:month]
+    #   month = month.first
+    #   price = price.where year_month_id: month.id
+    # end
 
     price = price.paginate(per_page: options[:per_page]||10, page: options[:page]||1)
 
