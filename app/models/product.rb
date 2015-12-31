@@ -15,6 +15,43 @@ class Product < ActiveRecord::Base
 
   MARK =%w(未分类 水产品 肉类 菇类 面类 冻品 粮油 调料 蔬菜 水果 杂货)
 
+
+  def self.export supplier_id, customer_id, year_month_id
+    supplier = Company.find(supplier_id)
+    customer = Company.find(customer_id)
+    year_month = YearMonth.find(year_month_id)
+    Spreadsheet.client_encoding = "UTF-8"
+    book = Spreadsheet::Workbook.new
+    sheet = book.create_worksheet name: '产品清单'
+    format = Spreadsheet::Format.new border: :thin
+    merge_format = Spreadsheet::Format.new align: :merge, horizontal_align: :center, border: :thin
+
+    current_row = 0
+    temp_mark = "nil"
+
+    products = Product.where(supplier_id: supplier_id, is_valid: true).order(:mark)
+    products.each do |product|
+      unless temp_mark==product.mark
+        sheet.row(current_row).push product.mark
+        current_row += 1
+        temp_mark = product.mark
+      end
+      price = Price.where(customer_id: customer_id, product_id: product.id, is_used: true, supplier_id: supplier_id, year_month_id: year_month_id).first
+      true_spec = if price.blank?
+                    product.spec
+                  else
+                    price.true_spec
+                  end
+      sheet.row(current_row).push product.chinese_name, true_spec
+      current_row += 1
+    end
+
+    file_path = "#{Rails.root}/public/downloads/#{supplier.simple_name}_#{customer.simple_name}_#{year_month.val}_#{Time.now.to_i}_货品清单.xls"
+    book.write file_path
+    file_path
+
+  end
+
   def self.import_products_from_xls supplier_id, file_io
     message = '导入产品开始于' + Time.now.to_s + '             '
     name = file_io.original_filename

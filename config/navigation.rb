@@ -98,10 +98,14 @@ SimpleNavigation::Configuration.run do |navigation|
 
     primary.item :key_6, '报表', "/supply/sheets" do |sub_nav|
       sub_nav.item :key_6_1, '分菜', '/supply/order_items/prepare_classify'
+      sub_nav.item :key_6_2, '产品清单', '/supply/products/prepare_export_products'
     end
     primary.item :key_7, '库存', "/supply/stocks" do |sub_nav|
     end
     primary.item :key_8, '配置', '/supply/i/config_' do |sub_nav|
+
+    end
+    primary.item :key_9, '下载', '/supply/downloads' do |sub_nav|
 
     end
     # you can also specify html attributes to attach to this particular level

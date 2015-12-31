@@ -192,6 +192,32 @@ class Supply::ProductsController < BaseController
     end
   end
 
+  def prepare_export_products
+    @customers = current_user.company.customers
+    @year_months = []
+    @year_months << YearMonth.pre_year_month
+    @year_months << YearMonth.current_year_month
+    @year_months << YearMonth.next_year_month
+  end
+
+  def export_products
+    file_name = Product.delay.export current_user.company.id, params[:customer_id], params[:year_month_id]
+    # if File.exists? file_name
+    #   io = File.open(file_name)
+    #   io.binmode
+    #   send_data io.read, filename: file_name, disposition: 'inline'
+    #   io.close
+    #   File.delete file_name
+    # else
+    #   flash[:alert] = '文件不存在！'
+    #   @customers = current_user.company.customers
+    #   @year_months = YearMonth.order(id: :desc).limit(4)
+    #   render :prepare_export_products
+    # end
+    flash[:notice] = "正在下载，下载完毕后，您可以在下载页看到您需要的文件"
+    redirect_to action: :prepare_export_products
+  end
+
   private
 
     def product_params

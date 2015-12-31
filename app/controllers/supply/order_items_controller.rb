@@ -91,18 +91,20 @@ class Supply::OrderItemsController < BaseController
 
   def do_classify
     # begin
-      file_name = OrderItem.classify current_user.company.id, params[:specified_date]
-      if File.exists? file_name
-        io = File.open(file_name)
-        io.binmode
-        send_data io.read, filename: file_name, disposition: 'inline'
-        io.close
-        File.delete file_name
-      else
-        flash[:alert] = '文件不存在！'
-        @specified_date = params[:specified_date].blank? ? Time.now.to_date + 1 : params[:specified_date]
-        render :prepare_classify
-      end
+      file_name = OrderItem.delay.classify current_user.company.id, params[:specified_date]
+      flash[:notice] = "正在下载，下载完毕后，您可以在下载页看到您需要的文件"
+      redirect_to action: :prepare_classify
+      # if File.exists? file_name
+      #   io = File.open(file_name)
+      #   io.binmode
+      #   send_data io.read, filename: file_name, disposition: 'inline'
+      #   io.close
+      #   File.delete file_name
+      # else
+      #   flash[:alert] = '文件不存在！'
+      #   @specified_date = params[:specified_date].blank? ? Time.now.to_date + 1 : params[:specified_date]
+      #   render :prepare_classify
+      # end
     # rescue Exception=> e
     #   flash[:alert] = dispose_exception e
     #   @specified_date = params[:specified_date].blank? ? Time.now.to_date + 1 : params[:specified_date]

@@ -192,17 +192,19 @@ class Supply::PricesController < BaseController
     @current_year_month_id = params[:year_month_id] || YearMonth.current_year_month.id
     if request.post?
       begin
-        file_name = Price.export_xls_of_prices @supplier_id, params[:id], params[:year_month_id]
-        if File.exists? file_name
-          io = File.open(file_name)
-          io.binmode
-          send_data io.read, filename: file_name, disposition: 'inline'
-          io.close
-          File.delete file_name
-        else
-          flash[:alert] = '文件不存在！'
-          redirect_to export_xls_of_prices_supply_prices_path
-        end
+        file_name = Price.delay.export_xls_of_prices @supplier_id, params[:id], params[:year_month_id]
+        flash[:notice] = "正在下载，下载完毕后，您可以在下载页看到您需要的文件"
+        redirect_to action: :export_xls_of_prices
+        # if File.exists? file_name
+        #   io = File.open(file_name)
+        #   io.binmode
+        #   send_data io.read, filename: file_name, disposition: 'inline'
+        #   io.close
+        #   File.delete file_name
+        # else
+        #   flash[:alert] = '文件不存在！'
+        #   redirect_to export_xls_of_prices_supply_prices_path
+        # end
       rescue Exception => e
         flash[:alert] = dispose_exception e
         render :export_xls_of_prices

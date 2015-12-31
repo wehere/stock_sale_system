@@ -326,7 +326,7 @@ class OrderItem < ActiveRecord::Base
       end
     end
 
-    file_path = "#{company.simple_name}_#{specified_date.to_date.to_s(:db)}_分菜单.xls"
+    file_path = "#{Rails.root}/public/downloads/#{company.simple_name}_#{specified_date.to_date.to_s(:db)}_#{Time.now.to_i}_分菜单.xls"
     book.write file_path
     file_path
   end

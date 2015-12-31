@@ -1,0 +1,45 @@
+<h3>可下载文件列表</h3>
+<table class="table">
+  <thead><th>文件名</th><th>操作</th></thead>
+<% @files.each do |file| %>
+      <tr>
+        <td width="80%">
+        <label><%= file.gsub("public/downloads/", "") %></label>
+        </td>
+        <td>
+        <%= link_to '下载', "/supply/downloads/download?file=#{file}" %>
+        <%= link_to '删除', "javascript:delete_file('#{file}')" %>
+        </td>
+    </div>
+      </tr>
+<% end %>
+</table>
+<script language="javascript">
+  function download_file(file){
+      $.ajax({
+          url: '/supply/downloads/download',
+          type: 'post',
+          data: {
+              "file": file
+          },
+          dataType: "file"
+      })
+  }
+  function delete_file(file){
+      $.ajax({
+          url: '/supply/downloads/delete_file',
+          type: 'post',
+          data: {
+              "file": file
+          },
+          dataType: "text"
+      }).done(
+              function(result){
+                  if(result=='ok'){
+                      alert("删除成功");
+                      location.reload();
+                  }
+              }
+      )
+  }
+</script>

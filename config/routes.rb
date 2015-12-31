@@ -12,6 +12,12 @@ Rails.application.routes.draw do
 
   # 供应方
   namespace :supply do
+    resources :downloads do
+      collection do
+        get :download
+        post :delete_file
+      end
+    end
     resources :i do
       collection do
         get :config_
@@ -81,6 +87,8 @@ Rails.application.routes.draw do
         get :strict_new
         post :strict_create
         post :mark
+        post :export_products
+        get :prepare_export_products
       end
     end
     resources :prices do
