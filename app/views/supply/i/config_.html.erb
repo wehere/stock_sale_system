@@ -66,6 +66,8 @@
                 if(result=="ok"){
                     str = '<div class="col-sm-2"><label class="inline">'+$("#mark").val()+'</label></div>';
                     $("#mark_container").append(str);
+                } else {
+                    alert(result);
                 }
               }
       )
@@ -103,6 +105,8 @@
                   if(result=="ok"){
                       str = '<div class="col-sm-2"><label class="inline">'+$("#vendor").val()+'</label></div>';
                       $("#vendor_container").append(str);
+                  }else{
+                      alert(result);
                   }
               }
       )
