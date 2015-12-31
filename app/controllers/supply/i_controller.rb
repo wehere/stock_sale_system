@@ -47,7 +47,7 @@ class Supply::IController < BaseController
   end
 
   def add_vendor
-    if params[:mark].blank?
+    if params[:vendor].blank?
       render text: '请先填写商贩'
       return
     end
