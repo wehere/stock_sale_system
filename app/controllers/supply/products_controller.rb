@@ -88,7 +88,8 @@ class Supply::ProductsController < BaseController
           g_p = GeneralProduct.new name: c_name,
                                    seller_id: seller.id,
                                    supplier_id: supplier_id,
-                                   vendor: params[:vendor]
+                                   vendor: params[:vendor],
+                                   mini_spec: params[:min_spec]
           g_p.save!
         end
 
