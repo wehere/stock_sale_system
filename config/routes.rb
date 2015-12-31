@@ -38,6 +38,7 @@ Rails.application.routes.draw do
         post :save_purchase_price_ratio
         get :common_complex
         post :change_pass_status
+        post :vendor
       end
     end
     resources :customers do
