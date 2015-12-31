@@ -5,9 +5,9 @@ class Supply::SheetsController < BaseController
     @start_date = Time.now.to_date.last_month.beginning_of_month
     @end_date = Time.now.to_date.last_month.end_of_month
     @customers = current_user.company.customers.order(:simple_name)
-    @customer_id = @customers.first.id
-    @stores = @customers.first.stores
-    @store_id = @stores.first.id
+    @customer_id = @customers.first.id rescue ''
+    @stores = @customers.first.stores rescue ''
+    @store_id = @stores.first.id rescue ''
   end
 
   def change_stores
