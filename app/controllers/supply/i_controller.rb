@@ -18,6 +18,10 @@ class Supply::IController < BaseController
   end
 
   def add_mark
+    if params[:mark].blank?
+      render text: '请先填写分类'
+      retrun
+    end
     company = current_user.company
     marks_array = company.marks.split(",")
     if marks_array.include? params[:mark]
@@ -43,6 +47,10 @@ class Supply::IController < BaseController
   end
 
   def add_vendor
+    if params[:mark].blank?
+      render text: '请先填写商贩'
+      retrun
+    end
     company = current_user.company
     vendors_array = company.vendors.split(",")
     if vendors_array.include? params[:vendor]
