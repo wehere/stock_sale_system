@@ -6,10 +6,13 @@
     <label>结束日期</label>
     <%= date_field_tag 'end_date', @end_date %>
     <label>单位</label>
+    <% unless @customers.blank? %>
     <%= select_tag 'customer_id', options_from_collection_for_select(@customers, 'id', 'simple_name', @customer_id), id: "customers_select" %>
+    <% end %>
     <label>门店</label>
+    <% unless @stores.blank? %>
     <div id="store_select"><%= select_tag 'store_id', options_from_collection_for_select(@stores, 'id', 'name', @store_id) %></div>
-
+    <% end %>
     <%= submit_tag '导出', class: 'btn btn-primary' %>
 <% end %>
 
