@@ -170,6 +170,7 @@ class Supply::ProductsController < BaseController
   def mark
     product = Product.find_by_id(params[:product_id])
     product.update_attribute :mark, params[:mark]
+    render text: 'ok'
   end
 
   def prepare_link_to_general_product
