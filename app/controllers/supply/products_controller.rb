@@ -59,6 +59,7 @@ class Supply::ProductsController < BaseController
   end
 
   def strict_create
+    need_warehouseman
     begin
       Product.transaction do
         params[:brand].gsub!("？", "?")
@@ -145,6 +146,7 @@ class Supply::ProductsController < BaseController
   end
 
   def edit
+    need_warehouseman
     begin
       @product = current_user.company.products.find(params[:id])
     rescue Exception=>e
@@ -154,6 +156,7 @@ class Supply::ProductsController < BaseController
   end
 
   def update
+    need_warehouseman
     begin
       current_user.company.products.find(params[:id]).update_attributes product_params
       flash[:notice] = "修改成功！"
