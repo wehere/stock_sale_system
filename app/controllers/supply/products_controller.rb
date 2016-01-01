@@ -46,12 +46,14 @@ class Supply::ProductsController < BaseController
   end
 
   def new
+    need_warehouseman
     # @product = Product.new
     # @product.supplier = current_user.company
     redirect_to action: :strict_new
   end
 
   def strict_new
+    need_warehouseman
     @marks = current_user.company.marks.split(",")
     @vendors = current_user.company.vendors.split(",")
   end

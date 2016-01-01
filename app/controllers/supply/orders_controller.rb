@@ -2,9 +2,14 @@ class Supply::OrdersController < BaseController
   before_filter :need_login
   def index
     @key = params[:key]
-    @date_start = params[:date_start].blank? ? Time.now.to_date : params[:date_start]
-    @date_end = params[:date_end].blank? ? Time.now.to_date : params[:date_end]
+
     @orders = current_user.company.in_orders.valid_orders
+    unless params[:date_start].blank?
+      @orders = @orders.where("reach_order_date>=?", [:date_start].to_time.change(hour:0,min:0,sec:0))
+    end
+    unless params[:date_end].blank?
+      @orders = @orders.where("reach_order_date<=?", params[:date_end].to_time.change(hour:23,min:59,sec:59))
+    end
     @orders = @orders.where(reach_order_date: @date_start..@date_end)
     @orders = @orders.where(customer_id: params[:customer_id]) unless params[:customer_id].blank?
     @orders = @orders.where(store_id: params[:store_id]) unless params[:store_id].blank?

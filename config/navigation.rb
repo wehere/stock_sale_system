@@ -56,56 +56,56 @@ SimpleNavigation::Configuration.run do |navigation|
     #                            when the item should be highlighted, you can set a regexp which is matched
     #                            against the current URI.  You may also use a proc, or the symbol <tt>:subpath</tt>.
     #
-    primary.item :key_1, '价格', "/supply/prices" do |sub_nav|
-      sub_nav.item :key_1_1, '给客户提供的价格', '/supply/prices/search'
-      sub_nav.item :key_1_2, '新增价格', '/supply/prices/prepare_create_price'
-      sub_nav.item :key_1_3, '生成下一个月价格', '/supply/prices/generate_next_month'
-      sub_nav.item :key_1_4, '用excel导入价格', '/supply/prices/import_prices_from_xls'
-      sub_nav.item :key_1_5, '导出价格', '/supply/prices/export_xls_of_prices'
-      sub_nav.item :key_1_6, '进货价格', '/purchase/purchase_price'
-      sub_nav.item :key_1_7, '更新进货价格', '/purchase/purchase_price/pre_update_price'
-      sub_nav.item :key_1_8, '售出价格', '/supply/prices/show_price'
-      sub_nav.item :key_1_9, '价格比率补充', '/supply/prices/need_make_up'
+    primary.item :key_1, '价格', "/supply/prices", if: -> { true } do |sub_nav|
+    sub_nav.item :key_1_1, '给客户提供的价格', '/supply/prices/search', if: -> { true }
+      sub_nav.item :key_1_2, '新增价格', '/supply/prices/prepare_create_price', if: -> { true }
+      sub_nav.item :key_1_3, '生成下一个月价格', '/supply/prices/generate_next_month', if: -> { true}
+      sub_nav.item :key_1_4, '用excel导入价格', '/supply/prices/import_prices_from_xls', if: -> { true}
+      sub_nav.item :key_1_5, '导出价格', '/supply/prices/export_xls_of_prices', if: -> { true}
+      sub_nav.item :key_1_6, '进货价格', '/purchase/purchase_price', if: -> { true}
+      sub_nav.item :key_1_7, '更新进货价格', '/purchase/purchase_price/pre_update_price', if: -> { true}
+      sub_nav.item :key_1_8, '售出价格', '/supply/prices/show_price', if: -> { true}
+      sub_nav.item :key_1_9, '价格比率补充', '/supply/prices/need_make_up', if: -> { true}
     end
 
     # Add an item which has a sub navigation (same params, but with block)
-    primary.item :key_2, '产品', "/supply/products" do |sub_nav|
+    primary.item :key_2, '产品', "/supply/products", if: -> { true} do |sub_nav|
       # Add an item to the sub navigation (same params again)
-      sub_nav.item :key_2_1, '新增产品', "/supply/products/strict_new"
-      sub_nav.item :key_2_2, '导入产品', '/supply/products/import_products_from_xls'
-      sub_nav.item :key_2_3, '通用产品一览', '/supply/general_products'
+      sub_nav.item :key_2_1, '新增产品', "/supply/products/strict_new", if: -> { true}
+      sub_nav.item :key_2_2, '导入产品', '/supply/products/import_products_from_xls', if: -> { true}
+      sub_nav.item :key_2_3, '通用产品一览', '/supply/general_products', if: -> { true}
 
     end
 
     # You can also specify a condition-proc that needs to be fullfilled to display an item.
     # Conditions are part of the options. They are evaluated in the context of the views,
     # thus you can use all the methods and vars you have available in the views.
-    primary.item :key_3, '出货单', "/supply/orders", class: 'special' do |sub_nav|#, if: -> { current_user.admin? }
-      sub_nav.item :key_3_1, '没回来的单子', "/supply/orders/not_return"
-      sub_nav.item :key_3_2, '单据回来－快捷', "/supply/orders/pre_confirm_back_order"
-      sub_nav.item :key_3_3, '查询未录入数据单据', "/supply/orders/not_input"
-      sub_nav.item :key_3_4, '开始录入到货量', "/supply/orders/0/edit"
-      sub_nav.item :key_3_5, '搜索已送品项', '/supply/order_items/search'
-      sub_nav.item :key_3_6, '补充未输入价格的品项', '/supply/order_items/null_price'
+    primary.item :key_3, '出货单', "/supply/orders", class: 'special', if: -> { true} do |sub_nav|
+      sub_nav.item :key_3_1, '没回来的单子', "/supply/orders/not_return", if: -> { true}
+      sub_nav.item :key_3_2, '单据回来－快捷', "/supply/orders/pre_confirm_back_order", if: -> { true}
+      sub_nav.item :key_3_3, '查询未录入数据单据', "/supply/orders/not_input", if: -> { true}
+      sub_nav.item :key_3_4, '开始录入到货量', "/supply/orders/0/edit", if: -> { true}
+      sub_nav.item :key_3_5, '搜索已送品项', '/supply/order_items/search', if: -> { true}
+      sub_nav.item :key_3_6, '补充未输入价格的品项', '/supply/order_items/null_price', if: -> { true}
     end
-    primary.item :key_4, '进货单', "/supply/purchase_orders", class: 'special' do |sub_nav|
+    primary.item :key_4, '进货单', "/supply/purchase_orders", class: 'special', if: -> { true} do |sub_nav|
 
     end
-    primary.item :key_5, '客户', "/supply/customers" do |sub_nav| #, unless: -> { logged_in? }
-      sub_nav.item :key_5_1, '单据类型管理', '/supply/order_types'
-      sub_nav.item :key_5_2, '卖家一览', '/supply/sellers'
+    primary.item :key_5, '客户', "/supply/customers", if: -> { true} do |sub_nav|
+      sub_nav.item :key_5_1, '单据类型管理', '/supply/order_types', if: -> { true}
+      sub_nav.item :key_5_2, '卖家一览', '/supply/sellers', if: -> { true}
     end
 
-    primary.item :key_6, '报表', "/supply/sheets" do |sub_nav|
-      sub_nav.item :key_6_1, '分菜', '/supply/order_items/prepare_classify'
-      sub_nav.item :key_6_2, '产品清单', '/supply/products/prepare_export_products'
+    primary.item :key_6, '报表', "/supply/sheets", if: -> { true} do |sub_nav|
+      sub_nav.item :key_6_1, '分菜', '/supply/order_items/prepare_classify', if: -> { true}
+      sub_nav.item :key_6_2, '产品清单', '/supply/products/prepare_export_products', if: -> { true}
     end
-    primary.item :key_7, '库存', "/supply/stocks" do |sub_nav|
+    primary.item :key_7, '库存', "/supply/stocks", if: -> { true} do |sub_nav|
     end
-    primary.item :key_8, '配置', '/supply/i/config_' do |sub_nav|
+    primary.item :key_8, '配置', '/supply/i/config_', if: -> { true} do |sub_nav|
 
     end
-    primary.item :key_9, '下载', '/supply/downloads' do |sub_nav|
+    primary.item :key_9, '下载', '/supply/downloads', if: -> { true} do |sub_nav|
 
     end
     # you can also specify html attributes to attach to this particular level
