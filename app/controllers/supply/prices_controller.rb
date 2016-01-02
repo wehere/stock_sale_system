@@ -102,9 +102,13 @@ class Supply::PricesController < BaseController
       else
         unless price.price.equal? params[:price].to_f
           unless params[:price].blank?
-            new_price = price.dup
-            price.update_attribute :is_used, false
-            new_price.update_attribute :price, params[:price]
+            if price.price.blank? || price.price == 0.0
+              price.update_attribute :price, params[:price]
+            else
+              new_price = price.dup
+              price.update_attribute :is_used, false
+              new_price.update_attribute :price, params[:price]
+            end
           end
         end
       end
