@@ -1,11 +1,10 @@
-<h2>下列产品项有可能重复</h2>
-确认
-修改名称
-关联同一个通用产品
-无效1个通用
-complex
-<br/>
-<%= @product_names.split(',').each do |name| %>
+下列产品项有可能重复：
+<% @product_names.split(',').each do |name| %>
     <%= name %>
-    <br/>
 <% end %>
+
+1、确认
+2、修改名称
+3、关联同一个通用产品
+4、无效1个通用
+5、complex
