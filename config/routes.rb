@@ -71,6 +71,7 @@ Rails.application.routes.draw do
         post :export_order_total_for_specified_days
         post :export_order_total_for_specified_month
         post :export_purchase_order
+        post :export_stocks
       end
       member do
         post :change_stores

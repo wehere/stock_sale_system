@@ -5,7 +5,7 @@ class Supply::OrdersController < BaseController
 
     @orders = current_user.company.in_orders.valid_orders
     unless params[:date_start].blank?
-      @orders = @orders.where("reach_order_date>=?", [:date_start].to_time.change(hour:0,min:0,sec:0))
+      @orders = @orders.where("reach_order_date>=?", params[:date_start].to_time.change(hour:0,min:0,sec:0))
     end
     unless params[:date_end].blank?
       @orders = @orders.where("reach_order_date<=?", params[:date_end].to_time.change(hour:23,min:59,sec:59))

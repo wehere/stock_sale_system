@@ -62,4 +62,11 @@ class Supply::SheetsController < BaseController
     redirect_to action: :index
     # send_file file_name
   end
+
+  def export_stocks
+    supplier_id = current_user.company.id
+    OrderDetail.delay.export_stocks params[:start_date], params[:end_date], supplier_id
+    flash[:notice] = "正在下载，下载完毕后，您可以在下载页看到您需要的文件"
+    redirect_to action: :index
+  end
 end

@@ -31,4 +31,48 @@ class OrderDetail < ActiveRecord::Base
       end
     # end
   end
+
+  def self.export_stocks start_date, end_date, supplier_id
+    order_details = OrderDetail.where("delete_flag is null or delete_flag = 0").where(supplier_id: supplier_id)
+    order_details = order_details.where("start_date>= ?", start_date.to_time.change(hour:0,min:0,sec:0)) unless start_date.blank?
+    order_details = order_details.where("end_date<=?", end_date.to_time.change(hour:23,min:59,sec:59)) unless end_date.blank?
+    result = {}
+    order_details.each do |order_detail|
+      if result[order_detail.product_id].blank?
+        if order_detail.detail_type == 2
+          h = {}
+          h[:sale_date] = order_detail.detail_date
+          h[:purchase_date] = ''
+          h[:sale_price] = order_detail.price
+          h[:purchase_price] = 0
+          h[:real_weight] = 0.0-order_detail.real_weight
+          result[order_detail.product_id] = h
+        elsif order_detail.detail_type == 1
+          h = {}
+          h[:sale_date] = ''
+          h[:purchase_date] = order_detail.detail_date
+          h[:sale_price] = 0
+          h[:purchase_price] = order_detail.price
+          h[:real_weight] = order_detail.real_weight
+          result[order_detail.product_id] = h
+        end
+      else
+        if order_detail.detail_type == 2
+          h = result[order_detail.product_id]
+          if order_detail.detail_date > h[:sale_date] && !order_detail.price.blank?
+            h[:sale_date] = order_detail.detail_date
+            h[:sale_price] = order_detail.price
+          end
+          h[:real_weight] -= order_detail.real_weight
+        elsif order_detail.detail_type == 1
+          h = result[order_detail.product_id]
+          if order_detail.detail_date > h[:purchase_date] && !order_detail.price.blank?
+            h[:purchase_date] = order_detail.detail_date
+            h[:purchase_price] = order_detail.price
+          end
+          h[:real_weight] += order_detail.real_weight
+        end
+      end
+    end
+  end
 end
