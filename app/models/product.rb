@@ -105,7 +105,7 @@ class Product < ActiveRecord::Base
     h = h.select{|k,v|k>=2}
     if h.count >= 1
       # send email to admin
-      AdminMailer.delay.product_repeated(h.values.join(",")).deliver
+      AdminMailer.delay.product_repeated(h.values.join(","))
     end
   end
 end
