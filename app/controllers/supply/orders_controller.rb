@@ -20,7 +20,8 @@ class Supply::OrdersController < BaseController
   end
 
   def destroy
-    order = Order.find_by_id(params[:id])
+    supplier_id = current_user.company.id
+    order = Order.where(supplier_id:supplier_id).find_by_id(params[:id])
     if order.is_confirm
       flash[:alert] = '该单据已经出库确认了，不可以删除。'
     else
@@ -47,10 +48,11 @@ class Supply::OrdersController < BaseController
   end
 
   def edit
+    supplier_id = current_user.company.id
     if params[:id] == "0"
-      @order = Order.first
+      @order = Order.where(supplier_id: supplier_id).first
     else
-      @order = Order.find(params[:id])
+      @order = Order.where(supplier_id: supplier_id).find_by_id(params[:id])
     end
 
     # @pre_order = @order.previous @order.order_type.previous
@@ -59,8 +61,9 @@ class Supply::OrdersController < BaseController
   end
 
   def update
+    supplier_id = current_user.company.id
     begin
-      order = Order.find(params[:order_id])
+      order = Order.where(supplier_id: supplier_id).find_by_id(params[:order_id])
       hash = params[:order_item]
       Order.transaction do
         hash.each do |key,value|
@@ -101,6 +104,7 @@ class Supply::OrdersController < BaseController
   end
 
   def not_input
+      supplier_id = current_user.company.id
       @orders = Order.common_query(params.permit(:start_date, :end_date, :allowed_number_not_input, :customer_id, :not_customer_id).merge(supplier_id: current_user.company.id))
       @orders = @orders.where("orders.not_input_number > ?", 0) if params[:allowed_number_not_input].blank?
       @orders = @orders.paginate(page: params[:page], per_page: 10)
@@ -108,7 +112,8 @@ class Supply::OrdersController < BaseController
   end
 
   def return
-    Order.find(params[:id]).return
+    supplier_id = current_user.company.id
+    Order.where(supplier_id: supplier_id).find_by_id(params[:id]).return
     render :text => "ok"
   end
 
@@ -123,7 +128,8 @@ class Supply::OrdersController < BaseController
   end
 
   def confirm_back_order
-    order = Order.find_by_id(params[:order_id])
+    supplier_id = current_user.company.id
+    order = Order.where(supplier_id: supplier_id).find_by_id(params[:order_id])
     if order.blank?
       render text: '找不到对应的单据。'
     else
