@@ -91,7 +91,7 @@ class Product < ActiveRecord::Base
   end
 
   def self.check_repeated supplier_id
-    names = Product.where(supplier_id: supplier_id, is_valid: true).pluck(:chinese_name)
+    names = GeneralProduct.where(supplier_id: supplier_id, is_valid: true).pluck(:name)
     names = names.collect{|x|x.match(/-[\u4e00-\u9fa5a-zA-Z\d]+-/).to_s[1..-2]}
     h = {}
     names.each do |name|
@@ -101,11 +101,10 @@ class Product < ActiveRecord::Base
         h[name] += 1
       end
     end
-    h = h.invert
-    h = h.select{|k,v|k>=2}
+    h = h.select{|k,v| v>=2 }
     if h.count >= 1
       # send email to admin
-      AdminMailer.delay.product_repeated(h.values.join(","))
+      AdminMailer.delay.product_repeated(h.keys.join(","))
     end
   end
 end
