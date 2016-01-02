@@ -75,7 +75,7 @@ class GeneralProduct < ActiveRecord::Base
     h = h.select{|k,v| v>=2 }
     if h.count >= 1
       # send email to admin
-      AdminMailer.product_repeated(h.keys.join(","))
+      AdminMailer.product_repeated(h.keys.join(",")).deliver
     end
   end
 end
