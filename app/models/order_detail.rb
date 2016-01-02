@@ -103,7 +103,7 @@ class OrderDetail < ActiveRecord::Base
       sum += (last_price||0.0)*value[:real_weight]
       current_row += 1
     end
-    sheet.row(current_row)[0] = "#{start_date}至#{end_date}汇总:#{sum_money_of_all.round(2)}"
+    sheet.row(current_row)[0] = "#{start_date}至#{end_date}汇总:#{sum.round(2)}"
     file_path = "#{Rails.root}/public/downloads/#{supplier_id}/#{start_date.to_date.to_s}至#{end_date.to_date.to_s}_#{Time.now.to_i}_库存数据.xls"
     book.write file_path
     file_path
