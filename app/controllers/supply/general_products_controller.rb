@@ -172,6 +172,7 @@ class Supply::GeneralProductsController < BaseController
 
   def check_repeated
     GeneralProduct.check_repeated current_user.company.id
+    redirect_to '/supply/general_products/'
   end
 
   private
