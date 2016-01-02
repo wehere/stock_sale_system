@@ -90,21 +90,5 @@ class Product < ActiveRecord::Base
     message
   end
 
-  def self.check_repeated supplier_id
-    names = GeneralProduct.where(supplier_id: supplier_id, is_valid: true).pluck(:name)
-    names = names.collect{|x|x.match(/-[\u4e00-\u9fa5a-zA-Z\d]+-/).to_s[1..-2]}
-    h = {}
-    names.each do |name|
-      if h[name].blank?
-        h[name] = 1
-      else
-        h[name] += 1
-      end
-    end
-    h = h.select{|k,v| v>=2 }
-    if h.count >= 1
-      # send email to admin
-      AdminMailer.delay.product_repeated(h.keys.join(","))
-    end
-  end
+
 end

@@ -9,6 +9,14 @@ class GeneralProduct < ActiveRecord::Base
   validates_uniqueness_of :name, message: '该通用产品已经存在。', scope: [:supplier_id]
   validate :mini_spec_check
 
+  after_create do |g_p|
+    GeneralProduct.check_repeated g_p.supplier_id
+  end
+
+  after_save do |g_p|
+    GeneralProduct.check_repeated g_p.supplier_id
+  end
+
   def mini_spec_check
     if mini_spec_changed? && persisted? && !skip_mini_spec_check
       used = false
@@ -50,6 +58,24 @@ class GeneralProduct < ActiveRecord::Base
                               mini_spec: params[:mini_spec],
                               skip_mini_spec_check: self.mini_spec.blank?
       self
+    end
+  end
+
+  def self.check_repeated supplier_id
+    names = GeneralProduct.where(supplier_id: supplier_id, is_valid: true).pluck(:name)
+    names = names.collect{|x|x.match(/-[\u4e00-\u9fa5a-zA-Z\d]+-/).to_s[1..-2]}
+    h = {}
+    names.each do |name|
+      if h[name].blank?
+        h[name] = 1
+      else
+        h[name] += 1
+      end
+    end
+    h = h.select{|k,v| v>=2 }
+    if h.count >= 1
+      # send email to admin
+      AdminMailer.product_repeated(h.keys.join(","))
     end
   end
 end
