@@ -65,7 +65,7 @@ class OrderDetail < ActiveRecord::Base
       else
         if order_detail.detail_type == 2
           h = result[order_detail.product.general_product_id]
-          if order_detail.detail_date.to_date > h[:sale_date].to_date && !order_detail.price.blank?
+          if h[:sale_date].blank? || !order_detail.price.blank? && !order_detail.detail_date.blank? && order_detail.detail_date.to_date > h[:sale_date].to_date
             h[:sale_date] = order_detail.detail_date
             h[:sale_price] = order_detail.price
           end
@@ -73,7 +73,7 @@ class OrderDetail < ActiveRecord::Base
           h[:real_weight] -= (order_detail.real_weight||0)*ratio
         elsif order_detail.detail_type == 1
           h = result[order_detail.product.general_product_id]
-          if order_detail.detail_date.to_date > h[:purchase_date].to_date && !order_detail.price.blank?
+          if h[:purchase_date].blank? || !order_detail.detail_date.blank? && !order_detail.price.blank? && order_detail.detail_date.to_date > h[:purchase_date].to_date
             h[:purchase_date] = order_detail.detail_date
             h[:purchase_price] = order_detail.price
           end
