@@ -48,6 +48,7 @@ class Supply::OrdersController < BaseController
   end
 
   def edit
+    begin
     supplier_id = current_user.company.id
     if params[:id] == "0"
       @order = Order.valid_orders.where(supplier_id: supplier_id).first
@@ -58,6 +59,10 @@ class Supply::OrdersController < BaseController
     # @pre_order = @order.previous @order.order_type.previous
     # @next_order = @order.next @order.order_type.next
     @order_items = @order.order_items
+    rescue Exception=> e
+      flash[:alert] = '找不到该单据'
+      redirect_to action: :index
+    end
   end
 
   def update
