@@ -47,7 +47,7 @@ class OrderDetail < ActiveRecord::Base
           h[:purchase_price] = 0
           ratio = OrderItem.find_by_id(order_detail.item_id).price.ratio||0.0 rescue 0.0
           h[:real_weight] = 0.0-(order_detail.real_weight||0)*ratio
-          result[order_detail.product_id] = h
+          result[order_detail.product.general_product_id] = h
         elsif order_detail.detail_type == 1
           h = {}
           h[:sale_date] = ''
@@ -56,7 +56,7 @@ class OrderDetail < ActiveRecord::Base
           h[:purchase_price] = order_detail.price
           ratio = PurchaseOrderItem.find_by_id(order_detail.item_id).purchase_price.ratio||0.0 rescue 0.0
           h[:real_weight] = (order_detail.real_weight||0)*ratio
-          result[order_detail.product_id] = h
+          result[order_detail.product.general_product_id] = h
         else
           h = {}
           ratio = 1.0
@@ -64,7 +64,7 @@ class OrderDetail < ActiveRecord::Base
         end
       else
         if order_detail.detail_type == 2
-          h = result[order_detail.product_id]
+          h = result[order_detail.product.general_product_id]
           if order_detail.detail_date.to_date > h[:sale_date].to_date && !order_detail.price.blank?
             h[:sale_date] = order_detail.detail_date
             h[:sale_price] = order_detail.price
@@ -72,7 +72,7 @@ class OrderDetail < ActiveRecord::Base
           ratio = OrderItem.find_by_id(order_detail.item_id).price.ratio||0.0 rescue 0.0
           h[:real_weight] -= (order_detail.real_weight||0)*ratio
         elsif order_detail.detail_type == 1
-          h = result[order_detail.product_id]
+          h = result[order_detail.product.general_product_id]
           if order_detail.detail_date.to_date > h[:purchase_date].to_date && !order_detail.price.blank?
             h[:purchase_date] = order_detail.detail_date
             h[:purchase_price] = order_detail.price
@@ -80,7 +80,7 @@ class OrderDetail < ActiveRecord::Base
           ratio = PurchaseOrderItem.find_by_id(order_detail.item_id).purchase_price.ratio||0.0 rescue 0.0
           h[:real_weight] += (order_detail.real_weight||0)*ratio
         elsif order_detail.detail_type == 3 or order_detail.detail_type == 4
-          h = result[order_detail.product_id]
+          h = result[order_detail.product.general_product_id]
           ratio = 1.0
           h[:real_weight] -= (order_detail.real_weight||0)*ratio
         end
