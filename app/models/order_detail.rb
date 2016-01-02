@@ -38,14 +38,15 @@ class OrderDetail < ActiveRecord::Base
     order_details = order_details.where("end_date<=?", end_date.to_time.change(hour:23,min:59,sec:59)) unless end_date.blank?
     result = {}
     order_details.each do |order_detail|
-      if result[order_detail.product_id].blank?
+      if result[order_detail.product.general_product_id].blank?
         if order_detail.detail_type == 2
           h = {}
           h[:sale_date] = order_detail.detail_date
           h[:purchase_date] = ''
           h[:sale_price] = order_detail.price
           h[:purchase_price] = 0
-          h[:real_weight] = 0.0-order_detail.real_weight
+          ratio = OrderItem.find_by_id(order_detail.item_id).price.ratio||0.0 rescue 0.0
+          h[:real_weight] = 0.0-(order_detail.real_weight||0)*ratio
           result[order_detail.product_id] = h
         elsif order_detail.detail_type == 1
           h = {}
@@ -53,8 +54,13 @@ class OrderDetail < ActiveRecord::Base
           h[:purchase_date] = order_detail.detail_date
           h[:sale_price] = 0
           h[:purchase_price] = order_detail.price
-          h[:real_weight] = order_detail.real_weight
+          ratio = PurchaseOrderItem.find_by_id(order_detail.item_id).purchase_price.ratio||0.0 rescue 0.0
+          h[:real_weight] = (order_detail.real_weight||0)*ratio
           result[order_detail.product_id] = h
+        else
+          h = {}
+          ratio = 1.0
+          h[:real_weight] = 0.0 - (order_detail.real_weight||0)*ratio
         end
       else
         if order_detail.detail_type == 2
@@ -63,16 +69,43 @@ class OrderDetail < ActiveRecord::Base
             h[:sale_date] = order_detail.detail_date
             h[:sale_price] = order_detail.price
           end
-          h[:real_weight] -= order_detail.real_weight
+          ratio = OrderItem.find_by_id(order_detail.item_id).price.ratio||0.0 rescue 0.0
+          h[:real_weight] -= (order_detail.real_weight||0)*ratio
         elsif order_detail.detail_type == 1
           h = result[order_detail.product_id]
           if order_detail.detail_date > h[:purchase_date] && !order_detail.price.blank?
             h[:purchase_date] = order_detail.detail_date
             h[:purchase_price] = order_detail.price
           end
-          h[:real_weight] += order_detail.real_weight
+          ratio = PurchaseOrderItem.find_by_id(order_detail.item_id).purchase_price.ratio||0.0 rescue 0.0
+          h[:real_weight] += (order_detail.real_weight||0)*ratio
+        elsif order_detail.detail_type == 3 or order_detail.detail_type == 4
+          h = result[order_detail.product_id]
+          ratio = 1.0
+          h[:real_weight] -= (order_detail.real_weight||0)*ratio
         end
       end
     end
+    result
+    Spreadsheet.client_encoding = 'UTF-8'
+    book = Spreadsheet::Workbook.new
+    in_center = Spreadsheet::Format.new horizontal_align: :center, vertical_align: :center, border: :thin
+    in_left = Spreadsheet::Format.new horizontal_align: :left, border: :thin
+    sheet = book.create_worksheet name: '库存'
+    current_row = 0
+    sheet.row(current_row).push
+    current_row += 1
+    sum = 0.0
+    result.each do |key, value|
+      g_p = GeneralProduct.find_by_id(key)
+      last_price = value[:purchase_price].blank? ? (value[:sale_price].blank? ? 0.0 : value[:sale_price]) : value[:purchase_price]
+      sheet.row(current_row).push g_p.name, g_p.mini_spec, last_price, value[:real_weight]
+      sum += (last_price||0.0)*value[:real_weight]
+      current_row += 1
+    end
+    sheet.row(current_row)[0] = "#{start_date}至#{end_date}汇总:#{sum_money_of_all.round(2)}"
+    file_path = "#{Rails.root}/public/downloads/#{supplier_id}/#{start_date.to_date.to_s}至#{end_date.to_date.to_s}_#{Time.now.to_i}_库存数据.xls"
+    book.write file_path
+    file_path
   end
 end
