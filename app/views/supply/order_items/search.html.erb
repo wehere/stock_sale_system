@@ -16,6 +16,7 @@
 <% else %>
     <table class="table">
       <thead>
+        <th>单据ID</th>
         <th>到货日期</th>
         <th>客户名称</th>
         <th>客户门店</th>
@@ -28,6 +29,7 @@
       </thead>
       <% @order_items.each do |order_item| %>
         <tr>
+          <td><%= order_item.order_id %></td>
           <td><%= order_item.order.reach_order_date %></td>
           <td><%= order_item.order.customer.simple_name %></td>
           <td><%= order_item.order.store.name %></td>
