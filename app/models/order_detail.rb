@@ -34,8 +34,8 @@ class OrderDetail < ActiveRecord::Base
 
   def self.export_stocks start_date, end_date, supplier_id
     order_details = OrderDetail.where("delete_flag is null or delete_flag = 0").where(supplier_id: supplier_id)
-    order_details = order_details.where("start_date>= ?", start_date.to_time.change(hour:0,min:0,sec:0)) unless start_date.blank?
-    order_details = order_details.where("end_date<=?", end_date.to_time.change(hour:23,min:59,sec:59)) unless end_date.blank?
+    order_details = order_details.where("detail_date>= ?", start_date.to_time.change(hour:0,min:0,sec:0)) unless start_date.blank?
+    order_details = order_details.where("detail_date<=?", end_date.to_time.change(hour:23,min:59,sec:59)) unless end_date.blank?
     result = {}
     order_details.each do |order_detail|
       if result[order_detail.product.general_product_id].blank?
