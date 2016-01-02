@@ -43,6 +43,7 @@ Rails.application.routes.draw do
     end
     resources :general_products do
       collection do
+        get :check_repeated
         get :prepare_link_to_seller
         post :do_link_to_seller
         get :complex

@@ -170,6 +170,10 @@ class Supply::GeneralProductsController < BaseController
 
   end
 
+  def check_repeated
+    GeneralProduct.check_repeated current_user.company.id
+  end
+
   private
     def show_link_to_seller_params
       @name = params[:name]
