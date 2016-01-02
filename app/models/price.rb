@@ -25,7 +25,8 @@ class Price < ActiveRecord::Base
   end
 
   def self.g_next_month_price origin_year_month_id, target_year_month_id, supplier_id
-    prices = Price.where(is_used: true, is_valid: true, year_month_id: origin_year_month_id, supplier_id: supplier_id)
+    prices = Price.joins(:product)
+    prices = prices.where("prices.is_used = 1 and products.is_valid = 1 and prices.year_month_id = ? and prices.supplier_id = ?", origin_year_month_id, supplier_id)
     Price.generate_next_month_batch prices, target_year_month_id
   end
 
