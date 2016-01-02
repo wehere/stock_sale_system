@@ -93,7 +93,7 @@ class OrderDetail < ActiveRecord::Base
     in_left = Spreadsheet::Format.new horizontal_align: :left, border: :thin
     sheet = book.create_worksheet name: '库存'
     current_row = 0
-    sheet.row(current_row).push
+    sheet.row(current_row).push %w(品名 单位 价格 库存量)
     current_row += 1
     sum = 0.0
     result.each do |key, value|
