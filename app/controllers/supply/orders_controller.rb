@@ -50,9 +50,9 @@ class Supply::OrdersController < BaseController
   def edit
     supplier_id = current_user.company.id
     if params[:id] == "0"
-      @order = Order.where(supplier_id: supplier_id).first
+      @order = Order.valid_orders.where(supplier_id: supplier_id).first
     else
-      @order = Order.where(supplier_id: supplier_id).find_by_id(params[:id])
+      @order = Order.valid_orders.where(supplier_id: supplier_id).find_by_id(params[:id])
     end
 
     # @pre_order = @order.previous @order.order_type.previous
@@ -63,7 +63,7 @@ class Supply::OrdersController < BaseController
   def update
     supplier_id = current_user.company.id
     begin
-      order = Order.where(supplier_id: supplier_id).find_by_id(params[:order_id])
+      order = Order.valid_orders.where(supplier_id: supplier_id).find_by_id(params[:order_id])
       hash = params[:order_item]
       Order.transaction do
         hash.each do |key,value|
