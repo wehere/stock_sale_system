@@ -10,8 +10,8 @@ class Product < ActiveRecord::Base
 
   scope :is_valid, ->{where(is_valid: true)}
 
-  MIN_SPEC = %w(斤 块 个 瓶 把 包 桶 根 箱 盒 米 公斤 袋 罐 双 卷 听 条 套 台 张 支 只)
-  SUB_SPEC = %w(斤 块 个 瓶 把 包 桶 根 箱 盒 米 公斤 袋 罐 双 卷 听 条 套 台 毫升 克 张 只 支)
+  MIN_SPEC = %w(斤 块 个 瓶 把 包 桶 根 箱 盒 米 公斤 袋 罐 双 卷 听 条 套 台 张 支 只 本)
+  SUB_SPEC = %w(斤 块 个 瓶 把 包 桶 根 箱 盒 米 公斤 袋 罐 双 卷 听 条 套 台 毫升 克 张 只 支 本)
 
   MARK =%w(未分类 水产品 肉类 菇类 面类 冻品 粮油 调料 蔬菜 水果 杂货)
 
