@@ -61,6 +61,10 @@ class Supply::ProductsController < BaseController
   def strict_create
     need_warehouseman
     begin
+      pp "*"*100
+      pp params
+      pp "*"*100
+
       Product.transaction do
         params[:brand].gsub!("？", "?")
         params[:number].gsub!("？", "?")
@@ -75,17 +79,18 @@ class Supply::ProductsController < BaseController
         end
         BusinessException.raise '请选择［单位］' if params[:min_spec].blank?
         BusinessException.raise '请选择［大小的单位］' if params[:sub_spec].blank?
+        supplier_id = current_user.company.id
         if params[:check] == "1"
-          products = Product.where("chinese_name like ? and is_valid = 1", "%#{params[:name]}%")
+          products = Product.where("chinese_name like ? and is_valid = 1 and supplier_id = ? ", "%#{params[:name]}%", supplier_id)
           unless products.blank?
             render text: "1|#{products.pluck(:chinese_name).join("^")}"
             return
           end
         end
-        supplier_id = current_user.company.id
+
         c_name = "#{params[:brand]}-#{params[:name]}-#{params[:min_spec]}(#{params[:number]}#{params[:sub_spec]})"
         abc = Pinyin.t(c_name) { |letters| letters[0].upcase }
-        g_p = GeneralProduct.where(name: c_name, is_valid: true).first
+        g_p = GeneralProduct.where(name: c_name, is_valid: true, supplier_id: supplier_id).first
         seller = Seller.find_or_create_by name: "其他", delete_flag: 0, supplier_id: supplier_id
         if g_p.blank?
           g_p = GeneralProduct.new name: c_name,
