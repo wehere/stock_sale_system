@@ -21,7 +21,7 @@ class OrderItem < ActiveRecord::Base
   end
 
   def update_money
-    self.update_attribute :money, (self.real_price*self.real_weight).round(2)
+    self.update_attribute :money, ((self.real_price||0)*self.real_weight).round(2)
   end
 
   def change_detail_and_stock current_user
