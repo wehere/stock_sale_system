@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160101090323) do
+ActiveRecord::Schema.define(version: 20160115075224) do
 
   create_table "comments", force: :cascade do |t|
     t.integer  "order_id",    limit: 4
@@ -240,6 +240,21 @@ ActiveRecord::Schema.define(version: 20160101090323) do
     t.integer  "supplier_id", limit: 4
     t.integer  "sort_number", limit: 4,   default: 0
     t.boolean  "delete_flag"
+  end
+
+  create_table "send_order_messages", force: :cascade do |t|
+    t.integer  "supplier_id",       limit: 4
+    t.integer  "customer_id",       limit: 4
+    t.integer  "store_id",          limit: 4
+    t.integer  "user_id",           limit: 4
+    t.datetime "reach_date"
+    t.integer  "order_type_id",     limit: 4
+    t.text     "main_message",      limit: 65535
+    t.text     "secondary_message", limit: 65535
+    t.boolean  "is_valid",                        default: true
+    t.boolean  "is_dealt",                        default: false
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
   end
 
   create_table "stocks", force: :cascade do |t|

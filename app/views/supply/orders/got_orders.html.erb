@@ -1,0 +1,46 @@
+<%= form_tag '/supply/orders/got_orders', method: :get do %>
+    <label>状态</label>
+    <%= select_tag :dealt_status, options_from_collection_for_select(SendOrderMessage::DEALT_STATUS,'first','second',params[:dealt_status]), prompt: '全部' %>
+    <label>时间区间</label><%= date_field_tag :start_date, params[:start_date] %><label>至</label><%= date_field_tag :end_date, params[:end_date] %>
+    <%= submit_tag '查询', class: 'btn btn-primary' %>
+<% end %>
+
+<table class="table">
+  <thead>
+    <th width="150px">订货单位</th>
+    <th>到货日期</th>
+    <th width="80px">订货时间</th>
+    <th width="">订货信息</th>
+    <th width="10px"></th>
+    <th width="">备注</th>
+    <th></th>
+    <th>操作</th>
+  </thead>
+  <tbody>
+    <% @messages.each_with_index do |message, index| %>
+        <tr>
+          <td><%= "#{message.customer.simple_name}-#{message.store.name}-#{message.order_type.name}-#{message.user.user_name}" rescue 'error' %></td>
+          <td><%= message.reach_date.strftime("%Y年%m月%d日") rescue 'error' %></td>
+          <td><%= Tools.distance_of_time_in_words(message.created_at) rescue 'error' %></td>
+          <td><%= text_area_tag "main_message_#{index}", message.main_message rescue 'error' %></td>
+          <td>
+            <button class='my_clip_button' data-clipboard-target="<%= "main_message_#{index}" %>" data-clipboard-text='Default clipboard text from attribute' id="<%= "clip_button_#{index}" %>" title='点击复制前面的订货信息'>
+            <b>复制</b>
+          </button></td>
+          <td><%= message.secondary_message rescue 'error' %></td>
+          <td>
+            <%= image_tag message.is_dealt? ? "ok.jpg" : "wenhao.jpg", size: '50x50' %>
+          </td>
+          <td><%= link_to '处理', "/supply/orders/send_message_dealt?id=#{message.id}&start_date=#{params[:start_date]}&end_date=#{params[:end_date]}&dealt_status=#{params[:dealt_status]}", class: 'btn btn-primary' unless message.is_dealt? %></td>
+        </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<script>
+    $(document).ready(function() {
+        var clip = new ZeroClipboard($(".my_clip_button"))
+    });
+
+</script>

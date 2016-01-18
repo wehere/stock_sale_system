@@ -49,3 +49,4 @@ gem "simple-navigation"
 gem 'chinese_pinyin', '~> 1.0'
 gem 'delayed_job_active_record'
 gem "daemons"
+gem 'zeroclipboard-rails', '~> 0.1.1'

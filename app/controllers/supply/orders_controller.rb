@@ -143,6 +143,61 @@ class Supply::OrdersController < BaseController
     end
   end
 
+  def got_orders
+    params[:start_date] ||= Time.now.tomorrow.to_date
+    params[:end_date] ||= Time.now.tomorrow.to_date
+    params[:dealt_status] ||= false
+    @messages = if params[:dealt_status].blank?
+                  SendOrderMessage.is_valid
+                elsif params[:dealt_status]
+                  SendOrderMessage.is_valid.is_dealt
+                else
+                  SendOrderMessage.is_valid.not_dealt
+                end
+    @messages = @messages.where(supplier_id: current_user.company.id)
+    @messages = @messages.where("reach_date >= ?", params[:start_date].to_time.change(hour:0,min:0,sec:0)) unless params[:start_date].blank?
+    @messages = @messages.where("reach_date <= ?", params[:end_date].to_time.change(hour:23,min:59,sec:59)) unless params[:end_date].blank?
+  end
+
+  def send_message_dealt
+    message = SendOrderMessage.find(params[:id])
+    message.update_attribute :is_dealt, true
+    redirect_to "/supply/orders/got_orders?start_date=#{params[:start_date]}&end_date=#{params[:end_date]}&dealt_status=#{params[:dealt_status]}"
+  end
+
+
+  def send_out_orders
+    begin
+      if current_user.store.blank?
+        flash[:alert] = '当前用户未绑定门店'
+        redirect_to '/vis/static_pages/welcome'
+        return
+      end
+      params[:start_date] ||= Time.now.tomorrow.to_date
+      params[:end_date] ||= Time.now.tomorrow.to_date
+      params[:dealt_status] ||= false
+      @messages = if params[:dealt_status].blank?
+                    SendOrderMessage.is_valid
+                  elsif params[:dealt_status]
+                    SendOrderMessage.is_valid.is_dealt
+                  else
+                    SendOrderMessage.is_valid.not_dealt
+                  end
+      @messages = @messages.where(store_id: current_user.store_id)
+      @messages = @messages.where("reach_date >= ?", params[:start_date].to_time.change(hour:0,min:0,sec:0)) unless params[:start_date].blank?
+      @messages = @messages.where("reach_date <= ?", params[:end_date].to_time.change(hour:23,min:59,sec:59)) unless params[:end_date].blank?
+    rescue Exception => e
+      flash[:alert] = dispose_exception e
+      redirect_to '/vis/static_pages/welcome'
+    end
+  end
+
+  def send_out_order_delete
+    message = SendOrderMessage.find(params[:id])
+    message.update_attribute :is_valid, false
+    redirect_to "/supply/orders/send_out_orders?start_date=#{params[:start_date]}&end_date=#{params[:end_date]}&dealt_status=#{params[:dealt_status]}"
+  end
+
 end
 
 # Parameters: {"order_id"=>"80",

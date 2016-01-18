@@ -125,6 +125,10 @@ Rails.application.routes.draw do
         get :not_return
         get :pre_confirm_back_order
         post :confirm_back_order
+        get :got_orders
+        get :send_message_dealt
+        get :send_out_orders
+        get :send_out_order_delete
       end
       member do
         get :return
@@ -179,6 +183,11 @@ Rails.application.routes.draw do
         post :send_message
         post :index
         post :comment
+        post :dingyu_send_order
+        get  :dingyu_send_order
+        post :get_spec_by_product_name
+        post :query_product_by_abc
+        post :send_message
       end
     end
   end

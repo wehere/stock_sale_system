@@ -12,30 +12,34 @@
 <header>
   <%= render 'layouts/navigation' %>
 </header>
-
-<div class='example'>
-  <div class='header'></div>
-  <div class='example_content' id='example_3'>
-    <div id='top_navigation'>
-      <%= render_navigation(:level => 1) %>
-    </div>
-    <div class='clear_float'></div>
-    <div class='content_wrapper'>
-      <div id='sub_navigation'>
-        <%= render_navigation(:level => 2) %>
-      </div>
-      <div class='content'>
-        <div class='breadcrumbs'>
-          <%= render_navigation(:renderer => :breadcrumbs, :join_with => ' &raquo; ', :prefix => '位置: ') %>
-          <main role="main">
-            <%= render 'layouts/messages' %>
-            <%= yield %>
-          </main>
+<% if @no_nav %>
+<%= yield %>
+<% else %>
+    <div class='example'>
+      <div class='header'></div>
+      <div class='example_content' id='example_3'>
+        <div id='top_navigation'>
+          <%= render_navigation(:level => 1) %>
+        </div>
+        <div class='clear_float'></div>
+        <div class='content_wrapper'>
+          <div id='sub_navigation'>
+            <%= render_navigation(:level => 2) %>
+          </div>
+          <div class='content'>
+            <div class='breadcrumbs'>
+              <%= render_navigation(:renderer => :breadcrumbs, :join_with => ' &raquo; ', :prefix => '位置: ') %>
+              <main role="main">
+                <%= render 'layouts/messages' %>
+                <%= yield %>
+              </main>
+            </div>
+          </div>
+          <div class='clear_float'></div>
         </div>
       </div>
-      <div class='clear_float'></div>
     </div>
-  </div>
-</div>
+<% end %>
+
 </body>
 </html>

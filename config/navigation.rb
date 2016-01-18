@@ -77,7 +77,11 @@ SimpleNavigation::Configuration.run do |navigation|
       sub_nav.item :key_2_4, '检测重复通用', '/supply/general_products/check_repeated', if: ->{true}
 
     end
-
+    primary.item :key_10, '订单', "/supply/orders/got_orders", if: -> {true } do |sub_nav|
+      sub_nav.item :key_10_1, '下订单', "/purchase/orders/dingyu_send_order", if: -> {true}
+      sub_nav.item :key_10_2, '收到的订单', "/supply/orders/got_orders", if: -> {true}
+      sub_nav.item :key_10_3, '发出的订单', "/supply/orders/send_out_orders", if: -> {true}
+    end
     # You can also specify a condition-proc that needs to be fullfilled to display an item.
     # Conditions are part of the options. They are evaluated in the context of the views,
     # thus you can use all the methods and vars you have available in the views.

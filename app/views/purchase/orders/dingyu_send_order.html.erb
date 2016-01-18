@@ -1,0 +1,262 @@
+<h4 style="text-align: center"><%= "#{@customer.simple_name}-#{@store.name}－后台下订单系统" %></h4>
+<% colors = ['#BBFFEE','#CCFF99','#FFEE99','#FFCCCC','#E8CCFF','#FFE4E1','	#FAEBD7'] %>
+  <% left = 15 %>
+<div class="search_panel">
+  <label>拼音首字母</label>&nbsp;&nbsp;&nbsp;<%= text_field_tag :abc, params[:abc] %>&nbsp;&nbsp;&nbsp;<%= link_to '检索', 'javascript:query_product()', class: 'btn btn-primary' %>
+</div>
+  <% @big_marks.each_with_index do |mark,index| %>
+      <div class="panel" style="left:<%= left %>px;background-color: <%= colors[index] %>;">
+        <h3 style="text-align: center"><%= mark %></h3>
+        <div id="<%= mark %>" class="fixed_panel">
+            <% @products.where(mark: mark).limit(16).each_with_index do |product,index| %>
+                <div onclick="choose_this('<%= product.chinese_name %>')" style="cursor:hand;width: 100%;height: 15px; "  >
+                    <h6><a href='#'><%= product.chinese_name %></a></h6>
+                </div>
+                <div style="height: 2px"></div>
+            <% end %>
+        </div>
+      </div>
+      <% left = left + 130 + 5  %>
+  <% end %>
+
+<div class="panel" style="left:<%= left %>px;background-color: <%= colors.last %>">
+  <h3 style="text-align: center"><%= "其他" %></h3>
+  <div id="others" class="fixed_panel">
+      <% @products.where("mark in (?)", @small_marks).limit(16).each_with_index do |product,index| %>
+          <div onclick="choose_this('<%= product.chinese_name %>')" style="width: 100%;height: 15px;cursor:hand;">
+            <h6><a href='#'><%= product.chinese_name %></a></h6>
+          </div>
+          <div style="height: 2px"></div>
+      <% end %>
+  </div>
+</div>
+<% left = left + 130 + 5 %>
+<div class="order_panel" style="left:<%= left %>px;">
+  <label>供应商</label><%= select_tag :supplier_id, options_from_collection_for_select(@suppliers, 'id', 'simple_name', params[:supplier_id]||@supplier_id), onchange: 'change_supplier()'%>
+  <label>单据类型</label><%= select_tag :order_type_id, options_from_collection_for_select(@order_types, 'id', 'name', params[:order_type_id]||@order_type_id) %>
+  <br/>
+
+  <label>到货日期</label><%= date_field_tag :reach_date, params[:reach_date]||Time.now.tomorrow.to_date %>
+  <table class="bordered">
+    <thead>
+    <th width="150px">品名</th><th width="75px">规格</th><th width="75px">数量</th>
+    </thead>
+    <tbody id="order_item_container">
+
+    </tbody>
+  </table>
+</div>
+<br/>
+<div class="memo_panel" style="left:<%= left %>px;">
+  <label>其他信息</label><br/><%= text_area_tag :secondary_message, params[:secondary_message], class: 'memo_area' %>
+</div>
+<div style="position: fixed;bottom: 50px;left:<%= left+100 %>px;">
+  <%= link_to '发送订单', "javascript:send_order()", class: 'btn btn-primary' %>
+</div>
+
+<script language="javascript">
+  index = 1;
+  function choose_this(product_name){
+      $.ajax({
+          url: '/purchase/orders/get_spec_by_product_name',
+          type: 'POST',
+          dataType: 'text',
+          data: {
+              "product_name":product_name,
+              "supplier_id":<%= @supplier_id %>
+          }
+      }).done(
+              function (result) {
+                  r = result.split('|');
+                  if(r[0]=='0'){
+                      str = '<tr id="item_'+index+'" class="product"><td id="product_name_'+index+'">'+product_name+'</td><td id="spec_'+index+'">'+r[1]+'</td><td><input type="text" id="num_'+index+'" name="num_'+index+'" size=5 />&nbsp;&nbsp;<a href="javascript:delete_item('+index+')">X</a></td></tr>';
+                      $("#order_item_container").append(str);
+                      index += 1;
+                  }else{
+                      alert(r[1]);
+                  }
+              }
+      )
+  }
+
+  function query_product(){
+      abc = $("#abc").val();
+      if(abc==''){
+          alert('请填写产品拼音首字母，再点击查询');
+          return false;
+      }
+      $.ajax({
+          url: '/purchase/orders/query_product_by_abc',
+          type: 'POST',
+          dataType: 'script',
+          data: {
+              'abc': abc,
+              'supplier_id': <%= @supplier_id %>
+          }
+      })
+  }
+
+  function change_supplier(){
+      location.href='/purchase/orders/dingyu_send_order?supplier_id='+$('#supplier_id').val();
+//      $.ajax({
+//          url: '/purchase/orders/dingyu_send_order',
+//          type: 'GET',
+//          dataType: 'html',
+//          data: {
+//              'supplier_id': $('#supplier_id').val()
+//          }
+//      })
+  }
+
+  function delete_item(index){
+      $("#item_"+index).remove();
+  }
+
+  function send_order(){
+      main_message = '';
+      for(var i= 1;i<=index;i++){
+          if ($("#product_name_"+i).size()==1){
+              main_message += $("#product_name_"+i).html();
+              main_message += $("#num_"+i).val();
+              main_message += $("#spec_"+i).html();
+              main_message += ',';
+          }
+      }
+      $.ajax({
+          url: '/purchase/orders/send_message',
+          type: 'POST',
+          dataType: 'text',
+          data: {
+              'main_message': main_message,
+              'supplier_id': $('#supplier_id').val(),
+              'secondary_message': $('#secondary_message').val(),
+              'order_type_id': $("#order_type_id").val(),
+              'reach_date': $("#reach_date").val()
+          }
+      }).done(
+              function(result){
+                  r = result.split('|');
+                  if(r[0]=='0'){
+                      alert("发送成功。");
+                      location.href='/purchase/orders/dingyu_send_order?supplier_id='+$('#supplier_id').val();
+                  }else{
+                      alert(r[1]);
+                  }
+              }
+      )
+  }
+</script>
+
+<style>
+
+    .search_panel {
+        text-align: center;
+        position: fixed;
+        width: 780px;
+    }
+
+    .panel {
+        top: 105px;
+        position: fixed;
+        width: 130px;
+    }
+
+    .order_panel {
+        position: relative;
+        width: 300px;
+        background-color: yellow;
+    }
+
+    .memo_panel {
+        position: relative;
+        width: 300px;
+
+    }
+
+    .memo_area {
+        width: 300px;
+        height: 100px;
+    }
+
+    table {
+        *border-collapse: collapse; /* IE7 and lower */
+        border-spacing: 0;
+        width: 100%;
+    }
+
+    .bordered {
+        border: solid #ccc 1px;
+        -moz-border-radius: 6px;
+        -webkit-border-radius: 6px;
+        border-radius: 6px;
+        -webkit-box-shadow: 0 1px 1px #ccc;
+        -moz-box-shadow: 0 1px 1px #ccc;
+        box-shadow: 0 1px 1px #ccc;
+    }
+
+    .bordered tr:hover {
+        background: #fbf8e9;
+        -o-transition: all 0.1s ease-in-out;
+        -webkit-transition: all 0.1s ease-in-out;
+        -moz-transition: all 0.1s ease-in-out;
+        -ms-transition: all 0.1s ease-in-out;
+        transition: all 0.1s ease-in-out;
+    }
+
+    .bordered td, .bordered th {
+        border-left: 1px solid #ccc;
+        border-top: 1px solid #ccc;
+        padding: 2px;
+        text-align: left;
+    }
+
+    .bordered th {
+        background-color: #dce9f9;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+        background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+        background-image:    -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+        background-image:     -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+        background-image:      -o-linear-gradient(top, #ebf3fc, #dce9f9);
+        background-image:         linear-gradient(top, #ebf3fc, #dce9f9);
+        -webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;
+        -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;
+        box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;
+        border-top: none;
+        text-shadow: 0 1px 0 rgba(255,255,255,.5);
+    }
+
+    .bordered td:first-child, .bordered th:first-child {
+        border-left: none;
+    }
+
+    .bordered th:first-child {
+        -moz-border-radius: 6px 0 0 0;
+        -webkit-border-radius: 6px 0 0 0;
+        border-radius: 6px 0 0 0;
+    }
+
+    .bordered th:last-child {
+        -moz-border-radius: 0 6px 0 0;
+        -webkit-border-radius: 0 6px 0 0;
+        border-radius: 0 6px 0 0;
+    }
+
+    .bordered th:only-child{
+        -moz-border-radius: 6px 6px 0 0;
+        -webkit-border-radius: 6px 6px 0 0;
+        border-radius: 6px 6px 0 0;
+    }
+
+    .bordered tr:last-child td:first-child {
+        -moz-border-radius: 0 0 0 6px;
+        -webkit-border-radius: 0 0 0 6px;
+        border-radius: 0 0 0 6px;
+    }
+
+    .bordered tr:last-child td:last-child {
+        -moz-border-radius: 0 0 6px 0;
+        -webkit-border-radius: 0 0 6px 0;
+        border-radius: 0 0 6px 0;
+    }
+
+</style>
