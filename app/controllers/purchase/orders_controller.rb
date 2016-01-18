@@ -131,10 +131,10 @@ class Purchase::OrdersController < BaseController
       render text: '1|没有指定供应商或产品名'
       return
     end
-    if params[:main_message].blank?
-      render text: '1|还没有选择产品呢'
-      return
-    end
+    # if params[:main_message].blank?
+    #   render text: '1|还没有选择产品呢'
+    #   return
+    # end
     customer = current_user.company
     begin
     SendOrderMessage.create_ supplier_id: params[:supplier_id],
