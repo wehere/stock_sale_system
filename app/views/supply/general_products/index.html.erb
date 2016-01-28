@@ -20,6 +20,7 @@
       <th>通用产品名称</th>
       <th>卖货人</th>
       <th>标准单位</th>
+      <th>存放位置</th>
       <th>操作</th>
       </thead>
       <tbody>
@@ -29,6 +30,7 @@
             <td><%= general_product.name %></td>
             <td><%= select_tag "vendor_#{general_product.id}", options_from_collection_for_select(@vendors, 'to_s', 'to_s', general_product.vendor), onchange: "change_vendor(#{general_product.id})" %></td>
             <td><%= general_product.mini_spec rescue '' %></td>
+            <td><%= general_product.location %></td>
             <td><%= link_to '编辑', edit_supply_general_product_path(general_product.id), target: "_blank" %></td>
             <td><%#= link_to '关联卖货人', "/supply/general_products/prepare_link_to_seller?general_product_id=#{general_product.id}", target: '_blank' %></td>
           </tr>

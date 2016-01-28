@@ -56,6 +56,8 @@ class GeneralProduct < ActiveRecord::Base
       self.update_attributes! name: params[:name],
                               another_seller_id: params[:seller_id],
                               mini_spec: params[:mini_spec],
+                              location: params[:location],
+                              memo: params[:memo],
                               skip_mini_spec_check: self.mini_spec.blank?
       self
     end

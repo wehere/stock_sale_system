@@ -17,6 +17,7 @@
       <th>中文名称</th>
       <th>缩写</th>
       <th>关联通用产品</th>
+      <th>存放位置</th>
       <th>分类</th>
       <th>操作</th>
       </thead>
@@ -26,6 +27,7 @@
         <td><%= product.chinese_name %></td>
         <td><%= product.simple_abc %></td>
         <td><%= product.general_product.name rescue '' %></td>
+        <td><%= product.location %></td>
         <td><%= select_tag "mark_#{product.id}", options_from_collection_for_select(@marks, 'to_s', 'to_s', product.mark), onchange: "change_mark(#{product.id})" %></td>
         <td>
           <%= link_to '修改', edit_supply_product_path(product.id) %>

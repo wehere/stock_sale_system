@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160115075224) do
+ActiveRecord::Schema.define(version: 20160128024615) do
 
   create_table "comments", force: :cascade do |t|
     t.integer  "order_id",    limit: 4
@@ -66,8 +66,10 @@ ActiveRecord::Schema.define(version: 20160115075224) do
     t.string   "mini_spec",         limit: 255
     t.integer  "another_seller_id", limit: 4
     t.boolean  "pass"
-    t.boolean  "is_valid",                      default: true
-    t.string   "vendor",            limit: 255, default: "未分配"
+    t.boolean  "is_valid",                       default: true
+    t.string   "vendor",            limit: 255,  default: "未分配"
+    t.string   "location",          limit: 500
+    t.string   "memo",              limit: 1000
   end
 
   create_table "messages", force: :cascade do |t|
