@@ -27,7 +27,7 @@
         <td><%= product.chinese_name %></td>
         <td><%= product.simple_abc %></td>
         <td><%= product.general_product.name rescue '' %></td>
-        <td><%= product.location %></td>
+        <td><%= product.general_product.location rescue '' %></td>
         <td><%= select_tag "mark_#{product.id}", options_from_collection_for_select(@marks, 'to_s', 'to_s', product.mark), onchange: "change_mark(#{product.id})" %></td>
         <td>
           <%= link_to '修改', edit_supply_product_path(product.id) %>
