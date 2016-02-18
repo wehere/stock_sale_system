@@ -31,7 +31,7 @@ class Company < ActiveRecord::Base
   end
 
   def all_prices
-    Price.where("customer_id in ( ? )", self.customers.ids).where(is_used: true)
+    Price.where("supplier_id = ? and customer_id in ( ? )", self.id, self.customers.ids).where(is_used: true)
   end
 
   def all_orders
