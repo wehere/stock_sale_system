@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160128024615) do
+ActiveRecord::Schema.define(version: 20160218101356) do
 
   create_table "comments", force: :cascade do |t|
     t.integer  "order_id",    limit: 4
@@ -31,6 +31,8 @@ ActiveRecord::Schema.define(version: 20160128024615) do
     t.datetime "updated_at"
     t.string   "marks",       limit: 1000, default: "未分类"
     t.string   "vendors",     limit: 2000, default: "未分配"
+    t.string   "min_specs",   limit: 500
+    t.string   "sub_specs",   limit: 500
   end
 
   create_table "customers_companies", id: false, force: :cascade do |t|

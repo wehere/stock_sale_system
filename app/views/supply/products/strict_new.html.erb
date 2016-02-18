@@ -32,7 +32,7 @@
     <label class="inline">出货最小单位</label>
   </div>
   <div class="col-sm-3">
-    <%= select_tag :min_spec, options_from_collection_for_select(Product::MIN_SPEC, "to_s", "to_s", params[:min_spec]), prompt: "请选择", onchange: "change_pro()" %>
+    <%= select_tag :min_spec, options_from_collection_for_select(@MIN_SPEC, "to_s", "to_s", params[:min_spec]), prompt: "请选择", onchange: "change_pro()" %>
   </div>
   <div class="col-sm-7 end">
     <label class="inline" style="color: coral">若想添加其他的单位，联系管理员</label>
@@ -56,7 +56,7 @@
     <label class="inline">大小的单位</label>
   </div>
   <div class="col-sm-3">
-    <%= select_tag :sub_spec, options_from_collection_for_select(Product::SUB_SPEC, "to_s", "to_s", params[:sub_spec]), prompt: "请选择", onchange: "change_pro()"  %>
+    <%= select_tag :sub_spec, options_from_collection_for_select(@SUB_SPEC, "to_s", "to_s", params[:sub_spec]), prompt: "请选择", onchange: "change_pro()"  %>
   </div>
   <div class="col-sm-7 end">
     <label class="inline" style="color: coral">若想添加其他的单位，联系管理员</label>
@@ -82,7 +82,7 @@
     <label class="inline">进货单位</label>
   </div>
   <div class="col-sm-3">
-    <%= select_tag :purchase_spec, options_from_collection_for_select(Product::MIN_SPEC, "to_s", "to_s", params[:purchase_spec]), prompt: "请选择", onchange: "change_pro()" %>
+    <%= select_tag :purchase_spec, options_from_collection_for_select(@MIN_SPEC, "to_s", "to_s", params[:purchase_spec]), prompt: "请选择", onchange: "change_pro()" %>
   </div>
   <div class="col-sm-4 text-left">
     <label id="explain_ratio">相对出货最小单位的比率</label>

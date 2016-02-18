@@ -54,8 +54,10 @@ class Supply::ProductsController < BaseController
 
   def strict_new
     need_warehouseman
-    @marks = current_user.company.marks.split(",")
-    @vendors = current_user.company.vendors.split(",")
+    @MIN_SPEC = current_user.company.min_specs.split(',') rescue []
+    @SUB_SPEC = current_user.company.sub_specs.split(',') rescue []
+    @marks = current_user.company.marks.split(",") rescue []
+    @vendors = current_user.company.vendors.split(",") rescue []
   end
 
   def strict_create
