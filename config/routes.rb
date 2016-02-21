@@ -88,6 +88,7 @@ Rails.application.routes.draw do
         get :import_products_from_xls
         post :import_products_from_xls
         get :strict_new
+        get :change_sub_spec
         post :strict_create
         post :mark
         post :export_products

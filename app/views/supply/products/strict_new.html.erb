@@ -32,7 +32,7 @@
     <label class="inline">出货最小单位</label>
   </div>
   <div class="col-sm-3">
-    <%= select_tag :min_spec, options_from_collection_for_select(@MIN_SPEC, "to_s", "to_s", params[:min_spec]), prompt: "请选择", onchange: "change_pro()" %>
+    <%= select_tag :min_spec, options_from_collection_for_select(@MIN_SPEC, "to_s", "to_s", params[:min_spec]), prompt: "请选择", onchange: "change_min_spec()" %>
   </div>
   <div class="col-sm-7 end">
     <label class="inline" style="color: coral">若想添加其他的单位，联系管理员</label>
@@ -55,7 +55,7 @@
   <div class="col-sm-2 text-right">
     <label class="inline">大小的单位</label>
   </div>
-  <div class="col-sm-3">
+  <div class="col-sm-3" id="sub_spec_div">
     <%= select_tag :sub_spec, options_from_collection_for_select(@SUB_SPEC, "to_s", "to_s", params[:sub_spec]), prompt: "请选择", onchange: "change_pro()"  %>
   </div>
   <div class="col-sm-7 end">
@@ -128,6 +128,14 @@
       $("#preview_product_name").html($("#brand").val()+'-'+$("#name").val()+'-'+$("#min_spec").val()+'('+$("#number").val()+$("#sub_spec").val()+')');
       $("#explain_panel").html($("#brand").val()+'-'+$("#name").val()+'-'+$("#min_spec").val()+'('+$("#number").val()+$("#sub_spec").val()+')，进货时以 '+$("#purchase_spec").val()+' 为单位进货，1'+$("#purchase_spec").val()+'='+$("#purchase_ratio").val()+$("#min_spec").val()+", 出货时最小最小是以"+$("#min_spec").val()+"出货的。");
       $("#explain_ratio").html('相对出货最小单位的比率(即1'+$("#purchase_spec").val()+'有多少'+$("#min_spec").val()+')');
+  }
+  function change_min_spec(){
+      change_pro();
+      $.ajax({
+          url: '/supply/products/change_sub_spec?min_spec='+$("#min_spec").val(),
+          method: 'get',
+          dataType: "script"
+      });
   }
   function create_product(check){
       change_pro();

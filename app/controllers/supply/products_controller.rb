@@ -54,10 +54,16 @@ class Supply::ProductsController < BaseController
 
   def strict_new
     need_warehouseman
-    @MIN_SPEC = current_user.company.min_specs.split(',') rescue []
-    @SUB_SPEC = current_user.company.sub_specs.split(',') rescue []
+    @MIN_SPEC = JSON.parse(current_user.company.min_specs).keys rescue []
+    pp @MIN_SPEC.class
+    @SUB_SPEC = []
     @marks = current_user.company.marks.split(",") rescue []
     @vendors = current_user.company.vendors.split(",") rescue []
+  end
+
+  def change_sub_spec
+    @sub_spec = JSON.parse(current_user.company.min_specs)[params[:min_spec]] rescue []
+    pp @sub_spec
   end
 
   def strict_create

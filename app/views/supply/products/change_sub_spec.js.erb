@@ -1,0 +1,6 @@
+ops = '<option value="">请选择</option>';
+<% @sub_spec.each do |sub_s| %>
+    ops += '<option value="<%= sub_s %>"><%= sub_s %></option>';
+<% end %>
+s = '<select name="sub_spec" id="sub_spec" onchange="change_pro()">'+ops+'</select>';
+$("#sub_spec_div").html(s);
