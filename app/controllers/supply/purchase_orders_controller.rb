@@ -45,4 +45,19 @@ class Supply::PurchaseOrdersController < BaseController
     flash[:notice] = success_message
     redirect_to action: :index
   end
+
+  def search_item
+    unless params[:product_name].blank?
+      @purchase_items = PurchaseOrderItem.joins(:product)
+      @purchase_items = @purchase_items.where("products.chinese_name like ?", "%#{params[:product_name]}%")
+      @purchase_items = @purchase_items.joins(:purchase_order)
+      @purchase_items = @purchase_items.where("purchase_orders.supplier_id = ? and (purchase_orders.delete_flag is null or purchase_orders.delete_flag = 0)", current_user.company.id)
+      unless params[:start_date].blank?
+        @purchase_items = @purchase_items.where("purchase_date >= ?", params[:start_date].to_time.change(hour:0, min:0, sec:0))
+      end
+      unless params[:end_date].blank?
+        @purchase_items = @purchase_items.where("purchase_date <= ?", params[:end_date].to_time.change(hour:23, min:59, sec:59))
+      end
+    end
+  end
 end

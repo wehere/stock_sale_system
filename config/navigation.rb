@@ -94,7 +94,7 @@ SimpleNavigation::Configuration.run do |navigation|
       sub_nav.item :key_3_6, '补充未输入价格的品项', '/supply/order_items/null_price', if: -> { true}
     end
     primary.item :key_4, '进货单', "/supply/purchase_orders", class: 'special', if: -> { true} do |sub_nav|
-
+      sub_nav.item :key_4_1, '查询进货品项详细', '/supply/purchase_orders/search_item', if: -> {true}
     end
     primary.item :key_5, '客户', "/supply/customers", if: -> { true} do |sub_nav|
       sub_nav.item :key_5_1, '单据类型管理', '/supply/order_types', if: -> { true}

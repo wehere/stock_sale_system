@@ -39,6 +39,7 @@ Rails.application.routes.draw do
     resources :purchase_orders do
       collection do
         get :change_order_item
+        get :search_item
       end
     end
     resources :general_products do
