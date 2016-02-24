@@ -61,7 +61,7 @@ class Purchase::OrdersController < BaseController
         return
       end
       @customer = current_user.company
-      @suppliers = @customer.supplies
+      @suppliers = @customer.supplies.where("id not in (?)", @customer.except_company_ids)
       if @suppliers.blank?
         flash[:alert] = '没有供应商信息'
         redirect_to welcome_vis_static_pages_path
