@@ -126,7 +126,9 @@ class Supply::GeneralProductsController < BaseController
 
   def edit
     begin
-      @general_product = GeneralProduct.find(params[:id])
+      supplier_id = current_user.company.id
+      @general_product = GeneralProduct.where(id: params[:id], supplier_id: supplier_id, is_valid: 1).first
+      BusinessException.raise '找不到该通用产品' if @general_product.blank?
       @sellers = current_user.company.sellers
       @seller = @general_product.seller
     rescue Exception=>e
@@ -138,7 +140,9 @@ class Supply::GeneralProductsController < BaseController
   def update
     params.permit!
     begin
-      GeneralProduct.find(params[:id]).update_general_product params
+      g_p = GeneralProduct.where(id: params[:id], supplier_id: supplier_id, is_valid: 1).first
+      BusinessException.raise '找不到该通用产品' if g_p.blank?
+      g_p.update_general_product params
       flash[:notice] = '产品修改成功。'
       redirect_to supply_general_products_path
     rescue Exception=>e

@@ -1,5 +1,5 @@
 <h3 class="text-center">修改产品  <%= @product.chinese_name %></h3>
-<h5 style="color: darkred">产品的名称最后会由以下五个属性组成：[品牌名]-[品名]-[单位]([大小][大小的单位])-</h5>
+<h5 style="color: darkred">产品的名称最后会由以下五个属性组成：[品牌名]-[品名]-[单位]([大小][大小的单位])</h5>
 <h5 style="color: darkred">范例：鼎丰-白醋-瓶(700毫升)</h5>
 <h5 style="color: darkred">解释：鼎丰是品牌名，白醋是品名，瓶代表单位，是白醋卖出的最小单位，700毫升表示这1瓶白醋有700毫升。</h5>
 <% b = @product.chinese_name.match  /([\S]*)-([\u4e00-\u9fa5a-zA-Z\d\s]*)-([\u4e00-\u9fa5a-zA-Z\d]*)\(([?\d]*)([\u4e00-\u9fa5a-zA-Z\d]*)\)/ %>
@@ -12,7 +12,7 @@
     <%= text_field_tag :brand, params[:brand]||b[1], onchange: "change_pro()" %>
   </div>
   <div class="col-sm-7 end">
-    <label class="inline" style="color: coral">如果是蔬菜,品牌名填"无"；实在暂时不知道品牌名，填"？"</label>
+    <label class="inline" style="color: coral"></label>
   </div>
 </div>
 <br/>
@@ -24,7 +24,7 @@
     <%= b[2] %>
   </div>
   <div class="col-sm-7 end">
-    <label class="inline" style="color: coral">比如：大番茄，白醋</label>
+    <label class="inline" style="color: coral"></label>
   </div>
 </div>
 <br/>
@@ -36,7 +36,7 @@
     <%= b[3] %>
   </div>
   <div class="col-sm-7 end">
-    <label class="inline" style="color: coral">若想添加其他的单位，联系管理员</label>
+    <label class="inline" style="color: coral"></label>
   </div>
 </div>
 <br/>
@@ -73,10 +73,6 @@
     <label class="inline" style="color: red;" id="preview_product_name"><%= @product.chinese_name %></label>
   </div>
   <br/>&nbsp;
-</div>
-<br/>
-<div class="row">
-  <label class="inline" id="existed_product_name"></label>
 </div>
 
 <br/>

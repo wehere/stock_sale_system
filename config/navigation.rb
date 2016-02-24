@@ -74,8 +74,8 @@ SimpleNavigation::Configuration.run do |navigation|
       # Add an item to the sub navigation (same params again)
       sub_nav.item :key_2_5, '产品', "/supply/products", if: -> { true}
       sub_nav.item :key_2_1, '新增产品', "/supply/products/strict_new", if: -> { true}
-      sub_nav.item :key_2_2, '导入产品', '/supply/products/import_products_from_xls', if: -> { true}
-      sub_nav.item :key_2_3, '通用产品一览', '/supply/general_products', if: -> { true}
+      # sub_nav.item :key_2_2, '导入产品', '/supply/products/import_products_from_xls', if: -> { true}
+      # sub_nav.item :key_2_3, '通用产品一览', '/supply/general_products', if: -> { true}
       sub_nav.item :key_2_4, '检测重复通用', '/supply/general_products/check_repeated', if: ->{true}
 
     end

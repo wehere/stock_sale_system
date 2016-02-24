@@ -16,9 +16,10 @@
       <th>产品ID</th>
       <th>中文名称</th>
       <th>缩写</th>
-      <th>关联通用产品</th>
       <th>存放位置</th>
+      <th>备注</th>
       <th>分类</th>
+      <th>哪里买</th>
       <th>操作</th>
       </thead>
   <% @products.each do |product| %>
@@ -26,13 +27,15 @@
         <td><%= product.id %></td>
         <td><%= product.chinese_name %></td>
         <td><%= product.simple_abc %></td>
-        <td><%= product.general_product.name rescue '' %></td>
-        <td><%= product.general_product.location rescue '' %></td>
+        <td><%= product.general_product.location rescue 'error' %></td>
+        <td><%= product.general_product.memo rescue 'error' %></td>
         <td><%= select_tag "mark_#{product.id}", options_from_collection_for_select(@marks, 'to_s', 'to_s', product.mark), onchange: "change_mark(#{product.id})" %></td>
+        <td><%= product.general_product.vendor rescue 'error' %></td>
         <td>
-          <%= link_to '修改', edit_supply_product_path(product.id) %>
-          <%= link_to '新增价格', new_supply_price_path(product_id: product.id) %>
-          <%= link_to '关联通用', "/supply/products/prepare_link_to_general_product?product_id=#{product.id}", target: '_blank' %>
+          <%= link_to '改名称', "/supply/products/strict_edit?id=#{product.id}" %>&nbsp;
+          <%= link_to '改其他信息', "/supply/general_products/#{product.general_product.id}/edit" %>
+          <%#= link_to '新增价格', new_supply_price_path(product_id: product.id) %>
+          <%#= link_to '关联通用', "/supply/products/prepare_link_to_general_product?product_id=#{product.id}", target: '_blank' %>
         </td>
       </tr>
   <% end %>
