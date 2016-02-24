@@ -15,6 +15,23 @@ class Product < ActiveRecord::Base
 
   MARK =%w(未分类 水产品 肉类 菇类 面类 冻品 粮油 调料 蔬菜 水果 杂货)
 
+  def strict_update options
+    Product.transaction do
+      b = self.chinese_name.match /([\S]*)-([\u4e00-\u9fa5a-zA-Z\d\s]*)-([\u4e00-\u9fa5a-zA-Z\d]*)\(([?\d]*)([\u4e00-\u9fa5a-zA-Z\d]*)\)/
+      c_name = "#{options[:brand]}-#{b[2]}-#{b[3]}(#{options[:number]}#{b[5]})"
+      abc = Pinyin.t(c_name) { |letters| letters[0].upcase }
+      self.chinese_name = c_name
+      self.simple_abc = abc.gsub(" ","")
+      self.mark = options[:mark]
+      self.save!
+      g_p = self.general_product
+      if g_p.products.count == 1
+        g_p.name = c_name
+        g_p.save!
+      end
+    end
+  end
+
 
   def self.export supplier_id, customer_id, year_month_id
     supplier = Company.find(supplier_id)

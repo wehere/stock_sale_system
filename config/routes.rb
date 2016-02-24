@@ -90,6 +90,8 @@ Rails.application.routes.draw do
         get :strict_new
         get :change_sub_spec
         post :strict_create
+        get :strict_edit
+        post :strict_update
         post :mark
         post :export_products
         get :prepare_export_products

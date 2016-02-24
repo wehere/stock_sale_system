@@ -158,6 +158,41 @@ class Supply::ProductsController < BaseController
     end
   end
 
+  def strict_edit
+    need_warehouseman
+    supplier_id = current_user.company.id
+    @product = Product.where(id: params[:id], supplier_id: supplier_id, is_valid: 1).first
+    if @product.blank?
+      flash[:alert] = '没有查到该产品'
+      redirect_to '/vis/static_pages/welcome/'
+      return
+    end
+    @MIN_SPEC = JSON.parse(current_user.company.min_specs).keys rescue []
+    @SUB_SPEC = []
+    @marks = current_user.company.marks.split(",") rescue []
+  end
+
+  def strict_update
+    need_warehouseman
+    supplier_id = current_user.company.id
+    product = Product.where(id: params[:id], supplier_id: supplier_id, is_valid: 1).first
+    begin
+      params[:brand].gsub!("？", "?")
+      params[:number].gsub!("？", "?")
+      BusinessException.raise '［品牌名］不可以空着' if params[:brand].blank?
+      if params[:number] != "?"
+        BusinessException.raise '［大小］只可以是数字' if !params[:number].match /^[0-9]+$/
+      end
+      pp params
+      product.strict_update params.permit(:brand, :number, :mark)
+      flash[:notice] = '修改成功'
+      redirect_to "/supply/products/strict_edit?id=#{product.id}"
+    rescue Exception=>e
+      flash[:alert] = dispose_exception e
+      redirect_to "/supply/products/strict_edit?id=#{product.id}"
+    end
+  end
+
   def edit
     need_warehouseman
     begin
