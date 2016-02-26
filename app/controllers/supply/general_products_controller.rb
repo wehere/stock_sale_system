@@ -133,18 +133,19 @@ class Supply::GeneralProductsController < BaseController
       @seller = @general_product.seller
     rescue Exception=>e
       flash[:alert] = dispose_exception e
-      redirect_to supply_general_products_path
+      redirect_to '/supply/products'
     end
   end
 
   def update
     params.permit!
+    supplier_id = current_user.company.id
     begin
       g_p = GeneralProduct.where(id: params[:id], supplier_id: supplier_id, is_valid: 1).first
       BusinessException.raise '找不到该通用产品' if g_p.blank?
-      g_p.update_general_product params
+      g_p.update_general_product params.permit(:barcode, :location, :memo, :seller_id)
       flash[:notice] = '产品修改成功。'
-      redirect_to supply_general_products_path
+      redirect_to '/supply/products'
     rescue Exception=>e
       flash[:alert] = dispose_exception e
       @general_product = GeneralProduct.find(params[:id])

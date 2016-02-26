@@ -14,6 +14,7 @@
     <table class="table table-striped">
       <thead>
       <th>产品ID</th>
+      <th>条码</th>
       <th>中文名称</th>
       <th>缩写</th>
       <th>存放位置</th>
@@ -25,6 +26,7 @@
   <% @products.each do |product| %>
       <tr>
         <td><%= product.id %></td>
+        <td><%= product.barcode %></td>
         <td><%= product.chinese_name %></td>
         <td><%= product.simple_abc %></td>
         <td><%= product.general_product.location rescue 'error' %></td>

@@ -27,6 +27,15 @@
 <br/>
 <div class="row">
   <div class="col-sm-2 text-right">
+    <label>条码编号</label>
+  </div>
+  <div class="col-sm-10">
+    <%= text_field_tag 'barcode', params[:barcode]||@general_product.barcode %>
+  </div>
+</div>
+<br/>
+<div class="row">
+  <div class="col-sm-2 text-right">
     <label>存放位置</label>
   </div>
   <div class="col-sm-10">

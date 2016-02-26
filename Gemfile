@@ -50,3 +50,6 @@ gem 'chinese_pinyin', '~> 1.0'
 gem 'delayed_job_active_record'
 gem "daemons"
 gem 'zeroclipboard-rails', '~> 0.1.1'
+
+gem 'chunky_png', '~> 1.3', '>= 1.3.5'
+gem 'barby', '~> 0.6.2'

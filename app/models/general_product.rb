@@ -53,12 +53,15 @@ class GeneralProduct < ActiveRecord::Base
 
   def update_general_product params
     GeneralProduct.transaction do
-      self.update_attributes! name: params[:name],
-                              another_seller_id: params[:seller_id],
-                              mini_spec: params[:mini_spec],
+      params = params.delete_if { |k, v| k.blank? }
+      self.update_attributes! another_seller_id: params[:seller_id],
                               location: params[:location],
+                              barcode: params[:barcode],
                               memo: params[:memo],
-                              skip_mini_spec_check: self.mini_spec.blank?
+                              skip_mini_spec_check: true
+      self.products.each do |p|
+        p.update_attribute :barcode, self.barcode
+      end
       self
     end
   end
