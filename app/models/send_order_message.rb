@@ -25,6 +25,8 @@ class SendOrderMessage < ActiveRecord::Base
   def self.create_ options
     m = self.new options
     m.save!
+    # 发送邮件通知供应商
+
     m
   end
 

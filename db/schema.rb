@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160224092242) do
+ActiveRecord::Schema.define(version: 20160226022234) do
 
   create_table "comments", force: :cascade do |t|
     t.integer  "order_id",    limit: 4
@@ -183,6 +183,7 @@ ActiveRecord::Schema.define(version: 20160224092242) do
     t.string   "describe",           limit: 255
     t.boolean  "is_valid",                       default: true
     t.string   "mark",               limit: 255, default: "未分类"
+    t.string   "barcode",            limit: 255
   end
 
   create_table "purchase_order_items", force: :cascade do |t|
