@@ -26,8 +26,15 @@ class SendOrderMessage < ActiveRecord::Base
     m = self.new options
     m.save!
     # 发送邮件通知供应商
-    OrderMessageMailer.delay(run_at: 5.minutes.from_now).send_to_supplier(m.id)
+    SendOrderMessage.delay(run_at: 5.minutes.from_now).send_email(m.id)
     m
+  end
+
+  def self.send_email id
+    m = self.find_by_id(id)
+    if m.is_valid
+      OrderMessageMailer.send_to_supplier(m.id).deliver_now
+    end
   end
 
 end
