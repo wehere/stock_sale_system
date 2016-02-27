@@ -7,6 +7,7 @@ require "action_controller/railtie"
 require "action_mailer/railtie"
 require "action_view/railtie"
 require "sprockets/railtie"
+require 'yaml'
 # require "rails/test_unit/railtie"
 
 # Require the gems listed in Gemfile, including any gems
@@ -31,11 +32,14 @@ module ShengxingSystem
     config.action_mailer.raise_delivery_errors = true
 
     config.action_mailer.delivery_method = :smtp
+    config.action_mailer.default_options = {from: 'message@591order.com'}
+    mail_config = YAML.load(File.open(Rails.root.join('config/config.yml')))
+    puts "******"*10
     config.action_mailer.smtp_settings = {
-        :address              => "smtp.qq.com",
-        :port                 => 587,
-        :user_name            => '864454373@qq.com',
-        :password             => 'jiaren',
+        :address              => mail_config["mail"]["address"],
+        :port                 => mail_config["mail"]["port"],
+        :user_name            => mail_config["mail"]["user_name"],
+        :password             => mail_config["mail"]["password"],
         :authentication       => 'plain',
         :enable_starttls_auto => true
     }

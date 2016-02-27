@@ -1,0 +1,7 @@
+订货单位： <%= @send_order_message.customer.simple_name %><br/>
+门店：    <%= @send_order_message.store.name %><br/>
+单据类型： <%= @send_order_message.order_type.name %><br/>
+订货人：   <%= @send_order_message.user.user_name %><br/>
+送货日期： <%= @send_order_message.reach_date.strftime("%Y-%m-%d") %><br/>
+订单：    <%= @send_order_message.main_message %><br/>
+附加信息： <%= @send_order_message.secondary_message %><br/>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160226040806) do
+ActiveRecord::Schema.define(version: 20160226094727) do
 
   create_table "comments", force: :cascade do |t|
     t.integer  "order_id",    limit: 4
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20160226040806) do
     t.string   "min_specs",          limit: 500
     t.string   "sub_specs",          limit: 500
     t.string   "except_company_ids", limit: 255,  default: "0"
+    t.string   "mail_address",       limit: 255
   end
 
   create_table "customers_companies", id: false, force: :cascade do |t|

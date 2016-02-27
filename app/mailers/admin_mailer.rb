@@ -1,5 +1,5 @@
 class AdminMailer < ApplicationMailer
-  default from: "864454373@qq.com"
+  # default from: "message@591order.com"
 
   def product_repeated product_names
     @product_names = product_names

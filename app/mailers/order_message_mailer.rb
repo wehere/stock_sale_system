@@ -1,5 +1,5 @@
 class OrderMessageMailer < ApplicationMailer
-  default from: "864454373@qq.com"
+  # default from: 'message@591order.com'
 
   def order_message_email customer_id, supplier_id, content, need_reach_date
     @content = content
@@ -27,6 +27,12 @@ class OrderMessageMailer < ApplicationMailer
     @send_date = send_date.to_s(:db)
     address = @order.customer.users.collect {|u| u.email}
     mail(to: address.shift, recient: address, subject: "来自#{@supplier.simple_name}对单据疑问的回复")
+  end
+
+  def send_to_supplier send_order_message_id
+    @send_order_message = SendOrderMessage.find_by_id(send_order_message_id)
+    address = @send_order_message.supplier.mail_address.split(',')
+    mail(to: address.shift, recient: address, subject: "#{@send_order_message.customer.simple_name}-#{@send_order_message.store.name} 的订单")
   end
 
 end

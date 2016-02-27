@@ -53,3 +53,5 @@ gem 'zeroclipboard-rails', '~> 0.1.1'
 
 gem 'chunky_png', '~> 1.3', '>= 1.3.5'
 gem 'barby', '~> 0.6.2'
+
+gem 'mail'
