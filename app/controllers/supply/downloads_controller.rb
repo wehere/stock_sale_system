@@ -2,7 +2,11 @@ class Supply::DownloadsController < BaseController
   before_filter :need_login
   def index
     id = current_user.company.id
-    @files = Dir.glob("public/downloads/#{id}/*.*")
+    str = `ls -c public/downloads/#{id}`
+    a = str.split("\n")
+    @files = a.collect{|x| "public/downloads/#{id}/#{x}"}
+
+    # @files = Dir.glob("public/downloads/#{id}/*.*")
   end
 
   def download
