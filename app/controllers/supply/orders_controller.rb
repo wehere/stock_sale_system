@@ -66,7 +66,8 @@ class Supply::OrdersController < BaseController
   end
 
   def update
-    supplier_id = current_user.company.id
+    supplier = current_user.company
+    supplier_id = supplier.id
     begin
       order = Order.valid_orders.where(supplier_id: supplier_id).find_by_id(params[:order_id])
       hash = params[:order_item]
@@ -86,6 +87,8 @@ class Supply::OrdersController < BaseController
             end
         end
       end
+
+      StockMailer.delay.negative_stock(supplier_id) if supplier.check_negative_stock
 
       order.update_attributes is_confirm: true unless order.is_confirm
       order.calculate_not_input_number

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160226094727) do
+ActiveRecord::Schema.define(version: 20160229070310) do
 
   create_table "comments", force: :cascade do |t|
     t.integer  "order_id",    limit: 4
@@ -23,18 +23,19 @@ ActiveRecord::Schema.define(version: 20160226094727) do
   end
 
   create_table "companies", force: :cascade do |t|
-    t.string   "simple_name",        limit: 255
-    t.string   "full_name",          limit: 255
-    t.string   "phone",              limit: 255
-    t.string   "address",            limit: 255
+    t.string   "simple_name",          limit: 255
+    t.string   "full_name",            limit: 255
+    t.string   "phone",                limit: 255
+    t.string   "address",              limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "marks",              limit: 1000, default: "未分类"
-    t.string   "vendors",            limit: 2000, default: "未分配"
-    t.string   "min_specs",          limit: 500
-    t.string   "sub_specs",          limit: 500
-    t.string   "except_company_ids", limit: 255,  default: "0"
-    t.string   "mail_address",       limit: 255
+    t.string   "marks",                limit: 1000, default: "未分类"
+    t.string   "vendors",              limit: 2000, default: "未分配"
+    t.string   "min_specs",            limit: 500
+    t.string   "sub_specs",            limit: 500
+    t.string   "except_company_ids",   limit: 255,  default: "0"
+    t.string   "mail_address",         limit: 255
+    t.boolean  "check_negative_stock",              default: false
   end
 
   create_table "customers_companies", id: false, force: :cascade do |t|

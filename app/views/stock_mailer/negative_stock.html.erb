@@ -1,0 +1,13 @@
+<table>
+  <th>产品名</th><th>库存</th>
+<% @stocks.each do |stock| %>
+    <tr>
+      <td>
+      <%= stock.general_product.name %>
+      </td>
+      <td>
+        <%= stock.real_weight %>
+      </td>
+    </tr>
+<% end %>
+</table>
