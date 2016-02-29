@@ -149,9 +149,9 @@ class Supply::OrdersController < BaseController
   def got_orders
     params[:start_date] ||= Time.now.tomorrow.to_date
     params[:end_date] ||= Time.now.tomorrow.to_date
-    @messages = if params[:dealt_status].nil?
+    @messages = if params[:dealt_status].blank?
                   SendOrderMessage.is_valid
-                elsif params[:dealt_status]
+                elsif params[:dealt_status] == "true"
                   SendOrderMessage.is_valid.is_dealt
                 else
                   SendOrderMessage.is_valid.not_dealt
@@ -177,10 +177,9 @@ class Supply::OrdersController < BaseController
       end
       params[:start_date] ||= Time.now.tomorrow.to_date
       params[:end_date] ||= Time.now.tomorrow.to_date
-      params[:dealt_status] ||= false
       @messages = if params[:dealt_status].blank?
                     SendOrderMessage.is_valid
-                  elsif params[:dealt_status]
+                  elsif params[:dealt_status] == "true"
                     SendOrderMessage.is_valid.is_dealt
                   else
                     SendOrderMessage.is_valid.not_dealt

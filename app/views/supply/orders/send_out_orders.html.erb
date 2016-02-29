@@ -1,4 +1,4 @@
-<%= form_tag '/supply/orders/got_orders', method: :get do %>
+<%= form_tag '/supply/orders/send_out_orders', method: :get do %>
     <label>状态</label>
     <%= select_tag :dealt_status, options_from_collection_for_select(SendOrderMessage::DEALT_STATUS,'first','second',params[:dealt_status]), prompt: '全部' %>
     <label>时间区间</label><%= date_field_tag :start_date, params[:start_date] %><label>至</label><%= date_field_tag :end_date, params[:end_date] %>
