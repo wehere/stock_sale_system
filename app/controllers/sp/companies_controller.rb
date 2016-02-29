@@ -1,4 +1,7 @@
-class Sp::CompaniesController < ApplicationController
+class Sp::CompaniesController < BaseController
+  before_filter :need_login
+  before_filter :need_super_admin
+
   def index
     @companies = Company.order(params[:simple_name]).paginate(page: params[:page],:per_page => 5)
   end
