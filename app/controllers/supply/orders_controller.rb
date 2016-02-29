@@ -195,6 +195,11 @@ class Supply::OrdersController < BaseController
 
   def send_out_order_delete
     message = SendOrderMessage.find(params[:id])
+    if message.is_dealt
+      flash[:alert] = '该订单已经被处理，不能作废'
+      redirect_to "/supply/orders/send_out_orders?start_date=#{params[:start_date]}&end_date=#{params[:end_date]}&dealt_status=#{params[:dealt_status]}"
+      return
+    end
     message.update_attribute :is_valid, false
     redirect_to "/supply/orders/send_out_orders?start_date=#{params[:start_date]}&end_date=#{params[:end_date]}&dealt_status=#{params[:dealt_status]}"
   end
