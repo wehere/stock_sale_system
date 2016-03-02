@@ -39,11 +39,16 @@ class Supply::PurchaseOrdersController < BaseController
   end
 
   def destroy
-    purchase_order = PurchaseOrder.find(params[:id])
-    success_message = "进货单据ID为#{purchase_order.id},日期为#{purchase_order.purchase_date.strftime("%Y年%m月%d日")},被删除成功。"
-    purchase_order.delete_self current_user
-    flash[:notice] = success_message
-    redirect_to action: :index
+    begin
+      purchase_order = PurchaseOrder.find(params[:id])
+      success_message = "进货单据ID为#{purchase_order.id},日期为#{purchase_order.purchase_date.strftime("%Y年%m月%d日")},被删除成功。"
+      purchase_order.delete_self current_user
+      flash[:notice] = success_message
+      redirect_to action: :index
+    rescue Exception=>e
+      flash[:alert] = dispose_exception e
+      redirect_to "/supply/purchase_orders/#{params[:id]}/edit"
+    end
   end
 
   def search_item

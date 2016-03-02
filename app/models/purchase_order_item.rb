@@ -57,7 +57,8 @@ class PurchaseOrderItem < ActiveRecord::Base
       current_weight = stock.real_weight || 0
       ratio = self.purchase_price.ratio
       BusinessException.raise "id为#{self.purchase_price.id}的purchase_price，进货价，产品名为#{self.product.chinese_name},对应的相对于标准单位比率为空或为0，不能做库存更新操作" if ratio.blank? || ratio == 0
-      stock.update_attributes real_weight: current_weight - order_detail.real_weight*ratio
+      detail_real_weight = order_detail.real_weight.blank? ? 0 : order_detail.real_weight
+      stock.update_attributes real_weight: current_weight - detail_real_weight*ratio
       order_detail.update_attributes delete_flag: 1
       if true_delete
         self.destroy!
