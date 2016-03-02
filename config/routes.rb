@@ -94,6 +94,7 @@ Rails.application.routes.draw do
         post :mark
         post :export_products
         get :prepare_export_products
+        get :detail
       end
     end
     resources :prices do

@@ -1,0 +1,184 @@
+<h3>查询产品详细信息</h3>
+<%= form_tag '/supply/products/detail', method: :get do %>
+<div class="row">
+  <div class="col-sm-4 text-right">
+    <label class="inline">扫描条形码/输入产品名</label>
+  </div>
+  <div class="col-sm-4">
+    <%= text_field_tag :key, params[:key] %>
+  </div>
+  <div class="col-sm-4 text-left">
+    <%= submit_tag '查询', class: 'btn btn-primary' %>
+  </div>
+</div>
+<% end %>
+<% @products.each do |product| %>
+    <h5>基本信息</h5>
+
+    <div class="row">
+      <div class="col-sm-4 text-right">
+        <label class="inline">
+          产品名称:
+        </label>
+      </div>
+      <div class="col-sm-8 text-left">
+        <%= product.chinese_name %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-4 text-right">
+        <label class="inline">
+          拼音缩写:
+        </label>
+      </div>
+      <div class="col-sm-8 text-left">
+        <%= product.simple_abc %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-4 text-right">
+        <label class="inline">
+          条形码:
+        </label>
+      </div>
+      <div class="col-sm-8 text-left">
+        <%= product.barcode %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-4 text-right">
+        <label class="inline">
+          出入单位:
+        </label>
+      </div>
+      <div class="col-sm-8 text-left">
+        <%= product.general_product.mini_spec rescue 'error' %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-4 text-right">
+        <label class="inline">
+          使用次数:
+        </label>
+      </div>
+      <div class="col-sm-8 text-left">
+        <%= product.print_times %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-4 text-right">
+        <label class="inline">
+          分类:
+        </label>
+      </div>
+      <div class="col-sm-8 text-left">
+        <%= product.mark %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-4 text-right">
+        <label class="inline">
+          哪里买:
+        </label>
+      </div>
+      <div class="col-sm-8 text-left">
+        <%= product.general_product.vendor rescue 'error' %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-4 text-right">
+        <label class="inline">
+          存放位置:
+        </label>
+      </div>
+      <div class="col-sm-8 text-left">
+        <%= product.general_product.location rescue 'error' %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-4 text-right">
+        <label class="inline">
+          备注:
+        </label>
+      </div>
+      <div class="col-sm-8 text-left">
+        <%= product.general_product.memo rescue 'error' %>
+      </div>
+    </div>
+
+    <h5>最近售出</h5>
+    <% order_items = OrderItem.joins(:order).where("(orders.delete_flag is null or orders.delete_flag = 0 ) and order_items.product_id = #{product.id} ").order("orders.reach_order_date desc").limit(5) %>
+    <table class="table">
+      <thead>
+        <th>日期</th><th>订量</th><th>到货量</th><th>价格</th><th>单位</th>
+      </thead>
+      <tbody>
+        <% order_items.each do |oi| %>
+            <tr>
+              <td>
+                <%= oi.order.reach_order_date.strftime("%Y-%m-%d") rescue 'error' %>
+              </td>
+              <td>
+                <%= oi.plan_weight %>
+              </td>
+              <td>
+                <%= oi.real_weight %>
+              </td>
+              <td>
+                <%= oi.price.price rescue 'error' %>
+              </td>
+              <td>
+                <%= oi.price.true_spec rescue 'error' %>
+              </td>
+            </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <h5>最近入库</h5>
+    <% purchase_order_items = PurchaseOrderItem.joins(:purchase_order).where("(purchase_orders.delete_flag is null or purchase_orders.delete_flag = 0 ) and purchase_order_items.product_id = #{product.id}").order("purchase_orders.purchase_date desc").limit(5) %>
+    <table class="table">
+      <thead>
+        <th>日期</th><th>订量</th><th>实际量</th><th>价格</th><th>单位</th>
+      </thead>
+      <tbody>
+        <% purchase_order_items.each do |poi| %>
+            <tr>
+              <td>
+                <%= poi.purchase_order.purchase_date.strftime("%Y-%m-%d") rescue 'error' %>
+              </td>
+              <td>
+                <%= poi.plan_weight %>
+              </td>
+              <td>
+                <%= poi.real_weight %>
+              </td>
+              <td>
+                <%= poi.price %>
+              </td>
+              <td>
+                <%= poi.true_spec %>
+              </td>
+            </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+<% end unless @products.blank? %>
+
+<script language="javascript">
+    function focus_key(){
+        $("#key").focus();
+        $("#key").val("");
+    }
+
+    window.onload = focus_key;
+</script>

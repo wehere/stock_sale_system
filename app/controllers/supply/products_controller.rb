@@ -272,6 +272,14 @@ class Supply::ProductsController < BaseController
     redirect_to action: :prepare_export_products
   end
 
+  def detail
+    unless params[:key].blank?
+      products = current_user.company.products.is_valid
+      @products = products.where(barcode: params[:key])
+      @products = products.where("chinese_name like ?", "%#{params[:key]}%") if @products.blank?
+    end
+  end
+
   private
 
     def product_params
