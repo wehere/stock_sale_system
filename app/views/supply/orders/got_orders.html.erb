@@ -8,6 +8,8 @@
 <table class="table">
   <thead>
     <th width="150px">订货单位</th>
+    <th>门店</th>
+    <th>单据类型</th>
     <th>到货日期</th>
     <th width="80px">订货时间</th>
     <th width="">订货信息</th>
@@ -17,9 +19,24 @@
     <th>操作</th>
   </thead>
   <tbody>
+  <% @messages = @messages.order(reach_date: :desc).order(:customer_id).order(:store_id).order(:order_type_id) %>
+  <%
+     current_store_id = @messages.first.store_id
+     flag = true
+     color = '#31b0d5'
+  %>
     <% @messages.each_with_index do |message, index| %>
-        <tr>
-          <td><%= "#{message.customer.simple_name}-#{message.store.name}-#{message.order_type.name}-#{message.user.user_name}" rescue 'error' %></td>
+        <%
+           unless current_store_id == message.store_id
+               current_store_id = message.store_id
+               flag = !flag
+               color = flag ? '#31b0d5' : '#bce8f1'
+           end
+        %>
+        <tr style="background-color: <%= color %>">
+          <td><%= "#{message.customer.simple_name}-#{message.user.user_name}" rescue 'error' %></td>
+          <td><%= "#{message.store.name}" %></td>
+          <td><%= "#{message.order_type.name}" %></td>
           <td><%= message.reach_date.strftime("%Y年%m月%d日") rescue 'error' %></td>
           <td><%= Tools.distance_of_time_in_words(message.created_at) rescue 'error' %></td>
           <td><%= text_area_tag "main_message_#{index}", message.main_message rescue 'error' %></td>

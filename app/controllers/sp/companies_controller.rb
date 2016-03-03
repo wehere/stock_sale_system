@@ -1,4 +1,5 @@
 class Sp::CompaniesController < BaseController
+  layout 'super_admin'
   before_filter :need_login
   before_filter :need_super_admin
 
