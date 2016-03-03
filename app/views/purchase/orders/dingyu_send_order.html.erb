@@ -2,7 +2,7 @@
 <% colors = ['#BBFFEE','#CCFF99','#FFEE99','#FFCCCC','#E8CCFF','#FFE4E1','	#FAEBD7'] %>
   <% left = 15 %>
 <div class="search_panel">
-  <label>拼音首字母</label>&nbsp;&nbsp;&nbsp;<%= text_field_tag :abc, params[:abc] %>&nbsp;&nbsp;&nbsp;<%= link_to '检索', 'javascript:query_product()', class: 'btn btn-primary' %>
+  <label>拼音首字母</label>&nbsp;&nbsp;&nbsp;<%= text_field_tag :abc, params[:abc] %>&nbsp;&nbsp;&nbsp;<%= link_to '检索', '#', class: 'btn btn-primary', id: 'query_button', onclick: "query_product()" %>
 </div>
   <% @big_marks.each_with_index do |mark,index| %>
       <div class="panel" style="left:<%= left %>px;background-color: <%= colors[index] %>;">
@@ -145,6 +145,13 @@
               }
       )
   }
+
+  $("#abc").keypress(function(e){
+      var keyCode = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
+      if (keyCode == 13){
+          $("#query_button").click();
+      }
+  });
 </script>
 
 <style>
