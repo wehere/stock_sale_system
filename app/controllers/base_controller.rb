@@ -24,7 +24,7 @@ class BaseController < ApplicationController
   end
 
   def need_super_admin
-    role = Role.find_or_created_by name: 'super_admin', is_valid: 1
+    role = Role.find_or_create_by name: 'super_admin', is_valid: 1
     unless current_user.access? [role.id]
       flash[:alert] = '此操作只有超级管理员可做。'
       redirect_to '/vis/static_pages/welcome/'
