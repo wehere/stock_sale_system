@@ -123,7 +123,7 @@ class Purchase::OrdersController < BaseController
   def query_product_by_abc
     @result_products = Product.where(supplier_id: params[:supplier_id],
                   is_valid: true
-    ).where("simple_abc like ?", "%#{params[:abc]}%").order(print_times: :desc)
+    ).where("simple_abc like ? or chinese_name like ? ", "%#{params[:abc]}%", "%#{params[:abc]}%").order(print_times: :desc)
   end
 
   def send_message
