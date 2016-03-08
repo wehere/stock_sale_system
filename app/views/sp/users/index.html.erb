@@ -1,0 +1,30 @@
+<h3>用户列表</h3>
+<table class="table">
+  <thead>
+  <th>邮箱</th>
+  <th>公司名</th>
+  <th>门店名</th>
+  <th>用户名</th>
+  <th>客户端密码</th>
+  </thead>
+<% @users.each do |user| %>
+<tr>
+  <td>
+    <%= user.email %>
+  </td>
+  <td>
+    <%= user.company.simple_name rescue '' %>
+  </td>
+  <td>
+    <%= user.store.name rescue '' %>
+  </td>
+  <td>
+    <%= user.user_name %>
+  </td>
+  <td>
+    <%= user.terminal_password %>
+  </td>
+</tr>
+<% end %>
+
+</table>

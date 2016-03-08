@@ -6,13 +6,28 @@ class User < ActiveRecord::Base
   belongs_to :company
   has_many :comments
   has_many :users
-  delegate :simple_name, to: :company, prefix: true, allow_nil: true
+  # delegate :simple_name, to: :company, prefix: true, allow_nil: true
   belongs_to :store
   has_and_belongs_to_many :roles
 
   def access? require
     return true if require.blank?
     !(self.roles.pluck(:id)&require).blank?
+  end
+
+  def admin?
+    role = Role.find_or_create_by name: 'admin', is_valid: 1
+    access? [role.id]
+  end
+
+  def super_admin?
+    role = Role.find_or_create_by name: 'super_admin', is_valid: 1
+    access? [role.id]
+  end
+
+  def warehouseman?
+    role = Role.find_or_create_by name: 'warehouseman', is_valid: 1
+    access? [role.id]
   end
 
 end

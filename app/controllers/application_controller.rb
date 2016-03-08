@@ -2,6 +2,9 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
+
+  layout :layout
+
   require 'pp'
   #处理控制器中的异常信息。
   def dispose_exception e
@@ -23,6 +26,17 @@ class ApplicationController < ActionController::Base
         # $@.to_logger
         return '发生未知错误'
     end
+  end
+
+
+
+  private
+
+  def layout
+    # only turn it off for login pages:
+    # is_a?(Devise::SessionsController) ? false : "application"
+    # or turn layout off for every devise controller:
+    devise_controller? ? 'visitor' : "application"
   end
 
 end

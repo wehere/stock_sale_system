@@ -40,9 +40,9 @@ end
   end
 
   def destroy
-    Company.find(params[:id]).destroy
-    flash[:success] = "删除成功."
-    redirect_to companies_url
+    # Company.find(params[:id]).destroy
+    # flash[:success] = "删除成功."
+    # redirect_to companies_url
   end
 
 
