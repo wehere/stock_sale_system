@@ -12,6 +12,8 @@ class Vis::StaticPagesController < ApplicationController
         'super_admin'
       elsif current_user.admin?
         'admin'
+      elsif current_user.company.blank?
+        'visitor'
       else
         'application'
       end
