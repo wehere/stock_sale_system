@@ -39,4 +39,10 @@ class User < ActiveRecord::Base
     user.save!
   end
 
+  def update_terminal_info options
+    self.user_name = options[:user_name] unless options[:user_name].blank?
+    self.terminal_password = options[:terminal_password] unless options[:terminal_password].blank?
+    self.save!
+  end
+
 end
