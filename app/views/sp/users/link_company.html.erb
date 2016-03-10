@@ -1,0 +1,9 @@
+<h3><%= @user.email %>关联公司</h3>
+<% params[:company_id] ||= @user.company.id %>
+<%= form_tag '/sp/users/link_company', method: :post do %>
+    <%= hidden_field_tag :user_id, @user.id %>
+    <% @companies.each do |company| %>
+        <%= radio_button_tag :company_id, company.id, params[:company_id].to_s==company.id.to_s %><%= company.simple_name %>
+    <% end %>
+    <%= submit_tag '保存', class: 'btn primary' %>
+<% end %>

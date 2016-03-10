@@ -30,4 +30,13 @@ class User < ActiveRecord::Base
     access? [role.id]
   end
 
+  def self.link_company options
+    user = User.find_by_id(options[:user_id])
+    BusinessException.raise '请给出用户ID' if user.blank?
+    company = Company.find_by_id(options[:company_id])
+    BusinessException.raise '请给出公司ID' if company.blank?
+    user.company = company
+    user.save!
+  end
+
 end

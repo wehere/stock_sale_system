@@ -6,7 +6,12 @@ Rails.application.routes.draw do
   # 超级管理员
   namespace :sp do
     resources :companies
-    resources :users
+    resources :users do
+      collection do
+        get :link_company
+        post :link_company
+      end
+    end
   end
 
   namespace :admin do
