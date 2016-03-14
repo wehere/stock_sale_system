@@ -36,6 +36,7 @@
         <td>
           <%= link_to '改名称', "/supply/products/strict_edit?id=#{product.id}" %>&nbsp;
           <%= link_to '改其他信息', "/supply/general_products/#{product.general_product.id}/edit" %>
+          <%= link_to '置为无效', "/supply/products/soft_delete?id=#{product.id}" if current_user.admin? %>
           <%#= link_to '新增价格', new_supply_price_path(product_id: product.id) %>
           <%#= link_to '关联通用', "/supply/products/prepare_link_to_general_product?product_id=#{product.id}", target: '_blank' %>
         </td>

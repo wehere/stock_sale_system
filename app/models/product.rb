@@ -32,6 +32,35 @@ class Product < ActiveRecord::Base
     end
   end
 
+  def soft_delete
+    Product.transaction do
+
+      #置该产品相关的出货价格无效
+      self.prices.each do |price|
+        price.is_used = 0
+        price.save!
+      end
+
+      #置该产品相关的进货价格无效
+      p = self.purchase_price
+      p.is_used = 0
+      p.save!
+
+      #如果当前产品关联的通用产品只有一个，置该通用产品无效
+      gps = general_product.products
+      if gps.count <= 1
+        gp = gps.first
+        gp.is_valid = 0
+        gp.save!
+      end
+
+      #当前产品置为无效
+      self.is_valid = 0
+      self.save!
+
+    end
+  end
+
 
   def self.export supplier_id, customer_id, year_month_id
     supplier = Company.find(supplier_id)

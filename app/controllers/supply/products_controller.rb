@@ -280,6 +280,23 @@ class Supply::ProductsController < BaseController
     end
   end
 
+  def soft_delete
+    unless current_user.admin?
+      flash[:alert] = '此操作权限只限于管理员'
+      redirect_to action: :index
+      return
+    end
+    product = Product.find_by_id(params[:id])
+    if product.blank?
+      flash[:alert] = '产品ID有误'
+      redirect_to action: :index
+      return
+    end
+    product.soft_delete
+    flash[:success] = '置为无效操作完成'
+    redirect_to action: :index
+  end
+
   private
 
     def product_params
