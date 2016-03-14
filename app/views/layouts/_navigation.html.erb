@@ -1,7 +1,16 @@
 <div class="sx-global-topbar">
   <div class="y-topbar-row" style="position: static; opacity: 1;">
     <div class="aliyun-login">
-      <a class="lnk-login-pre" onlcick="return false;" href="#nogo">欢迎来访，</a>
+      <%
+        rank = if user_signed_in?
+                 if current_user.super_admin?
+                   '超级管理员'
+                 elsif current_user.admin?
+                   '管理员'
+                 end
+               end
+      %>
+      <a class="lnk-login-pre" onlcick="return false;" href="#nogo">欢迎来访，<%= rank %></a>
       <% if user_signed_in? %>
           <%= current_user.user_name %>
           <a id="lnk_login" class="lnk-login" target="_self" rel="nofollow" data-method="delete" href="/users/sign_out">
