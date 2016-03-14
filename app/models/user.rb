@@ -15,6 +15,11 @@ class User < ActiveRecord::Base
     !(self.roles.pluck(:id)&require).blank?
   end
 
+  def employee?
+    !self.company.blank?
+  end
+
+
   def admin?
     role = Role.find_or_create_by name: 'admin', is_valid: 1
     access? [role.id]
