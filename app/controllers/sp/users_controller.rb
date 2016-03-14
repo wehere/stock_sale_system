@@ -51,4 +51,17 @@ class Sp::UsersController < BaseController
       redirect_to "/sp/users/#{user.id}/edit"
     end
   end
+
+  def set_role
+    if request.post?
+      user = User.find_by_id(params[:id])
+      user.set_role params[:role]
+      flash[:success] = '设置成功'
+      redirect_to action: :index
+    else
+      @user = User.find_by_id(params[:id])
+      @roles = Role.none_super_admin_roles
+      @own_roles = @user.roles
+    end
+  end
 end

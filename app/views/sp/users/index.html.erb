@@ -2,6 +2,7 @@
 <table class="table">
   <thead>
   <th>邮箱</th>
+  <th>角色</th>
   <th>公司名</th>
   <th>门店名</th>
   <th>用户名</th>
@@ -11,6 +12,9 @@
 <tr>
   <td>
     <%= user.email %>
+  </td>
+  <td>
+    <%= user.roles.pluck(:name).join(',') %>
   </td>
   <td>
     <%= user.company.simple_name rescue '' %>
@@ -25,8 +29,9 @@
     <%= user.terminal_password %>
   </td>
   <td>
-    <%= link_to '修改', "/sp/users/#{user.id}/edit" %>&nbsp;
-    <%= link_to '设置所属公司', "/sp/users/link_company?id=#{user.id}" %>
+    <%= link_to '修改', "/sp/users/#{user.id}/edit", class: 'btn btn-primary' %>&nbsp;
+    <%= link_to '设置所属公司', "/sp/users/link_company?id=#{user.id}", class: 'btn btn-primary'  %>
+    <%= link_to '设置角色', "/sp/users/set_role?id=#{user.id}", class: 'btn btn-primary'  %>
   </td>
 </tr>
 <% end %>

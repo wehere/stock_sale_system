@@ -35,6 +35,18 @@ class User < ActiveRecord::Base
     access? [role.id]
   end
 
+  def set_role role_ids
+    if super_admin?
+      self.roles = Role.where("id in (?) or name = ?", role_ids, 'super_admin')
+      self.save!
+    elsif admin?
+      self.roles = Role.where("(id in (?) or name = ?) and name <> ?", role_ids, 'admin', 'super_admin')
+      self.save!
+    else
+
+    end
+  end
+
   def self.link_company options
     user = User.find_by_id(options[:user_id])
     BusinessException.raise '请给出用户ID' if user.blank?

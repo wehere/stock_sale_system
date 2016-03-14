@@ -10,6 +10,8 @@ Rails.application.routes.draw do
       collection do
         get :link_company
         post :link_company
+        get :set_role
+        post :set_role
       end
     end
   end
