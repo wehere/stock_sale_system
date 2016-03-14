@@ -49,9 +49,8 @@ class Product < ActiveRecord::Base
       #如果当前产品关联的通用产品只有一个，置该通用产品无效
       gps = general_product.products
       if gps.count <= 1
-        gp = gps.first
-        gp.is_valid = 0
-        gp.save!
+        general_product.is_valid = 0
+        general_product.save!
       end
 
       #当前产品置为无效
