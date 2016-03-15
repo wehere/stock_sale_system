@@ -3,14 +3,14 @@ class BaseController < ApplicationController
   def need_login
     unless user_signed_in?
       flash[:alert] = '请先登录'
-      redirect_to welcome_vis_static_pages_path
+      redirect_to '/vis/static_pages/welcome/'
     end
   end
 
   def need_admin
     unless current_user.admin?
-      flash[:alert] = '非管理员不可访问。'
-      redirect_to welcome_vis_static_pages_index_path
+      flash[:alert] = '此操作只有管理员可做。'
+      redirect_to '/vis/static_pages/welcome/'
     end
   end
 

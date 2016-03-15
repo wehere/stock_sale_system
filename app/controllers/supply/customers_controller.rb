@@ -6,11 +6,13 @@ class Supply::CustomersController < BaseController
   end
 
   def new
+    need_admin
     @customer = Company.new
   end
 
   def create
     begin
+      need_admin
       customer = current_user.company.create_customer params[:company].permit(:simple_name, :full_name, :phone, :address)
       flash[:notice] = "创建成功！"
       redirect_to supply_customers_path
@@ -22,6 +24,7 @@ class Supply::CustomersController < BaseController
   end
 
   def add_store
+    need_admin
     if request.post?
       begin
         Store.create_store params.permit :company_id, :name
