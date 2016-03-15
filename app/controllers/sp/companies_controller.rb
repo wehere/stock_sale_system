@@ -4,7 +4,12 @@ class Sp::CompaniesController < BaseController
   before_filter :need_super_admin
 
   def index
-    @companies = Company.order(params[:simple_name]).paginate(page: params[:page],:per_page => 5)
+
+    @companies = if params[:all]=='1'
+                   Company.all.paginate(page: params[:page],:per_page => 15)
+                 else
+                   Company.all_suppliers.paginate(page: params[:page],:per_page => 15)
+                 end
   end
 
   def new
@@ -12,13 +17,9 @@ class Sp::CompaniesController < BaseController
   end
 
   def create
-   @company = Company.new(company_params)
-   if @company.save
-     flash[:success] = "Company created!"
-     redirect_to sp_companies_path
-   else
-     render 'sp/companies/new'
-   end
+    @company = Company.create_supplier company_params
+    flash[:success] = "Company created!"
+    redirect_to sp_companies_path
  end
 
  def show
@@ -48,7 +49,7 @@ end
 
   private
     def company_params
-      params.require(:company).permit(:simple_name, :full_name, :phone,:address)
+      params.permit(:simple_name, :full_name, :phone, :address, :store_name, :email, :password, :user_name, :terminal_password, :storage_name)
     end
 
 end

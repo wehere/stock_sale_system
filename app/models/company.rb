@@ -47,6 +47,7 @@ class Company < ActiveRecord::Base
     self.customers.count
   end
 
+  # 管理员创建客户
   def create_customer params
     Company.transaction do
       vip_type = self.vip_type
@@ -58,6 +59,62 @@ class Company < ActiveRecord::Base
         BusinessException.raise '客户数量已经达到上限！'
       end
     end
+  end
+
+  # 超级管理员创建供应商
+  #  :simple_name, :full_name, :phone, :address, :store_name, :email, :password, :user_name, :terminal_password, :storage_name
+  def self.create_supplier options = {}
+    self.transaction do
+      # 创建公司
+      company = Company.new simple_name: options[:simple_name],
+                            full_name: options[:full_name],
+                            phone: options[:phone],
+                            address: options[:address]
+      company.save!
+
+
+      # 创建门店
+      store_ops = {
+          :company_id => company.id,
+          :name => options[:store_name]
+      }
+      store = Store.create_store store_ops
+
+
+      # 创建管理员
+      admin = User.new email: options[:email],
+                       password: options[:password]
+      admin.save!
+      # 设置管理员角色
+      admin.set_admin
+      # 设置公司
+      admin.company = company
+      # 设置门店
+      admin.store = store
+      # 设置用户名
+      admin.user_name = options[:user_name]
+      # 设置客户端密码
+      admin.terminal_password = options[:terminal_password]
+      admin.save!
+
+
+      # 创建仓库
+      storage_ops = {
+          :store_id => store.id,
+          :name => options[:storage_name]
+      }
+      Storage.create_storage storage_ops
+
+      company
+    end
+  end
+
+  def self.all_suppliers
+    all_supplier_ids = []
+    Company.all.each do |c|
+      all_supplier_ids << c.id if c.customers.count >= 1
+    end
+    where("id in (?)", all_supplier_ids)
   end
 
 end

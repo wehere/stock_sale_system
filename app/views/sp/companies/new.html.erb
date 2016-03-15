@@ -1,45 +1,99 @@
 <%# provide(:title, 'New Company') %>
 <h1 class="text-center">注册公司</h1>
-    <%= form_for @company ,url: sp_companies_path ,method: 'post' do |f| %>
+    <%= form_tag '/sp/companies', method: 'post' do %>
       <%## render 'shared/error_messages' %>
     <div class="row">
-      <div class="col-sm-1 col-sm-offset-3 text-left">
-        <%= f.label '公司简称:' %>
+      <div class="col-sm-2 col-sm-offset-2 text-left">
+        <%= '公司简称:' %>
       </div>
       <div class="col-sm-8">
-        <%= f.text_field :simple_name %>
+        <%= text_field_tag :simple_name, params[:simple_name] %>
       </div>
     </div>
     </br>
     <div class="row">
-      <div class="col-sm-1 col-sm-offset-3 text-left">
-        <%= f.label '公司全称:' %>
+      <div class="col-sm-2 col-sm-offset-2 text-left">
+        <%= '公司全称:' %>
       </div>
       <div class="col-sm-8">
-        <%= f.text_field :full_name %>
+        <%= text_field_tag :full_name, params[:full_name] %>
       </div>
     </div>
     </br>
     <div class="row">
-      <div class="col-sm-1 col-sm-offset-3 text-left">
-        <%= f.label '电话号码:' %>
+      <div class="col-sm-2 col-sm-offset-2 text-left">
+        <%= '电话号码:' %>
       </div>
       <div class="col-sm-8">
-        <%= f.telephone_field :phone %>
+        <%= text_field_tag :phone, params[:phone] %>
       </div>
     </div>
     </br>
     <div class="row">
-      <div class="col-sm-1 col-sm-offset-3 text-left">
-        <%= f.label '公司地址:' %>
+      <div class="col-sm-2 col-sm-offset-2 text-left">
+        <%= '公司地址:' %>
       </div>
       <div class="col-sm-8">
-        <%= f.text_field :address %>
+        <%= text_field_tag :address, params[:address] %>
+      </div>
+    </div>
+    </br>
+    <div class="row">
+      <div class="col-sm-2 col-sm-offset-2 text-left">
+        <%= '门店名称:' %>
+      </div>
+      <div class="col-sm-8">
+        <%= text_field_tag :store_name, params[:store_name] %>
+      </div>
+    </div>
+    </br>
+    <div class="row">
+      <div class="col-sm-2 col-sm-offset-2 text-left">
+        <%= '邮箱:' %>
+      </div>
+      <div class="col-sm-8">
+        <%= text_field_tag :email, params[:email] %>
+      </div>
+    </div>
+    </br>
+    <div class="row">
+      <div class="col-sm-2 col-sm-offset-2 text-left">
+        <%= '密码:' %>
+      </div>
+      <div class="col-sm-8">
+        <%= text_field_tag :password, params[:password] %>
+      </div>
+    </div>
+    </br>
+    <div class="row">
+      <div class="col-sm-2 col-sm-offset-2 text-left">
+        <%= '用户名:' %>
+      </div>
+      <div class="col-sm-8">
+        <%= text_field_tag :user_name, params[:user_name] %>
+      </div>
+    </div>
+    </br>
+    <div class="row">
+      <div class="col-sm-2 col-sm-offset-2 text-left">
+        <%= '客户端密码:' %>
+      </div>
+      <div class="col-sm-8">
+        <%= text_field_tag :terminal_password, params[:terminal_password] %>
+      </div>
+    </div>
+    </br>
+    <div class="row">
+      <div class="col-sm-2 col-sm-offset-2 text-left">
+        <%= '仓库名称:' %>
+      </div>
+      <div class="col-sm-8">
+        <%= text_field_tag :storage_name, params[:storage_name] %>
       </div>
     </div>
     </br>
     <div class="text-center">
-      <%= f.submit "注册", class: "btn btn-large btn-primary" %>
+      <%= submit_tag "注册", class: "btn btn-large btn-primary" %>
       <%= link_to  "返回", sp_companies_path  %>
     </div>
     <% end %>

@@ -49,7 +49,7 @@ class Supply::ProductsController < BaseController
     need_warehouseman
     # @product = Product.new
     # @product.supplier = current_user.company
-    redirect_to action: :strict_new
+    redirect_to action: :strict_new if current_user.warehouseman?
   end
 
   def strict_new

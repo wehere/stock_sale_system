@@ -25,6 +25,11 @@ class User < ActiveRecord::Base
     access? [role.id]
   end
 
+  # 设置此用户为管理员
+  def set_admin
+    roles << Role.where(name: 'admin').first
+  end
+
   def super_admin?
     role = Role.find_or_create_by name: 'super_admin', is_valid: 1
     access? [role.id]
