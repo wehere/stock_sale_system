@@ -124,7 +124,7 @@ SimpleNavigation::Configuration.run do |navigation|
     primary.item :key_30, '公司', '/sp/companies', class: 'special', if: ->{ current_user.super_admin? } do |sub_nav|
       sub_nav.item :key_30_1, '供应商', '/sp/companies', if: -> { current_user.super_admin? }
       sub_nav.item :key_30_3, '创建供应商', '/sp/companies/new', if: -> { current_user.super_admin? }
-      sub_nav.item :key_30_2, '所以公司', '/sp/companies?all=1', if: -> { current_user.super_admin? }
+      sub_nav.item :key_30_2, '所有公司', '/sp/companies?all=1', if: -> { current_user.super_admin? }
     end
 
     primary.item :key_31, '用户', '/sp/users', class: 'special', if: ->{ current_user.super_admin? } do |sub_nav|
