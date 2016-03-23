@@ -152,7 +152,7 @@ class Product < ActiveRecord::Base
 
     GeneralProduct.where(supplier_id: supplier_id).each do |gp|
       sheet.merge_cells(current_row, 0, current_row+1, 0)
-      sheet.row(current_row).set(0, in_center)
+      sheet.row(current_row).set_format(0, in_center)
       sheet.row(current_row).push gp.name, "入库数量/#{gp.mini_spec}", '入库金额/元', "出库数量/#{gp.mini_spec}", "出库金额/元"
       current_row += 1
       in_weight = 0.0
@@ -161,14 +161,14 @@ class Product < ActiveRecord::Base
       out_money = 0.0
       gp.products.each do |product|
         # 入
-        order_details.where(product_id: product.id).where(order_type: 1).each do |od|
+        order_details.where(product_id: product.id).where(detail_type: 1).each do |od|
           ratio = PurchaseOrderItem.find_by_id(od.item_id).purchase_price.ratio
           in_weight += od.real_weight * ratio
           in_money += od.money
         end
 
         # 出
-        order_details.where(product_id: product.id).where(order_type: 2).each do |od|
+        order_details.where(product_id: product.id).where(detail_type: 2).each do |od|
           ratio = OrderItem.find_by_id(od.item_id).price.ratio
           out_weight += od.real_weight * ratio
           out_money += od.money
@@ -178,7 +178,6 @@ class Product < ActiveRecord::Base
       current_row += 1
     end
 
-    sheet.row(current_row)[0] = "#{start_date}至#{end_date}:#{sum.round(2)}"
     file_path = "#{Rails.root}/public/downloads/#{supplier_id}/#{start_date.to_date.to_s}至#{end_date.to_date.to_s}_#{Time.now.to_i}_产品入库出库汇总.xls"
     book.write file_path
     file_path
