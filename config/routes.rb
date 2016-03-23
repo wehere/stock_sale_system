@@ -89,6 +89,7 @@ Rails.application.routes.draw do
         post :export_order_total_for_specified_month
         post :export_purchase_order
         post :export_stocks
+        post :export_product_in_out
       end
       member do
         post :change_stores

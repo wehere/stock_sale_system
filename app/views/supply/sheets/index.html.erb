@@ -54,3 +54,12 @@
     <%= date_field_tag 'end_date', params[:end_date] %>
     <%= submit_tag '导出', class: 'btn btn-primary' %>
 <% end %>
+<br/>
+<h3>每个产品入出库情况</h3>
+<%= form_tag '/supply/sheets/export_product_in_out', method: :post do %>
+    <label>起始日期</label>
+    <%= date_field_tag 'start_date', params[:start_date] %>
+    <label>结束日期</label>
+    <%= date_field_tag 'end_date', params[:end_date] %>
+    <%= submit_tag '导出', class: 'btn btn-primary' %>
+<% end %>

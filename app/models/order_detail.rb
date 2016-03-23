@@ -1,6 +1,12 @@
 class OrderDetail < ActiveRecord::Base
   belongs_to :product
 
+  ORDER_TYPE = {
+      1 => '入库',
+      2 => '出库',
+      3 => '损耗'
+  }
+
   scope :valid, ->{where("delete_flag is null or delete_flag = 0")}
 
   def self.write_stock_from_start_to_end storage_id, supplier_id, start_id, end_id

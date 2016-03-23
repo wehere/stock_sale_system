@@ -135,5 +135,53 @@ class Product < ActiveRecord::Base
     message
   end
 
+  def self.export_product_in_out start_date, end_date, supplier_id
+
+    Spreadsheet.client_encoding = 'UTF-8'
+    book = Spreadsheet::Workbook.new
+    in_center = Spreadsheet::Format.new horizontal_align: :center, vertical_align: :center, border: :thin
+    in_left = Spreadsheet::Format.new horizontal_align: :left, border: :thin
+    sheet = book.create_worksheet name: '明细'
+    sheet.merge_cells(0,0,0,4)
+    sheet.row(0)[0] = "#{Company.find_by_id(supplier_id).simple_name} #{start_date}至#{end_date} 每个产品入库、出库汇总"
+    current_row = 1
+
+    order_details = OrderDetail.where("delete_flag is null or delete_flag = 0").where(supplier_id: supplier_id)
+    order_details = order_details.where("detail_date>= ?", start_date.to_time.change(hour:0,min:0,sec:0)) unless start_date.blank?
+    order_details = order_details.where("detail_date<=?", end_date.to_time.change(hour:23,min:59,sec:59)) unless end_date.blank?
+
+    GeneralProduct.where(supplier_id: supplier_id).each do |gp|
+      sheet.merge_cells(current_row, 0, current_row+1, 0)
+      sheet.row(current_row).set(0, in_center)
+      sheet.row(current_row).push gp.name, "入库数量/#{gp.mini_spec}", '入库金额/元', "出库数量/#{gp.mini_spec}", "出库金额/元"
+      current_row += 1
+      in_weight = 0.0
+      out_weight = 0.0
+      in_money = 0.0
+      out_money = 0.0
+      gp.products.each do |product|
+        # 入
+        order_details.where(product_id: product.id).where(order_type: 1).each do |od|
+          ratio = PurchaseOrderItem.find_by_id(od.item_id).purchase_price.ratio
+          in_weight += od.real_weight * ratio
+          in_money += od.money
+        end
+
+        # 出
+        order_details.where(product_id: product.id).where(order_type: 2).each do |od|
+          ratio = OrderItem.find_by_id(od.item_id).price.ratio
+          out_weight += od.real_weight * ratio
+          out_money += od.money
+        end
+      end
+      sheet.row(current_row).push gp.name, in_weight, in_money, out_weight, out_money
+      current_row += 1
+    end
+
+    sheet.row(current_row)[0] = "#{start_date}至#{end_date}:#{sum.round(2)}"
+    file_path = "#{Rails.root}/public/downloads/#{supplier_id}/#{start_date.to_date.to_s}至#{end_date.to_date.to_s}_#{Time.now.to_i}_产品入库出库汇总.xls"
+    book.write file_path
+    file_path
+  end
 
 end
