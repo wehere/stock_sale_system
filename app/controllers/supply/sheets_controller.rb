@@ -72,7 +72,7 @@ class Supply::SheetsController < BaseController
 
   def export_product_in_out
     supplier_id = current_user.company.id
-    Product.export_product_in_out params[:start_date], params[:end_date], supplier_id
+    Product.delay.export_product_in_out params[:start_date], params[:end_date], supplier_id
     flash[:notice] = "正在下载，下载完毕后，您可以在下载页看到您需要的文件"
     redirect_to action: :index
   end
