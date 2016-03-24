@@ -101,6 +101,7 @@ class Price < ActiveRecord::Base
     end
     file_path = "#{Rails.root}/public/downloads/#{supplier_id}/"+YearMonth.find(year_month_id).val + Company.find(supplier_id).simple_name +
         '_to_' + Company.find(customer_id).simple_name+ '的报价表' + "_#{Time.now.to_i}"+ ".xls"
+    Dir.mkdir Rails.root.join("public","downloads/#{supplier_id}/") unless Dir.exist? Rails.root.join("public","downloads/#{supplier_id}/")
     book.write file_path
     file_path
   end

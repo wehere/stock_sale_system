@@ -328,6 +328,7 @@ class OrderItem < ActiveRecord::Base
     end
 
     file_path = "#{Rails.root}/public/downloads/#{supplier_id}/#{company.simple_name}_#{specified_date.to_date.to_s(:db)}_#{Time.now.to_i}_分菜单.xls"
+    Dir.mkdir Rails.root.join("public","downloads/#{supplier_id}/") unless Dir.exist? Rails.root.join("public","downloads/#{supplier_id}/")
     book.write file_path
     file_path
   end

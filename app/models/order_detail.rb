@@ -110,7 +110,9 @@ class OrderDetail < ActiveRecord::Base
       current_row += 1
     end
     sheet.row(current_row)[0] = "#{start_date}至#{end_date}汇总:#{sum.round(2)}"
+
     file_path = "#{Rails.root}/public/downloads/#{supplier_id}/#{start_date.to_date.to_s}至#{end_date.to_date.to_s}_#{Time.now.to_i}_库存数据.xls"
+    Dir.mkdir Rails.root.join("public","downloads/#{supplier_id}/") unless Dir.exist? Rails.root.join("public","downloads/#{supplier_id}/")
     book.write file_path
     file_path
   end
