@@ -151,10 +151,19 @@ class Product < ActiveRecord::Base
     order_details = order_details.where("detail_date>= ?", start_date.to_time.change(hour:0,min:0,sec:0)) unless start_date.blank?
     order_details = order_details.where("detail_date<=?", end_date.to_time.change(hour:23,min:59,sec:59)) unless end_date.blank?
 
-    GeneralProduct.where(supplier_id: supplier_id).each do |gp|
+    vendor = nil
+    GeneralProduct.where(supplier_id: supplier_id).order(:vendor).each_with_index do |gp, index|
+      unless vendor == gp.vendor
+        vendor = gp.vendor
+        current_row += 2 if index!=0
+        sheet.merge_cells(current_row,0,current_row,6)
+        sheet.row(current_row).set_format(0, in_center)
+        sheet.row(current_row).push "下面是#{vendor}"
+        current_row += 1
+      end
       sheet.merge_cells(current_row, 0, current_row+1, 0)
       sheet.row(current_row).set_format(0, in_center)
-      sheet.row(current_row).push gp.name, "入库数量/#{gp.mini_spec}", '入库金额/元', "出库数量/#{gp.mini_spec}", "出库金额/元"
+      sheet.row(current_row).push gp.name, "入库数量/#{gp.mini_spec}", '入库金额/元', '入库均价', "出库数量/#{gp.mini_spec}", "出库金额/元", '出库均价', '是否有问题'
       current_row += 1
       in_weight = 0.0
       out_weight = 0.0
@@ -175,7 +184,10 @@ class Product < ActiveRecord::Base
           out_money += od.money
         end
       end
-      sheet.row(current_row).push gp.name, in_weight, in_money, out_weight, out_money
+      average_in_price = in_money/(in_weight*1.0)
+      average_out_price = out_money/(out_weight*1.0)
+      problem = average_out_price <= average_in_price ? '有' : ''
+      sheet.row(current_row).push gp.name, in_weight, in_money, average_in_price.round(2), out_weight, out_money, average_out_price.round(2), problem
       current_row += 1
     end
 
