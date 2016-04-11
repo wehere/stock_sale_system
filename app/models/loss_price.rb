@@ -1,3 +1,3 @@
-class LossPrice
+class LossPrice < ActiveRecord::Base
 
 end

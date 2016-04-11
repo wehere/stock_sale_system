@@ -1,3 +1,3 @@
-class LossOrder
+class LossOrder < ActiveRecord::Base
 
 end
