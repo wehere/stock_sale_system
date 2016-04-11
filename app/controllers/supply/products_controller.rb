@@ -145,7 +145,14 @@ class Supply::ProductsController < BaseController
                           print_times: 1
         purchase_price.save!
         # 产生损耗价格
-        loss_price =
+        loss_price = LossPrice.new supplier_id: supplier_id,
+                                   seller_id: seller.id,
+                                   is_used: 1,
+                                   true_spec: params[:purchase_spec],
+                                   price: 0,
+                                   product_id: product.id,
+                                   ratio: params[:purchase_ratio]
+        loss_price.save!
         # 产生出货价格
         current_year_month = YearMonth.current_year_month
         next_year_month = YearMonth.next_year_month
