@@ -1,0 +1,3 @@
+class LossOrder
+
+end

@@ -144,6 +144,8 @@ class Supply::ProductsController < BaseController
                           ratio: params[:purchase_ratio],
                           print_times: 1
         purchase_price.save!
+        # 产生损耗价格
+        loss_price =
         # 产生出货价格
         current_year_month = YearMonth.current_year_month
         next_year_month = YearMonth.next_year_month

@@ -1,0 +1,3 @@
+class LossOrderItem
+
+end
