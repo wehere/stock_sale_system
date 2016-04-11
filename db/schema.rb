@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160410081209) do
+ActiveRecord::Schema.define(version: 20160411072217) do
 
   create_table "comments", force: :cascade do |t|
     t.integer  "order_id",    limit: 4
@@ -76,6 +76,42 @@ ActiveRecord::Schema.define(version: 20160410081209) do
     t.string   "location",          limit: 500
     t.string   "memo",              limit: 1000
     t.string   "barcode",           limit: 255
+  end
+
+  create_table "loss_order_items", force: :cascade do |t|
+    t.integer  "loss_order_id", limit: 4
+    t.integer  "product_id",    limit: 4
+    t.float    "real_weight",   limit: 24
+    t.float    "price",         limit: 24
+    t.float    "money",         limit: 24
+    t.integer  "loss_price_id", limit: 4
+    t.string   "true_spec",     limit: 255
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  create_table "loss_orders", force: :cascade do |t|
+    t.integer  "storage_id",  limit: 4
+    t.datetime "loss_date"
+    t.integer  "user_id",     limit: 4
+    t.boolean  "delete_flag",           default: false
+    t.integer  "supplier_id", limit: 4
+    t.integer  "seller_id",   limit: 4
+    t.integer  "loss_type",   limit: 4
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+  end
+
+  create_table "loss_prices", force: :cascade do |t|
+    t.integer  "supplier_id", limit: 4
+    t.integer  "seller_id",   limit: 4
+    t.boolean  "is_used"
+    t.string   "true_spec",   limit: 255
+    t.float    "price",       limit: 24
+    t.integer  "product_id",  limit: 4
+    t.float    "ratio",       limit: 24
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   create_table "messages", force: :cascade do |t|
