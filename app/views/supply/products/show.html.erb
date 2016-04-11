@@ -1,0 +1,19 @@
+<h3><%= "#{@product.chinese_name}的所有信息" %></h3>
+<table class="table">
+  <tr><td>ID</td><td><%= @product.id %></td></tr>
+  <tr><td>中文名</td><td><%= @product.chinese_name %></td></tr>
+  <tr><td>缩写</td><td><%= @product.simple_abc %></td></tr>
+  <tr><td>打印次数</td><td><%= @product.print_times %></td></tr>
+  <tr><td>描述</td><td><%= @product.describe %></td></tr>
+  <tr><td>分类</td><td><%= @product.mark %></td></tr>
+  <tr><td>售出系数</td><td><%= @product.sale_ratio %></td></tr>
+  <tr><td>最小单位</td><td><%= @general_product.mini_spec %></td></tr>
+  <tr><td>商贩</td><td><%= @general_product.vendor %></td></tr>
+  <tr><td>存储位置</td><td><%= @general_product.location %></td></tr>
+  <tr><td>备注</td><td><%= @general_product.memo %></td></tr>
+  <tr><td>条形码</td><td><%= @general_product.barcode %></td></tr>
+</table>
+<%= link_to '改名称', "/supply/products/strict_edit?id=#{@product.id}", class: 'btn btn-primary' %>
+<%= link_to '改其他信息', "/supply/general_products/#{@general_product.id}/edit", class: 'btn btn-primary' %>
+<%= link_to '置为无效', "/supply/products/soft_delete?id=#{@product.id}", data: {confirm: '确定置为无效吗？'}, class: 'btn btn-primary' if current_user.admin? %>
+<%= link_to '更改售出系数', "/supply/products/change_sale_ratio?id=#{@product.id}", class: 'btn btn-primary' if current_user.admin? %>

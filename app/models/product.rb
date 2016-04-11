@@ -32,6 +32,13 @@ class Product < ActiveRecord::Base
     end
   end
 
+  def update_sale_ratio options
+    if !options[:sale_ratio].blank? && options[:sale_ratio].to_f != 0.0
+      self.sale_ratio = options[:sale_ratio]
+      self.save!
+    end
+  end
+
   def soft_delete
     Product.transaction do
 

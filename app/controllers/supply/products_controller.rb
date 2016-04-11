@@ -15,6 +15,23 @@ class Supply::ProductsController < BaseController
     end
   end
 
+  def show
+    @product = current_user.company.products.is_valid.find(params[:id])
+    @general_product = @product.general_product
+  end
+
+  def change_sale_ratio
+    need_admin
+    if request.post?
+      product = current_user.company.products.is_valid.find(params[:id])
+      product.update_sale_ratio sale_ratio: params[:sale_ratio]
+      flash[:success] = '更新成功'
+      redirect_to "/supply/products/#{params[:id]}"
+    else
+      @product = current_user.company.products.is_valid.find(params[:id])
+    end
+  end
+
   def create_one
     product = Product.new product_params
     begin

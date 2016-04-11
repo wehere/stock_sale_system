@@ -96,7 +96,7 @@ Rails.application.routes.draw do
       end
     end
     resources :home, only: [:index]
-    resources :products, only: [:index, :new, :update, :edit] do
+    resources :products, only: [:index, :new, :update, :edit, :show] do
       collection do
         get :prepare_link_to_general_product
         post :do_link_to_general_product
@@ -113,6 +113,8 @@ Rails.application.routes.draw do
         get :prepare_export_products
         get :detail
         get :soft_delete
+        get :change_sale_ratio
+        post :change_sale_ratio
       end
     end
     resources :prices do
