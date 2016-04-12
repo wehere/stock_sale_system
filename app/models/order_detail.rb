@@ -92,7 +92,7 @@ class OrderDetail < ActiveRecord::Base
           h[:real_weight] += (order_detail.real_weight||0)*ratio
         elsif order_detail.detail_type == 3 or order_detail.detail_type == 4
           h = result[order_detail.product.general_product_id]
-          ratio = 1.0
+          ratio = LossOrderItem.find_by_id(order_detail.item_id).loss_price.ratio||0.0 rescue 0.0
           h[:real_weight] -= (order_detail.real_weight||0)*ratio
         end
       end
