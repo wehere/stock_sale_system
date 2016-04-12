@@ -1,5 +1,6 @@
 class LossOrderItem < ActiveRecord::Base
 
+  belongs_to :loss_price
 
   #     loss_order_id: loss_order.id,
   #     product_id: loss_price.product_id,

@@ -1,5 +1,6 @@
 class LossPrice < ActiveRecord::Base
   belongs_to :product
+  has_many :loss_order_items
   scope :is_used, -> { where is_used: 1 }
 
   def update_price new_price

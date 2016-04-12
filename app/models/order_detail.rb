@@ -11,6 +11,7 @@ class OrderDetail < ActiveRecord::Base
   scope :valid, ->{where("delete_flag is null or delete_flag = 0")}
 
   def self.write_stock_from_start_to_end start_id, end_id
+    BusinessException.raise '有问题，需要改正'
     # self.transaction do
       self.valid.where("id between ? and ?", start_id, end_id).each do |order_detail|
         general_product = order_detail.product.general_product
@@ -47,6 +48,7 @@ class OrderDetail < ActiveRecord::Base
     order_details.each do |order_detail|
       if result[order_detail.product.general_product_id].blank?
         if order_detail.detail_type == 2
+          # 出库
           h = {}
           h[:sale_date] = order_detail.detail_date
           h[:purchase_date] = ''
@@ -56,6 +58,7 @@ class OrderDetail < ActiveRecord::Base
           h[:real_weight] = 0.0-(order_detail.real_weight||0)*ratio
           result[order_detail.product.general_product_id] = h
         elsif order_detail.detail_type == 1
+          # 入库
           h = {}
           h[:sale_date] = ''
           h[:purchase_date] = order_detail.detail_date
@@ -65,8 +68,9 @@ class OrderDetail < ActiveRecord::Base
           h[:real_weight] = (order_detail.real_weight||0)*ratio
           result[order_detail.product.general_product_id] = h
         else
+          # 损耗
           h = {}
-          ratio = 1.0
+          ratio = LossOrderItem.find_by_id(order_detail.item_id).loss_price.ratio||0.0 rescue 0.0
           h[:real_weight] = 0.0 - (order_detail.real_weight||0)*ratio
         end
       else
