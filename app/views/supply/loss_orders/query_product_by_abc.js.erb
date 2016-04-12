@@ -1,0 +1,17 @@
+$(".fixed_panel").html("");
+<% @result_products.each do |loss_price| %>
+if($("#<%= loss_price.product.mark %>").size()==1){
+    str = '<div onclick="choose_this('+'\'<%= loss_price.product.chinese_name %>\''+')" style="cursor:hand;width: 100%;height: 15px; "  >';
+    str += '<h6><a href="#"><%= loss_price.product.chinese_name %></a></h6>';
+    str += '</div>';
+    str += '<div style="height: 2px"></div>';
+    $("#<%= loss_price.product.mark %>").append(str);
+}else{
+    str = '<div onclick="choose_this('+'\'<%= loss_price.product.chinese_name %>\''+')" style="cursor:hand;width: 100%;height: 15px; "  >';
+    str += '   <h6><a href="#"><%= loss_price.product.chinese_name %></a></h6>';
+    str += '</div>';
+    str += '<div style="height: 2px"></div>';
+    $("#others").append(str);
+}
+
+<% end %>

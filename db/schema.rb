@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160411072217) do
+ActiveRecord::Schema.define(version: 20160411091534) do
 
   create_table "comments", force: :cascade do |t|
     t.integer  "order_id",    limit: 4
@@ -94,12 +94,13 @@ ActiveRecord::Schema.define(version: 20160411072217) do
     t.integer  "storage_id",  limit: 4
     t.datetime "loss_date"
     t.integer  "user_id",     limit: 4
-    t.boolean  "delete_flag",           default: false
+    t.boolean  "delete_flag",              default: false
     t.integer  "supplier_id", limit: 4
     t.integer  "seller_id",   limit: 4
     t.integer  "loss_type",   limit: 4
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+    t.string   "memo",        limit: 1000
   end
 
   create_table "loss_prices", force: :cascade do |t|

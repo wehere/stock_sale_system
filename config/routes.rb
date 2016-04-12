@@ -57,6 +57,14 @@ Rails.application.routes.draw do
         get :search_item
       end
     end
+    resources :loss_orders do
+      collection do
+        get :create_loss_order
+        post :create_loss_order
+        post :query_product_by_abc
+        post :get_price_by_product_name
+      end
+    end
     resources :general_products do
       collection do
         get :check_repeated

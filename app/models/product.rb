@@ -7,6 +7,7 @@ class Product < ActiveRecord::Base
   validates_uniqueness_of :chinese_name, scope: [:supplier_id], message: "产品名称已经存在，请选用其他产品名称"
   has_one :purchase_price, -> { where is_used: true }
   has_many :purchase_order_items
+  has_one :loss_price, -> { where is_used: true }
 
   scope :is_valid, ->{where(is_valid: true)}
 
