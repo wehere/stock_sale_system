@@ -63,6 +63,9 @@ Rails.application.routes.draw do
         post :create_loss_order
         post :query_product_by_abc
         post :get_price_by_product_name
+        
+        get :change_order_item
+        get :search_item
       end
     end
     resources :general_products do

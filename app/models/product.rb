@@ -8,6 +8,7 @@ class Product < ActiveRecord::Base
   has_one :purchase_price, -> { where is_used: true }
   has_many :purchase_order_items
   has_one :loss_price, -> { where is_used: true }
+  has_many :loss_order_items
 
   scope :is_valid, ->{where(is_valid: true)}
 
@@ -166,6 +167,8 @@ class Product < ActiveRecord::Base
       out_weight = 0.0
       in_money = 0.0
       out_money = 0.0
+      loss_weight = 0.0
+      loss_money = 0.0
       gp.products.each do |product|
         # 入
         order_details.where(product_id: product.id).where(detail_type: 1).each do |od|
@@ -179,6 +182,13 @@ class Product < ActiveRecord::Base
           ratio = OrderItem.find_by_id(od.item_id).price.ratio
           out_weight += od.real_weight * ratio
           out_money += od.money
+        end
+
+        # 损
+        order_details.where(product_id: product.id).where("detail_type = 3 or detail_type = 4").each do |od|
+          ratio = LossOrderItem.find_by_id(od.item_id).loss_price.ratio
+          loss_weight += od.real_weight * ratio
+          loss_money += od.money
         end
       end
       average_in_price = in_money/(in_weight*1.0)
@@ -194,7 +204,9 @@ class Product < ActiveRecord::Base
           'out_money' => out_money.round(2).to_s,
           'average_out_price' => average_out_price.round(2).to_s,
           'problem' => problem.to_s,
-          'mini_spec' => gp.mini_spec
+          'mini_spec' => gp.mini_spec,
+          'loss_weight' => loss_weight.round(2).to_s,
+          'loss_money' => loss_money.round(2).to_s
       }
     end
 
@@ -212,14 +224,14 @@ class Product < ActiveRecord::Base
 
         sheet.merge_cells(current_row, 0, current_row+1, 0)
         sheet.row(current_row).set_format(0, in_center)
-        sheet.row(current_row).push gp['name'], "入库数量/#{gp['mini_spec']}", '入库金额/元', '入库均价', "出库数量/#{gp['mini_spec']}", "出库金额/元", '出库均价', '是否有问题'
+        sheet.row(current_row).push gp['name'], "入库数量/#{gp['mini_spec']}", '入库金额/元', '入库均价', "出库数量/#{gp['mini_spec']}", "出库金额/元", '出库均价', '是否有问题', "损耗数量/#{gp['mini_spec']}", '损耗金额/元'
         current_row += 1
-        sheet.row(current_row).push gp[name], gp['in_weight'], gp['in_money'], gp['average_in_price'], gp['out_weight'], gp['out_money'], gp['average_out_price'], gp['problem']
+        sheet.row(current_row).push gp[name], gp['in_weight'], gp['in_money'], gp['average_in_price'], gp['out_weight'], gp['out_money'], gp['average_out_price'], gp['problem'], gp['loss_weight'], gp['loss_money']
         current_row += 1
       end
     end
 
-    file_path = "#{Rails.root}/public/downloads/#{supplier_id}/#{start_date.to_date.to_s}至#{end_date.to_date.to_s}_#{Time.now.to_i}_产品入库出库汇总.xls"
+    file_path = "#{Rails.root}/public/downloads/#{supplier_id}/#{start_date.to_date.to_s}至#{end_date.to_date.to_s}_#{Time.now.to_i}_产品入库出库损耗汇总.xls"
     Dir.mkdir Rails.root.join("public","downloads/#{supplier_id}/") unless Dir.exist? Rails.root.join("public","downloads/#{supplier_id}/")
     book.write file_path
     file_path

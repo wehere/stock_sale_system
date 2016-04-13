@@ -101,8 +101,10 @@ SimpleNavigation::Configuration.run do |navigation|
       sub_nav.item :key_4_2, '进货单', "/supply/purchase_orders", if: -> {true}
       sub_nav.item :key_4_1, '查询进货品项详细', '/supply/purchase_orders/search_item', if: -> {true}
     end
-    primary.item :key_31, '损耗单', "/supply/loss_orders/create_loss_order", class: 'special', if: -> {current_user.employee?} do |sub_nav|
-      sub_nav.item :key_31_1, '录入损耗单', '/supply/loss_orders/create_loss_order', if: -> {current_user.employee?}
+    primary.item :key_31, '损耗单', "/supply/loss_orders", class: 'special', if: -> {current_user.employee?} do |sub_nav|
+      sub_nav.item :key_31_1, '损耗单', '/supply/loss_orders', if: -> {current_user.employee?}
+      sub_nav.item :key_31_2, '录入损耗单', '/supply/loss_orders/create_loss_order', if: -> {current_user.employee?}
+      sub_nav.item :key_31_3, '查询损耗', '/supply/loss_orders/search_item', if: -> {current_user.employee?}
     end
     primary.item :key_5, '客户', "/supply/customers", class: 'special', if: -> { current_user.employee?} do |sub_nav|
       sub_nav.item :key_5_3, '客户', "/supply/customers", if: -> { true}

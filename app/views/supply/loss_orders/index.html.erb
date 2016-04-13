@@ -1,0 +1,34 @@
+<%= form_tag "/supply/purchase_orders", method: :get do %>
+    <label>起始日期</label>
+    <%= date_field_tag 'start_date', params[:start_date] %>
+    <label>结束日期</label>
+    <%= date_field_tag 'end_date', params[:end_date] %>
+    <label>包含产品</label>
+    <%= text_field_tag 'product_name', params[:product_name] %>
+    <br/>
+    <label>备注包含</label>
+    <%= text_field_tag 'memo', params[:memo] %>
+    <%= submit_tag '查询', class: 'btn btn-primary' %>
+<% end %>
+<br/>
+<table class="table">
+  <thead>
+  <th>单据ID</th>
+  <th>卖家</th>
+  <th>损耗日期</th>
+  <th>损耗金额</th>
+  <th>备注</th>
+  <th>操作</th>
+  </thead>
+  <% @loss_orders.each do |loss_order| %>
+      <tr>
+        <td><%= loss_order.id %></td>
+        <td><%= loss_order.seller.name rescue 'error' %></td>
+        <td><%= loss_order.loss_date.strftime("%Y年%m月%d日") %></td>
+        <td><%= loss_order.sum_money %></td>
+        <td><%= loss_order.memo %></td>
+        <td><%= link_to '查看&编辑', "/supply/loss_orders/#{loss_order.id}/edit" %></td>
+      </tr>
+  <% end %>
+</table>
+<%= will_paginate @loss_orders, :class => 'flickr_pagination' ,:previous_label => '上一页', :next_label => '下一页'%>

@@ -1,6 +1,56 @@
 class Supply::LossOrdersController < BaseController
   before_filter :need_login
 
+  def index
+    supplier_id = current_user.company.id
+    @loss_orders = LossOrder.where("loss_orders.supplier_id = ? and (loss_orders.delete_flag is null or loss_orders.delete_flag = 0)", supplier_id)
+    # params[:start_date] ||= Time.now.to_date - 10.days
+    # params[:end_date] ||= Time.now.to_date
+    unless params[:start_date].blank?
+      start_date = params[:start_date].to_time.change(hour:0, min:0, sec:0)
+      @loss_orders = @loss_orders.where("loss_orders.loss_date >= ?", start_date)
+    end
+    unless params[:end_date].blank?
+      end_date = params[:end_date].to_time.change(hour:23, min:59, sec:59)
+      @loss_orders = @loss_orders.where("loss_orders.loss_date <= ?", end_date)
+    end
+    unless params[:product_name].blank?
+      @loss_orders = @loss_orders.joins(loss_order_items: :product).where("products.chinese_name like ?", "%#{params[:product_name]}%")
+    end
+    unless params[:memo].blank?
+      @loss_orders = @loss_orders.where("loss_orders.memo like ? ", "%#{params[:memo]}%")
+    end
+    @loss_orders = @loss_orders.order(loss_date: :desc).paginate(page: params[:page]||1, per_page: params[:per_page]||10)
+  end
+
+  def edit
+    @loss_order = LossOrder.find_by_id(params[:id])
+    @loss_order_items = LossOrderItem.where(loss_order_id: params[:id])
+  end
+
+  def change_order_item
+    begin
+      loss_order_item = LossOrderItem.find_by_id(params[:loss_order_item_id])
+      loss_order_item.change_order_item params[:real_weight], params[:price], current_user
+      render text: 'ok'
+    rescue Exception=>e
+      render text: 'error'
+    end
+  end
+
+  def destroy
+    begin
+      loss_order = LossOrder.find(params[:id])
+      success_message = "进货单据ID为#{loss_order.id},日期为#{loss_order.loss_date.strftime("%Y年%m月%d日")},被删除成功。"
+      loss_order.delete_self current_user
+      flash[:notice] = success_message
+      redirect_to action: :index
+    rescue Exception=>e
+      flash[:alert] = dispose_exception e
+      redirect_to "/supply/loss_orders/#{params[:id]}/edit"
+    end
+  end
+
   def create_loss_order
     if request.post?
       begin
@@ -94,4 +144,18 @@ class Supply::LossOrdersController < BaseController
     render text: "0|#{loss_price.id}|#{loss_price.true_spec}|#{loss_price.price}"
   end
 
+  def search_item
+    unless params[:product_name].blank?
+      @loss_items = LossOrderItem.joins(:product)
+      @loss_items = @loss_items.where("products.chinese_name like ?", "%#{params[:product_name]}%")
+      @loss_items = @loss_items.joins(:loss_order)
+      @loss_items = @loss_items.where("loss_orders.supplier_id = ? and (loss_orders.delete_flag is null or loss_orders.delete_flag = 0)", current_user.company.id)
+      unless params[:start_date].blank?
+        @loss_items = @loss_items.where("loss_date >= ?", params[:start_date].to_time.change(hour:0, min:0, sec:0))
+      end
+      unless params[:end_date].blank?
+        @loss_items = @loss_items.where("loss_date <= ?", params[:end_date].to_time.change(hour:23, min:59, sec:59))
+      end
+    end
+  end
 end

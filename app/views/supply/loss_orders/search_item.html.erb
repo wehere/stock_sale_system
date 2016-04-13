@@ -1,0 +1,27 @@
+<h3>搜索过去的损耗详情</h3>
+<%= form_tag '/supply/loss_orders/search_item', method: :get do %>
+    <label>产品名</label><%= text_field_tag :product_name, params[:product_name] %>
+    <label>时间区间</label><%= date_field_tag :start_date, params[:start_date] %>
+    <label>至</label><%= date_field_tag :end_date, params[:end_date] %>
+    <%= submit_tag '查询', class: 'btn btn-primary' %>
+<% end %>
+<table class="table">
+  <thead>
+  <th>品名</th>
+  <th>价格</th>
+  <th>损耗量</th>
+  <th>规格</th>
+  <th>损耗日期</th>
+  </thead>
+  <tbody>
+  <% @loss_items.each do |i| %>
+      <tr>
+        <td><%= i.product.chinese_name rescue 'error' %></td>
+        <td><%= i.price %></td>
+        <td><%= i.real_weight %></td>
+        <td><%= i.true_spec %></td>
+        <td><%= i.loss_order.loss_date.strftime('%Y-%m-%d') %></td>
+      </tr>
+  <% end unless @loss_items.blank? %>
+  </tbody>
+</table>
