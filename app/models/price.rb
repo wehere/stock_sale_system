@@ -145,28 +145,30 @@ class Price < ActiveRecord::Base
     price
   end
 
-  def update_price options
-    PurchasePrice.transaction do
-
-      old_attributes = self.attributes
-      old_attributes.delete("id")
-
-      pps = Price.where year_month_id: self.year_month_id,
-                        product_id: self.product_id,
-                        is_used: true,
-                        customer_id:  self.customer_id,
-                        supplier_id: self.supplier_id
-      pps.each do |p|
-        p.is_used = false
-        p.save!
-      end
-      pur_p = Price.new old_attributes
-      pur_p.is_used = true
-      pur_p.save!
 
 
-      pur_p.update! options
-      pur_p
-    end
-  end
+  # def update_price options
+  #   PurchasePrice.transaction do
+  #
+  #     old_attributes = self.attributes
+  #     old_attributes.delete("id")
+  #
+  #     pps = Price.where year_month_id: self.year_month_id,
+  #                       product_id: self.product_id,
+  #                       is_used: true,
+  #                       customer_id:  self.customer_id,
+  #                       supplier_id: self.supplier_id
+  #     pps.each do |p|
+  #       p.is_used = false
+  #       p.save!
+  #     end
+  #     pur_p = Price.new old_attributes
+  #     pur_p.is_used = true
+  #     pur_p.save!
+  #
+  #
+  #     pur_p.update! options
+  #     pur_p
+  #   end
+  # end
 end

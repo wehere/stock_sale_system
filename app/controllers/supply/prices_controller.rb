@@ -90,16 +90,20 @@ class Supply::PricesController < BaseController
     end
   end
 
+  # 价格如果没变，不用更新
+  # 原价格为空或者0.0，直接硬更新
+  # 原价格不为空或者0.0，置为无效，新增一条新记录
   def update_one_price
     price = Price.find_by_id(params[:id]) rescue nil
     unless price.blank?
-      if params[:price].blank?
-        unless price.true_spec.equal? params[:spec]
-          unless params[:spec].blank?
-            price.update_attribute :true_spec, params[:spec]
-          end
-        end
-      else
+      # if params[:price].blank?
+      #   unless price.true_spec.equal? params[:spec]
+      #     unless params[:spec].blank?
+      #       price.update_attribute :true_spec, params[:spec]
+      #     end
+      #   end
+      # else
+      unless params[:price].blank?
         unless price.price.equal? params[:price].to_f
           unless params[:price].blank?
             if price.price.blank? || price.price == 0.0
@@ -118,30 +122,31 @@ class Supply::PricesController < BaseController
   end
 
   def update
-    begin
-      @old_price = Price.find(params[:id])
-      unless @old_price.price.equal? params[:submitted_price].to_f
-        new_price = @old_price.dup
-        @old_price.update_attribute :is_used, false
-        new_price.update_attributes! price: params[:submitted_price].to_f, true_spec: params[:submitted_spec]
-        flash[:notice] = '更新成功'
-      else
-        @old_price.update_attribute :true_spec, params[:submitted_spec]
-        flash[:notice] = '更新成功'
-      end
-    rescue Exception => e
-      flash[:notice] = dispose_exception e
-    end
-    company = current_user.company
-    @customers = company.customers
-    @year_months = YearMonth.all
-    @customer_id = @old_price.customer_id
-    @year_month_id = @old_price.year_month_id
-    @search_results = company.supply_prices.where(customer_id: @customer_id, year_month_id: @year_month_id, is_used: true).order(:product_id)
-    @pos_id = params[:pos_id].to_i - 1
-    render :search
+    # begin
+    #   @old_price = Price.find(params[:id])
+    #   unless @old_price.price.equal? params[:submitted_price].to_f
+    #     new_price = @old_price.dup
+    #     @old_price.update_attribute :is_used, false
+    #     new_price.update_attributes! price: params[:submitted_price].to_f, true_spec: params[:submitted_spec]
+    #     flash[:notice] = '更新成功'
+    #   else
+    #     @old_price.update_attribute :true_spec, params[:submitted_spec]
+    #     flash[:notice] = '更新成功'
+    #   end
+    # rescue Exception => e
+    #   flash[:notice] = dispose_exception e
+    # end
+    # company = current_user.company
+    # @customers = company.customers
+    # @year_months = YearMonth.all
+    # @customer_id = @old_price.customer_id
+    # @year_month_id = @old_price.year_month_id
+    # @search_results = company.supply_prices.where(customer_id: @customer_id, year_month_id: @year_month_id, is_used: true).order(:product_id)
+    # @pos_id = params[:pos_id].to_i - 1
+    # render :search
   end
 
+  # price为null或者0.0时直接硬更新价格
   def true_update_price
     begin
       true_price = Price.find(params[:id])

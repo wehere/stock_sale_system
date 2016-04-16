@@ -56,7 +56,7 @@
                 <%= price.product.blank? ? '' : price.product.chinese_name %>
                 </td>
                 <td>
-                <%= text_field_tag "submitted_spec", price.true_spec, onfocus: "select();", onchange: "update_spec(#{price.id},this.value);", size: 6 %>
+                  <%= price.true_spec.blank? ? '' : price.true_spec %>
                 </td>
                 <%= hidden_field_tag 'pos_id', index %>
                 <td>
@@ -84,12 +84,12 @@
       });
   }
 
-  function update_spec(id, spec){
-      $.ajax({
-          type: 'post',
-          url: "/supply/prices/update_one_price",
-          dataType: 'text',
-          data: {id: id, spec: spec}
-      });
-  }
+//  function update_spec(id, spec){
+//      $.ajax({
+//          type: 'post',
+//          url: "/supply/prices/update_one_price",
+//          dataType: 'text',
+//          data: {id: id, spec: spec}
+//      });
+//  }
 </script>
