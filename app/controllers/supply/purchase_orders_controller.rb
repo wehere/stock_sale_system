@@ -68,8 +68,8 @@ class Supply::PurchaseOrdersController < BaseController
 
   def create_purchase_order
     if request.post?
-      pp "^"*100
-      pp params
+      # pp "^"*100
+      # pp params
       # {"main_message"=>
       #      "purchase_price_id:2810|real_weight:1|price:5,purchase_price_id:2811|real_weight:1|price:8,",
       #  "supplier_id"=>"53",
@@ -78,39 +78,41 @@ class Supply::PurchaseOrdersController < BaseController
       #  "seller_id"=>"53",
       #  "controller"=>"supply/purchase_orders",
       #  "action"=>"create_purchase_order"}
+      begin
+        PurchaseOrder.transaction do
+          # 创建purchase_orders
+          store = current_user.store
+          BusinessException.raise '当前用户没有绑定门店' if store.blank?
+          storage = store.storage
+          BusinessException.raise '当前用户所属门店没有绑定仓库' if storage.blank?
+          purchase_order = PurchaseOrder.new storage_id: storage.id, purchase_date: params[:purchase_date].to_date, user_id: current_user.id,
+                                     delete_flag: 0, supplier_id: current_user.company.id, seller_id: params[:seller_id], memo: params[:memo]
+          purchase_order.save!
+          # 创建purchase_order_items
+          items = params[:main_message].split(',')
+          items.each do |item|
+            options = item.split('|')
 
-      PurchaseOrder.transaction do
-        # 创建purchase_orders
-        store = current_user.store
-        BusinessException.raise '当前用户没有绑定门店' if store.blank?
-        storage = store.storage
-        BusinessException.raise '当前用户所属门店没有绑定仓库' if storage.blank?
-        purchase_order = PurchaseOrder.new storage_id: storage.id, purchase_date: params[:purchase_date].to_date, user_id: current_user.id,
-                                   delete_flag: 0, supplier_id: current_user.company.id, seller_id: params[:seller_id], memo: params[:memo]
-        purchase_order.save!
-        # 创建purchase_order_items
-        items = params[:main_message].split(',')
-        items.each do |item|
-          options = item.split('|')
+            # 更新loss_price
+            purchase_price_id = options[0].split(':').last
+            purchase_price = PurchasePrice.find(purchase_price_id)
+            param_purchase_price = options[2].split(':').last
+            BusinessException.raise "#{purchase_price.product.chinese_name}价格必须填写数字，且不可以为0" if param_purchase_price.to_f == 0
+            purchase_price = purchase_price.update_price param_purchase_price.to_f
 
-          # 更新loss_price
-          purchase_price_id = options[0].split(':').last
-          purchase_price = PurchasePrice.find(purchase_price_id)
-          param_purchase_price = options[2].split(':').last
-          BusinessException.raise "#{purchase_price.product.chinese_name}价格必须填写数字，且不可以为0" if param_purchase_price.to_f == 0
-          purchase_price = purchase_price.update_price param_purchase_price.to_f
-
-          real_weight = options[1].split(':').last
-          BusinessException.raise "#{purchase_price.product.chinese_name}数量必须填写数字，且不可以为0" if real_weight.to_f == 0
-          # 创建purchase_order_item  创建order_detail  更新stock
-          PurchaseOrderItem.create_and_update_order_detail purchase_order_id: purchase_order.id,
-                                                       product_id: purchase_price.product_id,
-                                                       real_weight: real_weight,
-                                                       purchase_price_id: purchase_price.id
+            real_weight = options[1].split(':').last
+            BusinessException.raise "#{purchase_price.product.chinese_name}数量必须填写数字，且不可以为0" if real_weight.to_f == 0
+            # 创建purchase_order_item  创建order_detail  更新stock
+            PurchaseOrderItem.create_and_update_order_detail purchase_order_id: purchase_order.id,
+                                                         product_id: purchase_price.product_id,
+                                                         real_weight: real_weight,
+                                                         purchase_price_id: purchase_price.id
+          end
+          render text: "0|保存成功"
         end
-        render text: "0|保存成功"
+      rescue Exception=>e
+        render text: "1|#{dispose_exception(e)}"
       end
-
     else
       # 录入损耗单页面
       params[:purchase_date] = Time.now.to_date

@@ -100,7 +100,6 @@ class Supply::LossOrdersController < BaseController
         end
       rescue Exception=>e
         render text: "1|#{dispose_exception(e)}"
-        return
       end
     else
       # 录入损耗单页面
