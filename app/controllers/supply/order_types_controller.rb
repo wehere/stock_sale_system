@@ -2,7 +2,7 @@ class Supply::OrderTypesController < BaseController
   before_filter :need_login
 
   def index
-    @customers = current_user.company.customers
+    @customers = current_user.company.now_customers
   end
 
   def create

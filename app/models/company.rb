@@ -2,8 +2,15 @@ class Company < ActiveRecord::Base
   has_many :users
   has_many :get_prices, foreign_key: 'customer_id', class_name: 'Price' #得到的价格
   has_many :supply_prices, foreign_key: 'supplier_id', class_name: 'Price' #由自己提供的价格
+
+  # 包含曾经的客户
   has_many :relations, foreign_key: 'company_id', class_name: 'CustomersCompanies'
   has_many :customers, through: :relations, source: :purchaser #下家，即我的客户
+
+  # 只包含现在的客户
+  has_many :now_relations, -> { where("delete_flag is null or delete_flag = 0 ")}, foreign_key: 'company_id', class_name: 'CustomersCompanies'
+  has_many :now_customers, through: :now_relations, source: :purchaser
+
   has_many :reverse_relations, foreign_key: 'customer_id', class_name: 'CustomersCompanies'
   has_many :supplies, through: :reverse_relations, source: :supplier #上家，即我的供应商
   has_many :stores
@@ -44,7 +51,7 @@ class Company < ActiveRecord::Base
   end
 
   def customer_count
-    self.customers.count
+    self.now_customers.count
   end
 
   # 管理员创建客户

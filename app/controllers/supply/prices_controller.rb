@@ -3,7 +3,7 @@ class Supply::PricesController < BaseController
   before_filter :need_login
 
   def index
-    @customers = current_user.company.customers
+    @customers = current_user.company.now_customers
     @year_months = YearMonth.all
     params[:year_month_id] ||= YearMonth.current_year_month.id
 
@@ -33,7 +33,7 @@ class Supply::PricesController < BaseController
   def do_not_use
     price = Price.find(params[:id])
     price.update_attribute :is_used, false
-    @customers = current_user.company.customers
+    @customers = current_user.company.now_customers
     @year_months = YearMonth.all
     render :index
   end
@@ -41,7 +41,7 @@ class Supply::PricesController < BaseController
   def search
     begin
       company = current_user.company
-      @customers = company.customers
+      @customers = company.now_customers
       @year_months = YearMonth.all
       if request.post?
         @customer_id = params[:customer_id]
@@ -67,7 +67,7 @@ class Supply::PricesController < BaseController
     @product_id = params[:product_id]
     @chinese_name = Product.find(@product_id).chinese_name
     @supplier_id = company.id
-    @customers = company.customers
+    @customers = company.now_customers
     @year_months = YearMonth.all
     @year_month_id = YearMonth.current_year_month.id
   end
@@ -83,7 +83,7 @@ class Supply::PricesController < BaseController
       @product_id = params[:product_id]
       @chinese_name = Product.find(@product_id).chinese_name
       @supplier_id = company.id
-      @customers = company.customers
+      @customers = company.now_customers
       @year_months = YearMonth.all
       @year_month_id = YearMonth.current_year_month.id
       render :new
@@ -183,7 +183,7 @@ class Supply::PricesController < BaseController
     @year_months = YearMonth.all
     @year_month_id = YearMonth.current_year_month.id
     company = current_user.company
-    @customers = company.customers
+    @customers = company.now_customers
     if request.post?
       supplier_id = current_user.company.id
       customer_id = params[:customer_id]

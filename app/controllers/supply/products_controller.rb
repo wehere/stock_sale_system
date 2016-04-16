@@ -156,7 +156,7 @@ class Supply::ProductsController < BaseController
         # 产生出货价格
         current_year_month = YearMonth.current_year_month
         next_year_month = YearMonth.next_year_month
-        customers = current_user.company.customers
+        customers = current_user.company.now_customers
         customers.each do |customer|
           current_year_month_price = Price.new year_month_id: current_year_month.id,
                             customer_id: customer.id,
@@ -273,7 +273,7 @@ class Supply::ProductsController < BaseController
   end
 
   def prepare_export_products
-    @customers = current_user.company.customers
+    @customers = current_user.company.now_customers
     @year_months = []
     @year_months << YearMonth.pre_year_month
     @year_months << YearMonth.current_year_month
