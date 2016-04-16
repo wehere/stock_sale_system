@@ -80,14 +80,17 @@ class Supply::LossOrdersController < BaseController
           items = params[:main_message].split(',')
           items.each do |item|
             options = item.split('|')
+
+            # 更新loss_price
             loss_price_id = options[0].split(':').last
             loss_price = LossPrice.find(loss_price_id)
             param_loss_price = options[2].split(':').last
             BusinessException.raise "#{loss_price.product.chinese_name}价格必须填写数字，且不可以为0" if param_loss_price.to_f == 0
-            # 更新loss_price
             loss_price = loss_price.update_price param_loss_price.to_f
+
             real_weight = options[1].split(':').last
             BusinessException.raise "#{loss_price.product.chinese_name}数量必须填写数字，且不可以为0" if real_weight.to_f == 0
+            # 创建loss_order_item  order_detail  stock
             LossOrderItem.create_and_update_order_detail loss_order_id: loss_order.id,
                                                          product_id: loss_price.product_id,
                                                          real_weight: real_weight,
@@ -104,7 +107,7 @@ class Supply::LossOrdersController < BaseController
       params[:loss_date] = Time.now.to_date
       @no_nav = true
       @company = current_user.company
-      @marks = Product.where(supplier_id: 31, is_valid:1).group(:mark).order("count(*) desc").count
+      @marks = Product.where(supplier_id: @company.id, is_valid:1).group(:mark).order("count(*) desc").count
       #{"干货"=>117, "蔬菜"=>53, "冻品"=>37, "调料"=>28, "肉类"=>18, "豆制品"=>10, "水产品"=>9, "菇类"=>5, "面类"=>4, "水果"=>4, "杂货"=>3, "未分类"=>1}
       @big_marks = []
       @small_marks = []

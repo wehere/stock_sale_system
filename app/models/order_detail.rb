@@ -1,4 +1,6 @@
 class OrderDetail < ActiveRecord::Base
+  # price 与 对应purchase_price的price可能不一样。所以用到price时以此price为准。
+
   belongs_to :product
   belongs_to :supplier, foreign_key: :supplier_id, class_name: 'Company'
 

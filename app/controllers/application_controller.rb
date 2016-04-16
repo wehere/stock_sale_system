@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
       else
         # e.to_s.to_logger
         # $@.to_logger
-        return '发生未知错误'
+        return '貌似有一些问题，请联系系统管理员，微信 mbeslow'
     end
   end
 

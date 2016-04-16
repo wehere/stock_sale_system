@@ -53,6 +53,11 @@ Rails.application.routes.draw do
     end
     resources :purchase_orders do
       collection do
+        get :create_purchase_order
+        post :create_purchase_order
+        post :query_product_by_abc
+        post :get_price_by_product_name
+
         get :change_order_item
         get :search_item
       end
@@ -63,7 +68,7 @@ Rails.application.routes.draw do
         post :create_loss_order
         post :query_product_by_abc
         post :get_price_by_product_name
-        
+
         get :change_order_item
         get :search_item
       end

@@ -1,4 +1,4 @@
-<h4 style="text-align: center"><%= "#{@company.simple_name}损耗" %></h4>
+<h4 style="text-align: center"><%= "#{@company.simple_name}进货" %></h4>
 <% colors = ['#BBFFEE','#CCFF99','#FFEE99','#FFCCCC','#E8CCFF','#FFE4E1','	#FAEBD7'] %>
 <% left = 15 %>
 <div class="search_panel">
@@ -8,9 +8,9 @@
     <div class="panel" style="left:<%= left %>px;background-color: <%= colors[index] %>;">
       <h3 style="text-align: center"><%= mark %></h3>
       <div id="<%= mark %>" class="fixed_panel">
-        <% @loss_prices.where("products.mark = ?", mark).limit(16).each_with_index do |loss_price, index| %>
-            <div onclick="choose_this('<%= loss_price.product.chinese_name %>')" style="cursor:hand;width: 100%;height: 15px; "  >
-              <h6><a href='#'><%= loss_price.product.chinese_name %></a></h6>
+        <% @purchase_prices.where("products.mark = ?", mark).limit(16).each_with_index do |purchase_price, index| %>
+            <div onclick="choose_this('<%= purchase_price.product.chinese_name %>')" style="cursor:hand;width: 100%;height: 15px; "  >
+              <h6><a href='#'><%= purchase_price.product.chinese_name %></a></h6>
             </div>
             <div style="height: 2px"></div>
         <% end %>
@@ -22,9 +22,9 @@
 <div class="panel" style="left:<%= left %>px;background-color: <%= colors.last %>">
   <h3 style="text-align: center"><%= "其他" %></h3>
   <div id="others" class="fixed_panel">
-    <% @loss_prices.where("products.mark in (?)", @small_marks).limit(16).each_with_index do |loss_price, index| %>
-        <div onclick="choose_this('<%= loss_price.product.chinese_name %>')" style="width: 100%;height: 15px;cursor:hand;">
-          <h6><a href='#'><%= loss_price.product.chinese_name %></a></h6>
+    <% @purchase_prices.where("products.mark in (?)", @small_marks).limit(16).each_with_index do |purchase_price, index| %>
+        <div onclick="choose_this('<%= purchase_price.product.chinese_name %>')" style="width: 100%;height: 15px;cursor:hand;">
+          <h6><a href='#'><%= purchase_price.product.chinese_name %></a></h6>
         </div>
         <div style="height: 2px"></div>
     <% end %>
@@ -32,11 +32,8 @@
 </div>
 <% left = left + 130 + 5 %>
 <div class="order_panel" style="left:<%= left %>px;">
-  <label>买自</label><%= select_tag :seller_id, options_from_collection_for_select(@sellers, 'id', 'name', params[:seller_id]||(@sellers.first.id rescue '')), onchange: 'change_supplier()'%>
-  <label>损耗类型</label><%= select_tag :loss_type, options_from_collection_for_select(LossOrder::LOSS_TYPE, 'first', 'second', params[:loss_type]||LossOrder::LOSS_TYPE.keys.first) %>
-  <br/>
-
-  <label>损耗日期</label><%= date_field_tag :loss_date, params[:loss_date]||Time.now.tomorrow.to_date %>
+  <label>买自</label><%= select_tag :seller_id, options_from_collection_for_select(@sellers, 'id', 'name', params[:seller_id]||(@sellers.first.id rescue '')) %>
+  <label>进货日期</label><%= date_field_tag :purchase_date, params[:purchase_date]||Time.now.tomorrow.to_date %>
   <table class="bordered">
     <thead>
     <th width="150px">品名</th><th width="50px">规格</th><th width="50px">数量</th><th width="50px">价格</th><th></th>
@@ -47,12 +44,13 @@
   </table>
   <label>合计:</label><label id="sum_money"></label>
 </div>
+
 <br/>
 <div class="memo_panel" style="left:<%= left %>px;">
   <label>备注</label><br/><%= text_area_tag :memo, params[:memo], class: 'memo_area' %>
 </div>
 <div style="position: fixed;bottom: 50px;left:<%= left+100 %>px;">
-  <%= link_to '保存损耗单', "javascript:save_loss_order()", class: 'btn btn-primary' %>
+  <%= link_to '保存进货单', "javascript:save_purchase_order()", class: 'btn btn-primary' %>
 </div>
 
 <script language="javascript">
@@ -69,7 +67,7 @@
             return false;
         }
         $.ajax({
-            url: '/supply/loss_orders/get_price_by_product_name',
+            url: '/supply/purchase_orders/get_price_by_product_name',
             type: 'POST',
             dataType: 'text',
             data: {
@@ -80,7 +78,7 @@
                 function (result) {
                     r = result.split('|');
                     if(r[0]=='0'){
-                        str = '<tr id="item_'+index+'" class="product">'+'<input id="loss_price_id_'+index+'" name="loss_price_id_'+index+'" type="hidden" value="'+r[1]+'" />'+'<td id="product_name_'+index+'">'+product_name+'</td><td id="spec_'+index+'">'+r[2]+'</td><td><input type="text" id="num_'+index+'" name="num_'+index+'" size=5 onchange="calc_sum_money()" /><td><input type="text" id="price_'+index+'" name="price_'+index+'", value="", size=5 onchange="calc_sum_money()" /></td><td><a href="javascript:delete_item('+index+')">X</a></td></tr>';
+                        str = '<tr id="item_'+index+'" class="product">'+'<input id="purchase_price_id_'+index+'" name="purchase_price_id_'+index+'" type="hidden" value="'+r[1]+'" />'+'<td id="product_name_'+index+'">'+product_name+'</td><td id="spec_'+index+'">'+r[2]+'</td><td><input type="text" id="num_'+index+'" name="num_'+index+'" size=5 onchange="calc_sum_money()" /><td><input type="text" id="price_'+index+'" name="price_'+index+'", value="", size=5 onchange="calc_sum_money()" /></td><td><a href="javascript:delete_item('+index+')">X</a></td></tr>';
                         $("#order_item_container").append(str);
                         index += 1;
                     }else{
@@ -112,7 +110,7 @@
             return false;
         }
         $.ajax({
-            url: '/supply/loss_orders/query_product_by_abc',
+            url: '/supply/purchase_orders/query_product_by_abc',
             type: 'POST',
             dataType: 'script',
             data: {
@@ -139,26 +137,25 @@
         $("#item_"+index).remove();
     }
 
-    function save_loss_order(){
+    function save_purchase_order(){
         main_message = '';
         for(var i= 1;i<=index;i++){
             if ($("#product_name_"+i).size()==1){
-                main_message += 'loss_price_id:' + $("#loss_price_id_"+i).val() + '|';
+                main_message += 'purchase_price_id:' + $("#purchase_price_id_"+i).val() + '|';
                 main_message += 'real_weight:' + $("#num_"+i).val() + "|";
                 main_message += 'price:' + $("#price_"+i).val();
                 main_message += ',';
             }
         }
         $.ajax({
-            url: '/supply/loss_orders/create_loss_order',
+            url: '/supply/purchase_orders/create_purchase_order',
             type: 'POST',
             dataType: 'text',
             data: {
                 'main_message': main_message,
                 'supplier_id': <%= @company.id %>,
                 'memo': $('#memo').val(),
-                'loss_type': $("#loss_type").val(),
-                'loss_date': $("#loss_date").val(),
+                'purchase_date': $("#purchase_date").val(),
                 'seller_id': $("#seller_id").val()
             }
         }).done(
@@ -166,7 +163,7 @@
                     r = result.split('|');
                     if(r[0]=='0'){
                         alert("保存成功。");
-                        location.href='/supply/loss_orders/create_loss_order?loss_date='+$('#loss_date').val()+'&seller_id='+$("#seller_id").val()+'&loss_type='+$("#loss_type").val();
+                        location.href='/supply/purchase_orders/create_purchase_order?purchase_date='+$('#purchase_date').val()+'&seller_id='+$("#seller_id").val();
                     }else{
                         alert(r[1]);
                     }

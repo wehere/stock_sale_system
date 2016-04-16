@@ -74,7 +74,7 @@ class Purchase::OrdersController < BaseController
         redirect_to welcome_vis_static_pages_path
         return
       end
-      @marks = Product.where(supplier_id: 31, is_valid:1).group(:mark).order("count(*) desc").count
+      @marks = Product.where(supplier_id: @supplier_id, is_valid:1).group(:mark).order("count(*) desc").count
       #{"干货"=>117, "蔬菜"=>53, "冻品"=>37, "调料"=>28, "肉类"=>18, "豆制品"=>10, "水产品"=>9, "菇类"=>5, "面类"=>4, "水果"=>4, "杂货"=>3, "未分类"=>1}
       @big_marks = []
       @small_marks = []

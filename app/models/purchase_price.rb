@@ -67,6 +67,7 @@ class PurchasePrice < ActiveRecord::Base
     end
   end
 
+  # 更新购买价格的各属性
   def update_purchase_price options
     PurchasePrice.transaction do
 
@@ -88,5 +89,18 @@ class PurchasePrice < ActiveRecord::Base
     end
   end
 
+  # 只更新价格的价格属性
+  def update_price new_price
+    PurchasePrice.transaction do
+      new_price = new_price.to_f
+      BusinessException.raise "#{self.product.chinese_name}的价格必须是数字，且不可以为0" if new_price == 0.0
+      new_purchase_price = self.dup
+      self.is_used = 0
+      self.save!
+      new_purchase_price.price = new_price
+      new_purchase_price.save!
+      new_purchase_price
+    end
+  end
 
 end
