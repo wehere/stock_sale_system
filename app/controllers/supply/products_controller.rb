@@ -324,6 +324,7 @@ class Supply::ProductsController < BaseController
   end
 
   def update_sale_ratio_by_mark
+    need_admin
     if request.post?
       begin
         Product.update_sale_ratio_by_mark params[:mark], params[:sale_ratio], current_user.company.id
@@ -339,6 +340,7 @@ class Supply::ProductsController < BaseController
   end
 
   def force_update_sale_ratio_by_mark
+    need_admin
     begin
       Product.force_update_sale_ratio_by_mark params[:mark_], params[:sale_ratio_], current_user.company.id
       flash[:success] = '更新成功'
