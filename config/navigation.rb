@@ -57,16 +57,16 @@ SimpleNavigation::Configuration.run do |navigation|
     #                            against the current URI.  You may also use a proc, or the symbol <tt>:subpath</tt>.
     #
     primary.item :key_1, '价格', "/supply/prices", class: 'special', if: -> { current_user.employee? } do |sub_nav|
-      sub_nav.item :key_1_10, '价格', "/supply/prices", if: -> { true }
-      sub_nav.item :key_1_1, '给客户提供的价格', '/supply/prices/search', if: -> { true }
+      sub_nav.item :key_1_10, '价格查询', "/supply/prices", if: -> { true }
+      sub_nav.item :key_1_1, '修改价格', '/supply/prices/search', if: -> { true }
       # sub_nav.item :key_1_2, '新增价格', '/supply/prices/prepare_create_price', if: -> { true }
-      sub_nav.item :key_1_3, '生成下一个月价格', '/supply/prices/generate_next_month', if: -> { true}
+      sub_nav.item :key_1_3, '更新次月价格', '/supply/prices/generate_next_month', if: -> { true}
       # sub_nav.item :key_1_4, '用excel导入价格', '/supply/prices/import_prices_from_xls', if: -> { true}
       sub_nav.item :key_1_5, '导出价格', '/supply/prices/export_xls_of_prices', if: -> { true}
       # sub_nav.item :key_1_6, '进货价格', '/purchase/purchase_price', if: -> { true}
       # sub_nav.item :key_1_7, '更新进货价格', '/purchase/purchase_price/pre_update_price', if: -> { true}
       # sub_nav.item :key_1_8, '售出价格', '/supply/prices/show_price', if: -> { true}
-      sub_nav.item :key_1_9, '价格比率补充', '/supply/prices/need_make_up', if: -> { true}
+      # sub_nav.item :key_1_9, '价格比率补充', '/supply/prices/need_make_up', if: -> { true}
     end
 
     # Add an item which has a sub navigation (same params, but with block)

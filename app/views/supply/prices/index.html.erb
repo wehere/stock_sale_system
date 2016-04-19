@@ -9,7 +9,7 @@
 <% end %>
 <table class="table table-striped table-hover">
   <thead>
-    <th>id</th><th>月份</th><th>客户</th><th>产品</th><th>价格</th><th>规格</th><th>使用次数</th><th>是否废弃</th><th>操作</th>
+    <th>id</th><th>月份</th><th>客户</th><th>产品</th><th>价格</th><th>规格</th><th>更新日期</th><th>使用次数</th><th>是否废弃</th><th>操作</th>
   </thead>
   <tbody>
   <% @prices.each do |price| %>
@@ -20,9 +20,10 @@
         <td><%= price.product.chinese_name %></td>
         <td><%= price.price %></td>
         <td><%= price.true_spec %></td>
+        <td><%= price.according_purchase_date %></td>
         <td><%= price.print_times %></td>
         <td><%= !price.is_used? ? "废弃" : "" %></td>
-        <td><%= link_to '废弃', "/supply/prices/#{price.id}/do_not_use", class: 'btn btn-primary btn-tiny', data: {confirm: "你确定废弃此价格？"} %></td>
+        <td><%#= link_to '废弃', "/supply/prices/#{price.id}/do_not_use", class: 'btn btn-primary btn-tiny', data: {confirm: "你确定废弃此价格？"} %></td>
     </tr>
   <% end unless @prices.blank? %>
   </tbody>

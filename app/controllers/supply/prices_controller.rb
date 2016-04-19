@@ -47,7 +47,9 @@ class Supply::PricesController < BaseController
         @customer_id = params[:customer_id]
         @year_month_id = params[:year_month_id]
         @search_results = company.supply_prices.where(customer_id: params[:customer_id], year_month_id: params[:year_month_id], is_used: true).order(:product_id)
+        # 如果启用售出系数
         if company.use_sale_ratio
+          # according_purchase_date不为空表示此价格受售出系数限制，不可以更改，故过滤掉，不可以更改
           @search_results = @search_results.where("according_purchase_date is null")
         end
       else
@@ -97,31 +99,35 @@ class Supply::PricesController < BaseController
   # 原价格为空或者0.0，直接硬更新
   # 原价格不为空或者0.0，置为无效，新增一条新记录
   def update_one_price
-    price = Price.find_by_id(params[:id]) rescue nil
-    unless price.blank?
-      # if params[:price].blank?
-      #   unless price.true_spec.equal? params[:spec]
-      #     unless params[:spec].blank?
-      #       price.update_attribute :true_spec, params[:spec]
-      #     end
-      #   end
-      # else
-      unless params[:price].blank?
-        unless price.price.equal? params[:price].to_f
-          unless params[:price].blank?
-            if price.price.blank? || price.price == 0.0
-              price.update_attribute :price, params[:price]
-            else
-              new_price = price.dup
-              price.update_attribute :is_used, false
-              new_price.update_attribute :price, params[:price]
+    begin
+      price = Price.find_by_id(params[:id]) rescue nil
+      unless price.blank?
+        # if params[:price].blank?
+        #   unless price.true_spec.equal? params[:spec]
+        #     unless params[:spec].blank?
+        #       price.update_attribute :true_spec, params[:spec]
+        #     end
+        #   end
+        # else
+        unless params[:price].blank?
+          unless price.price.equal? params[:price].to_f
+            unless params[:price].blank?
+              if price.price.blank? || price.price == 0.0
+                price.update_attribute :price, params[:price]
+              else
+                new_price = price.dup
+                price.update_attribute :is_used, false
+                new_price.update_attribute :price, params[:price]
+              end
             end
           end
         end
-      end
 
+      end
+      render :text => 'ok'
+    rescue Exception=>e
+      render :text => dispose_exception(e)
     end
-    render :text => 'ok'
   end
 
   def update

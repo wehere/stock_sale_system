@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160417080508) do
+ActiveRecord::Schema.define(version: 20160419063404) do
 
   create_table "comments", force: :cascade do |t|
     t.integer  "order_id",    limit: 4
@@ -64,19 +64,21 @@ ActiveRecord::Schema.define(version: 20160417080508) do
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
   create_table "general_products", force: :cascade do |t|
-    t.string   "name",              limit: 255
-    t.integer  "seller_id",         limit: 4
+    t.string   "name",                   limit: 255
+    t.integer  "seller_id",              limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "supplier_id",       limit: 4
-    t.string   "mini_spec",         limit: 255
-    t.integer  "another_seller_id", limit: 4
+    t.integer  "supplier_id",            limit: 4
+    t.string   "mini_spec",              limit: 255
+    t.integer  "another_seller_id",      limit: 4
     t.boolean  "pass"
-    t.boolean  "is_valid",                       default: true
-    t.string   "vendor",            limit: 255,  default: "未分配"
-    t.string   "location",          limit: 500
-    t.string   "memo",              limit: 1000
-    t.string   "barcode",           limit: 255
+    t.boolean  "is_valid",                            default: true
+    t.string   "vendor",                 limit: 255,  default: "未分配"
+    t.string   "location",               limit: 500
+    t.string   "memo",                   limit: 1000
+    t.string   "barcode",                limit: 255
+    t.float    "current_purchase_price", limit: 24,   default: 0.0
+    t.date     "purchase_price_date"
   end
 
   create_table "loss_order_items", force: :cascade do |t|

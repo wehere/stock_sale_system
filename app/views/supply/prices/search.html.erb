@@ -81,6 +81,10 @@
           url: "/supply/prices/update_one_price",
           dataType: 'text',
           data: {id: id, price: new_price}
+      }).done(
+          function(result){
+            if(result != "ok")
+              alert(result);
       });
   }
 

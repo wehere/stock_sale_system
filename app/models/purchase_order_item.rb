@@ -47,6 +47,14 @@ class PurchaseOrderItem < ActiveRecord::Base
       stock.last_purchase_price = purchase_price.price if !purchase_price.price.blank? && purchase_price.price != 0.0 #变更最后一次价格
       stock.save!
 
+      # 更新general_products的最新入库价格
+      g_p = product.general_product
+      if g_p.purchase_price_date.blank? || g_p.purchase_price_date <= purchase_order.purchase_date.to_date
+        g_p.purchase_price_date = purchase_order.purchase_date.to_date
+        g_p.current_purchase_price = purchase_price.price
+        g_p.save!
+      end
+
       # if 启用系数｛
       # 发现产品售出系数为空或小于1，报错，提醒更新产品系数。
       # 更改当前月份、与下个月份 对应的价格
