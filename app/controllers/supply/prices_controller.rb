@@ -47,6 +47,9 @@ class Supply::PricesController < BaseController
         @customer_id = params[:customer_id]
         @year_month_id = params[:year_month_id]
         @search_results = company.supply_prices.where(customer_id: params[:customer_id], year_month_id: params[:year_month_id], is_used: true).order(:product_id)
+        if company.use_sale_ratio
+          @search_results = @search_results.where("according_purchase_date is null")
+        end
       else
         @customer_id = params[:customer_id]
         @year_month_id = YearMonth.current_year_month.id

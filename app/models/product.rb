@@ -41,6 +41,24 @@ class Product < ActiveRecord::Base
     end
   end
 
+  def self.update_sale_ratio_by_mark mark, sale_ratio, supplier_id
+    BusinessException.raise '请选择分类' if mark.blank?
+    BusinessException.raise '售出系数必须大于1且小于2' if sale_ratio.blank? || sale_ratio.to_f <= 1 || sale_ratio.to_f >= 2
+    Product.where(is_valid: true, supplier_id: supplier_id, mark: mark).each do |product|
+      if product.sale_ratio.blank? || product.sale_ratio == 0
+        product.update_attributes sale_ratio: sale_ratio
+      end
+    end
+  end
+
+  def self.force_update_sale_ratio_by_mark mark, sale_ratio, supplier_id
+    BusinessException.raise '请选择分类' if mark.blank?
+    BusinessException.raise '售出系数必须大于1且小于2' if sale_ratio.blank? || sale_ratio.to_f <= 1 || sale_ratio.to_f >= 2
+    Product.where(is_valid: true, supplier_id: supplier_id, mark: mark).each do |product|
+      product.update_attributes sale_ratio: sale_ratio
+    end
+  end
+
   def soft_delete
     Product.transaction do
 

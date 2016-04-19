@@ -46,6 +46,41 @@ class PurchaseOrderItem < ActiveRecord::Base
       stock.real_weight = old_weight + purchase_price.ratio*purchase_order_item.real_weight #变更库存量
       stock.last_purchase_price = purchase_price.price if !purchase_price.price.blank? && purchase_price.price != 0.0 #变更最后一次价格
       stock.save!
+
+      # if 启用系数｛
+      # 发现产品售出系数为空或小于1，报错，提醒更新产品系数。
+      # 更改当前月份、与下个月份 对应的价格
+      # ｝
+      supplier = product.supplier
+      if supplier.use_sale_ratio
+        sale_ratio = product.sale_ratio
+        BusinessException.raise "#{product.chinese_name}的售出系数必须填写，大于1且小于2" if sale_ratio.blank? || sale_ratio < 1.0 || sale_ratio >= 2.0
+        purchase_year_month = YearMonth.specified_year_month purchase_order.purchase_date
+        months = []
+        months << YearMonth.current_year_month
+        months << YearMonth.next_year_month
+        # 进货日期属于当前月，才会更新出货价格
+        if months.include? purchase_year_month
+          supplier.now_customers.each do |customer|
+            months.each do |month|
+              price = Price.where(year_month_id: month.id, customer_id: customer.id, product_id: product.id, is_used: 1, supplier_id: supplier.id).first
+              next if price.blank?
+              # 上次更新价格依据的进货日期，为空则更新价格
+              # 比本次进货日期较早，更新价格
+              if price.according_purchase_date.blank? || price.according_purchase_date <= purchase_order.purchase_date.to_date
+                new_price = price.dup
+                price.update_attributes is_used: 0
+                new_price.according_purchase_date = purchase_order.purchase_date.to_date
+                BusinessException.raise "id为#{price.id}的出货价格，产品名为#{product.chinese_name},对应的相对于标准单位比率为空或为0，不能做根据进货价格更新出货价格操作" if price.ratio.blank? || price.ratio == 0
+                BusinessException.raise "id为#{purchase_price.id}进货价格，产品名为#{product.chinese_name},对应的相对于标准单位比率为空或为0，不能做根据进货价格更新出货价格操作" if purchase_price.ratio.blank? || purchase_price.ratio == 0
+                new_price.price = purchase_price.price/(purchase_price.ratio/price.ratio)*product.sale_ratio
+                new_price.save!
+              end
+            end
+          end
+        end
+
+      end
     end
   end
 

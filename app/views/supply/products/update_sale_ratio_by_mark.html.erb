@@ -1,0 +1,16 @@
+<h3>非强制性更改手抽系数</h3>
+<p>如果该分类下的某个产品已经有售出系数，则不更改其售出系数</p>
+<%= form_tag '/supply/products/update_sale_ratio_by_mark', method: :post do %>
+<label>分类</label><%= select_tag 'mark', options_from_collection_for_select(@marks, 'to_s', 'to_s', params[:mark]), prompt: '请选择分类'  %>
+<label>设置系数</label><%= text_field_tag 'sale_ratio', params[:sale_ratio] %>
+<%= submit_tag '保存修改' %>
+<% end %>
+
+<br/><br/>
+<h3 style="color: red">强制性更改手抽系数</h3>
+<p>该分类下的<span style="color: red">所有产品</span>的售出系数都会改动</p>
+<%= form_tag '/supply/products/force_update_sale_ratio_by_mark', method: :post do %>
+    <label>分类</label><%= select_tag 'mark_', options_from_collection_for_select(@marks, 'to_s', 'to_s', params[:mark_]), prompt: '请选择分类'  %>
+    <label>设置系数</label><%= text_field_tag 'sale_ratio_', params[:sale_ratio_] %>
+    <%= submit_tag '保存修改' %>
+<% end %>

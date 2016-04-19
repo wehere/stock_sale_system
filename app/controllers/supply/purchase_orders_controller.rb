@@ -114,7 +114,7 @@ class Supply::PurchaseOrdersController < BaseController
         render text: "1|#{dispose_exception(e)}"
       end
     else
-      # 录入损耗单页面
+      # 录入进货单页面
       params[:purchase_date] = Time.now.to_date
       @no_nav = true
       @company = current_user.company

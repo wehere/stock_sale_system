@@ -131,6 +131,9 @@ Rails.application.routes.draw do
         get :soft_delete
         get :change_sale_ratio
         post :change_sale_ratio
+        get :update_sale_ratio_by_mark
+        post :update_sale_ratio_by_mark
+        post :force_update_sale_ratio_by_mark
       end
     end
     resources :prices do

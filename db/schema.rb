@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160411091534) do
+ActiveRecord::Schema.define(version: 20160417080508) do
 
   create_table "comments", force: :cascade do |t|
     t.integer  "order_id",    limit: 4
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 20160411091534) do
     t.string   "except_company_ids",   limit: 255,  default: "0"
     t.string   "mail_address",         limit: 255
     t.boolean  "check_negative_stock",              default: false
+    t.boolean  "use_sale_ratio",                    default: false
   end
 
   create_table "customers_companies", id: false, force: :cascade do |t|
@@ -191,17 +192,18 @@ ActiveRecord::Schema.define(version: 20160411091534) do
   end
 
   create_table "prices", force: :cascade do |t|
-    t.integer  "year_month_id", limit: 4
-    t.integer  "customer_id",   limit: 4
-    t.integer  "product_id",    limit: 4
-    t.float    "price",         limit: 24
+    t.integer  "year_month_id",           limit: 4
+    t.integer  "customer_id",             limit: 4
+    t.integer  "product_id",              limit: 4
+    t.float    "price",                   limit: 24
     t.boolean  "is_used"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "true_spec",     limit: 255
-    t.integer  "supplier_id",   limit: 4
-    t.integer  "print_times",   limit: 4,   default: 0
-    t.float    "ratio",         limit: 24
+    t.string   "true_spec",               limit: 255
+    t.integer  "supplier_id",             limit: 4
+    t.integer  "print_times",             limit: 4,   default: 0
+    t.float    "ratio",                   limit: 24
+    t.date     "according_purchase_date"
   end
 
   create_table "print_order_notices", force: :cascade do |t|
