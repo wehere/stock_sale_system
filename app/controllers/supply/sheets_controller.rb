@@ -76,4 +76,11 @@ class Supply::SheetsController < BaseController
     flash[:notice] = "正在下载，下载完毕后，您可以在下载页看到您需要的文件"
     redirect_to action: :index
   end
+
+  def export_total_day_money_by_vendor
+    supplier_id = current_user.company.id
+    Product.delay.export_total_day_money_by_vendor params[:start_date], params[:end_date], supplier_id
+    flash[:notice] = "正在下载，下载完毕后，您可以在下载页看到您需要的文件"
+    redirect_to action: :index
+  end
 end

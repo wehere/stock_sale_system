@@ -106,6 +106,7 @@ Rails.application.routes.draw do
         post :export_purchase_order
         post :export_stocks
         post :export_product_in_out
+        post :export_total_day_money_by_vendor
       end
       member do
         post :change_stores

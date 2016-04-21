@@ -255,4 +255,70 @@ class Product < ActiveRecord::Base
     file_path
   end
 
+  def self.export_total_day_money_by_vendor start_date, end_date, supplier_id
+    Spreadsheet.client_encoding = 'UTF-8'
+    book = Spreadsheet::Workbook.new
+    in_center = Spreadsheet::Format.new horizontal_align: :center, vertical_align: :center, border: :thin
+    in_left = Spreadsheet::Format.new horizontal_align: :left, border: :thin
+    sheet = book.create_worksheet name: '统计'
+    # sheet.merge_cells(0,0,0,4)
+    # sheet.row(0)[0] = "#{Company.find_by_id(supplier_id).simple_name} #{start_date}至#{end_date} 每个产品入库、出库汇总"
+
+    order_details = OrderDetail.where("order_details.detail_type = 1 and (order_details.delete_flag is null or order_details.delete_flag = 0) and order_details.supplier_id = ?", supplier_id)
+    order_details = order_details.where("order_details.detail_date>= ?", start_date.to_time.change(hour:0,min:0,sec:0)) unless start_date.blank?
+    order_details = order_details.where("order_details.detail_date<=?", end_date.to_time.change(hour:23,min:59,sec:59)) unless end_date.blank?
+    order_details = order_details.joins(product: :general_product)
+    h = order_details.group("general_products.vendor").group("order_details.detail_date").sum("order_details.money")
+    h.each do |a|
+      a.first[1] = a.first[1].to_date.to_s
+
+    end
+
+
+
+    n_h = {}
+    h.each do |a|
+      n_h[a[0].to_s] = a[1]
+    end
+
+    row = 1
+    date = start_date.to_date
+    while date <= end_date.to_date
+      sheet.row(row)[0] = date.to_s
+      date += 1.day
+      row += 1
+    end
+    last_row = row
+    sheet.row(row)[0] = '小计'
+
+    total_money = 0.0
+    col = 1
+    Company.find(supplier_id).vendors.split(',').each do |k|
+        sum_money = 0.0
+        row = 0
+        sheet.row(row)[col] = k
+        row += 1
+
+
+        date = start_date.to_date
+        while date <= end_date.to_date
+          money = n_h[[k,date.to_s].to_s].to_f.round(2)
+          sheet.row(row)[col] = money==0.0 ? '' : money
+          sum_money += money
+          date += 1.day
+          row += 1
+        end
+        sheet.row(row)[col] = sum_money.round(2)
+        col += 1
+
+        total_money += sum_money
+    end
+
+    sheet.row(last_row)[col] = total_money.round(2)
+    file_path = "#{Rails.root}/public/downloads/#{supplier_id}/#{start_date.to_date.to_s}至#{end_date.to_date.to_s}_#{Time.now.to_i}_按商贩统计采购总金额.xls"
+    Dir.mkdir Rails.root.join("public","downloads/#{supplier_id}/") unless Dir.exist? Rails.root.join("public","downloads/#{supplier_id}/")
+    book.write file_path
+    file_path
+  end
+
 end
