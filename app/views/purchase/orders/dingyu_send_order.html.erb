@@ -63,7 +63,8 @@
           dataType: 'text',
           data: {
               "product_name":product_name,
-              "supplier_id":<%= @supplier_id %>
+              "supplier_id":<%= @supplier_id %>,
+              'reach_date': $("#reach_date").val()
           }
       }).done(
               function (result) {

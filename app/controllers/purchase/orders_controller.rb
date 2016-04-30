@@ -92,7 +92,6 @@ class Purchase::OrdersController < BaseController
   end
 
   def get_spec_by_product_name
-    params[:reach_date] = Time.now.to_date
     if params[:supplier_id].blank? || params[:product_name].blank?
       render text: "1|没有指定供应商或产品名"
       return
