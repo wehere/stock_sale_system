@@ -9,6 +9,7 @@ class Product < ActiveRecord::Base
   has_many :purchase_order_items
   has_one :loss_price, -> { where is_used: true }
   has_many :loss_order_items
+  has_one :employee_food, -> {where is_valid: true}
 
   scope :is_valid, ->{where(is_valid: true)}
 

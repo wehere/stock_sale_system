@@ -76,13 +76,15 @@ SimpleNavigation::Configuration.run do |navigation|
       sub_nav.item :key_2_6, '产品详情', "/supply/products/detail", if: -> {true}
       sub_nav.item :key_2_1, '新增产品', "/supply/products/strict_new", if: -> { true}
       sub_nav.item :key_2_7, '据分类更新售出系数', "/supply/products/update_sale_ratio_by_mark", if: ->{current_user.admin?}
+      sub_nav.item :key_2_8, '管理员工餐产品', '/supply/employee_foods', if: ->{current_user.admin?}
       # sub_nav.item :key_2_2, '导入产品', '/supply/products/import_products_from_xls', if: -> { true}
       # sub_nav.item :key_2_3, '通用产品一览', '/supply/general_products', if: -> { true}
       # sub_nav.item :key_2_4, '检测重复通用', '/supply/general_products/check_repeated', if: ->{true}
 
     end
     primary.item :key_10, '订单', "/supply/orders/got_orders", class: 'special', if: -> {current_user.employee? } do |sub_nav|
-      sub_nav.item :key_10_1, '下订单', "/purchase/orders/dingyu_send_order", if: -> {true}
+      sub_nav.item :key_10_1, '订客餐', "/purchase/orders/dingyu_send_order", if: -> {true}
+      sub_nav.item :key_10_4, '订员工餐', '/purchase/employee_foods', if: -> {true}
       sub_nav.item :key_10_2, '收到的订单', "/supply/orders/got_orders", if: -> {true}
       sub_nav.item :key_10_3, '发出的订单', "/supply/orders/send_out_orders", if: -> {true}
     end

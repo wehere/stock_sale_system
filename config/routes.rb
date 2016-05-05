@@ -27,6 +27,14 @@ Rails.application.routes.draw do
   end
   # 供应方
   namespace :supply do
+
+    resources :employee_foods do
+      collection do
+        get :add_it
+        get :delete_it
+      end
+    end
+
     resources :downloads do
       collection do
         get :download
@@ -232,6 +240,12 @@ Rails.application.routes.draw do
         post :get_spec_by_product_name
         post :query_product_by_abc
         post :send_message
+      end
+    end
+
+    resources :employee_foods do
+      collection do
+        post :send_employee_food_order
       end
     end
   end

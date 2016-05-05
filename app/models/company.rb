@@ -13,6 +13,10 @@ class Company < ActiveRecord::Base
 
   has_many :reverse_relations, foreign_key: 'customer_id', class_name: 'CustomersCompanies'
   has_many :supplies, through: :reverse_relations, source: :supplier #上家，即我的供应商
+
+  has_many :now_reverse_relations, -> { where("delete_flag is null or delete_flag = 0 ")}, foreign_key: 'customer_id', class_name: 'CustomersCompanies'
+  has_many :now_supplies, through: :now_reverse_relations, source: :supplier
+
   has_many :stores
   has_many :get_order_types, foreign_key: 'customer_id', class_name: 'OrderType' #对于该公司我提供的单据类型
   has_many :supply_order_types, foreign_key: 'supplier_id', class_name: 'OrderType' #给我提供的单据类型
@@ -25,6 +29,8 @@ class Company < ActiveRecord::Base
   has_many :sellers, foreign_key: :supplier_id
   has_many :general_products, foreign_key: :supplier_id
   has_many :stocks, foreign_key: :supplier_id
+
+  has_many :employee_foods, foreign_key: :supplier_id
 
   #由eric添加
   has_many :purchase_prices, foreign_key: :supplier_id

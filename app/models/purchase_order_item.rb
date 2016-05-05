@@ -63,12 +63,9 @@ class PurchaseOrderItem < ActiveRecord::Base
       if supplier.use_sale_ratio
         sale_ratio = product.sale_ratio
         BusinessException.raise "#{product.chinese_name}的售出系数必须填写，大于1且小于2" if sale_ratio.blank? || sale_ratio < 1.0 || sale_ratio >= 2.0
-        purchase_year_month = YearMonth.specified_year_month purchase_order.purchase_date
         months = []
         months << YearMonth.current_year_month
         months << YearMonth.next_year_month
-        # 进货日期属于当前月，才会更新出货价格
-        if months.include? purchase_year_month
           supplier.now_customers.each do |customer|
             months.each do |month|
               price = Price.where(year_month_id: month.id, customer_id: customer.id, product_id: product.id, is_used: 1, supplier_id: supplier.id).first
@@ -86,7 +83,6 @@ class PurchaseOrderItem < ActiveRecord::Base
               end
             end
           end
-        end
 
       end
     end

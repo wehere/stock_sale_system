@@ -87,7 +87,7 @@ class Purchase::OrdersController < BaseController
       end
       @products = Product.is_valid.where(supplier_id: params[:supplier_id]).order(print_times: :desc)
       @supplier_id = params[:supplier_id]
-      @order_types = OrderType.match_types(@supplier_id, @customer.id)
+      @order_types = OrderType.match_types(@supplier_id, @customer.id).where("name <> ?", '员工餐')
     end
   end
 

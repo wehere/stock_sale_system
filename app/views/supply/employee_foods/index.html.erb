@@ -1,0 +1,39 @@
+<h3>管理员工餐</h3>
+<div class="row">
+  <div class="col-sm-6">
+    <%= form_tag '/supply/employee_foods', method: :get do %>
+        <%= label_tag 'key', '关键词' %>
+        <%= text_field_tag 'key', @key_value %>
+        <%= submit_tag '查询', class: 'btn btn-primary' %>
+        (关键词可以是、中文名称、缩写)
+    <% end %>
+    <table class="table">
+      <thead>
+      <th>产品名</th><th>分类</th><th></th>
+      </thead>
+      <% @products.each do |product| %>
+          <tr>
+            <td style="color: orangered"><%= product.chinese_name %></td>
+            <td><%= product.mark %></td>
+            <td><span style="font-size: 30"><%= link_to "＋", "/supply/employee_foods/add_it?product_id=#{product.id}" %></span></td>
+          </tr>
+      <% end %>
+    </table>
+  </div>
+  <div class="col-sm-6">
+    <h5>员工餐菜单</h5>
+    <table class="table">
+      <thead>
+        <th>产品名</th><th></th>
+      </thead>
+      <tbody>
+        <% @employee_foods.each do |employee_food| %>
+            <tr>
+              <td style="color: green"><%= employee_food.product.chinese_name %></td>
+              <td style="font-size: 30"><%= link_to '－', "/supply/employee_foods/delete_it?id=#{employee_food.id}" %></td>
+            </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

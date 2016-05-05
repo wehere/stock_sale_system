@@ -1,0 +1,71 @@
+<h3 class="text-center">员工餐下单 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= link_to '客餐订货', '/purchase/orders/dingyu_send_order'  %></h3><br/>
+<%= form_tag '/purchase/employee_foods', method: :get do %>
+    <div class="text-center">
+<%= select_tag 'supplier_id', options_from_collection_for_select(@suppliers, 'id', 'simple_name', @default_supplier.id), onchange: '$("#params_form").click();' %>
+<%= date_field_tag 'reach_date', @reach_date, onchange: '$("#params_form").click();' %>
+<%= submit_tag '#', id: 'params_form' %>
+    </div>
+<% end %>
+
+
+
+<%= form_tag '/purchase/employee_foods/send_employee_food_order', method: :post do %>
+
+    <%= hidden_field_tag 'supplier_id', @default_supplier.id %>
+
+    <%= hidden_field_tag 'reach_date', @reach_date %>
+
+    <%
+       mark = nil
+       change = true
+    %>
+
+    <% @employee_foods.each_with_index do |employee_food, index| %>
+
+        <%
+           customer_id = current_user.company.id
+           product = employee_food.product
+           year_month_id = YearMonth.find_or_create_by(val: YearMonth.chinese_month_format(@reach_date)).id
+           price = Price.where(year_month_id:year_month_id,
+                               customer_id:customer_id,
+                               product_id:product.id,
+                               is_used:true,
+                               supplier_id:@default_supplier.id
+           ).first
+        %>
+
+        <% if mark != employee_food.product.mark %>
+            <div class="row"><div class="col-sm-1 end"></div></div><br/><h5 style="margin-left: 80px"><%= employee_food.product.mark %></h5>
+            <%
+               mark = employee_food.product.mark
+               change = !change
+            %>
+        <% end %>
+        <div class="col-sm-4">
+          <tr>
+          <td><label style="background-color: <%= change ? 'chartreuse' : 'yellow' %>"><%= employee_food.product.chinese_name %></label></td>&nbsp;
+          <td><%= " #{price.price}元/#{price.true_spec}" rescue '' %></td>&nbsp;
+            <%= hidden_field_tag "data[#{employee_food.id}][]", employee_food.product.chinese_name %>
+          <td><%= text_field_tag "data[#{employee_food.id}][]", '', size: 5 %></td>
+            <%= hidden_field_tag "data[#{employee_food.id}][]", (price.true_spec rescue '') %>
+          <td><%= "#{price.true_spec}" rescue '' %></td>
+        </tr>
+        </div>
+
+    <% end %>
+    <div class="row">
+      <div class="col-sm-1 end"></div>
+    </div><br/>
+    <div class="row">
+      <div class="col-sm-1 text-right">
+        <label class="inline">备注</label>
+      </div>
+      <div class="col-sm-11">
+        <%= text_area_tag 'memo' %>
+      </div>
+    </div>
+    <div class="text-center">
+      <%= submit_tag '发送员工餐订单', class: 'btn btn-primary' %>
+    </div>
+    <!--</table>-->
+<% end %>
