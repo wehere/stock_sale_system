@@ -2,8 +2,10 @@ class Purchase::EmployeeFoodsController < BaseController
   before_filter :need_login
 
   def index
+    begin
     @no_nav = true
     @suppliers = current_user.company.now_supplies
+    BusinessException.raise '没有供应商信息' if @suppliers.blank?
     @reach_date = params[:reach_date]||Time.now.to_date+1.day
     @default_supplier = if params[:supplier_id].blank?
                           @suppliers.first
@@ -13,6 +15,10 @@ class Purchase::EmployeeFoodsController < BaseController
     @employee_foods = @default_supplier.employee_foods.is_valid
     @employee_foods = @employee_foods.joins(:product)
     @employee_foods = @employee_foods.order("products.mark")
+    rescue Exception=>e
+      flash[:alert] = dispose_exception e
+      redirect_to welcome_vis_static_pages_path
+    end
   end
 
   def send_employee_food_order
