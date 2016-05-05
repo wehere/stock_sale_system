@@ -7,7 +7,7 @@ class Supply::PricesController < BaseController
     @year_months = YearMonth.all
     params[:year_month_id] ||= YearMonth.current_year_month.id
 
-    @prices = current_user.company.all_prices
+    @prices = current_user.company.all_prices.where("customer_id in (?) ", @customers.ids)
     @prices = @prices.where(year_month_id: params[:year_month_id]) unless params[:year_month_id].blank?
     @prices = @prices.where(customer_id: params[:customer_id]) unless params[:customer_id].blank?
     unless params[:product_name].blank?
