@@ -75,6 +75,8 @@ class PurchaseOrderItem < ActiveRecord::Base
               if price.according_purchase_date.blank? || price.according_purchase_date <= purchase_order.purchase_date.to_date
                 new_price = price.dup
                 price.update_attributes is_used: 0
+                new_price.pre_according_purchase_date = new_price.according_purchase_date
+                new_price.pre_price = new_price.price
                 new_price.according_purchase_date = purchase_order.purchase_date.to_date
                 BusinessException.raise "id为#{price.id}的出货价格，产品名为#{product.chinese_name},对应的相对于标准单位比率为空或为0，不能做根据进货价格更新出货价格操作" if price.ratio.blank? || price.ratio == 0
                 BusinessException.raise "id为#{purchase_price.id}进货价格，产品名为#{product.chinese_name},对应的相对于标准单位比率为空或为0，不能做根据进货价格更新出货价格操作" if purchase_price.ratio.blank? || purchase_price.ratio == 0
@@ -147,6 +149,20 @@ class PurchaseOrderItem < ActiveRecord::Base
       order_detail.update_attributes delete_flag: 1
       if true_delete
         self.destroy!
+      end
+
+      months = []
+      months << YearMonth.current_year_month
+      months << YearMonth.next_year_month
+      Company.find_by_id(purchase_order.supplier_id).now_customers.each do |customer|
+        months.each do |month|
+          price = Price.where(year_month_id: month.id, customer_id: customer.id, product_id: self.product_id, is_used: 1, supplier_id: purchase_order.supplier_id).first
+          next if price.blank?
+          price.according_purchase_date = price.pre_according_purchase_date
+          price.pre_according_purchase_date = nil
+          price.price = price.pre_price
+          price.save!
+        end
       end
     end
   end

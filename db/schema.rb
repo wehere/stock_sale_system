@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160504083221) do
+ActiveRecord::Schema.define(version: 20160505060828) do
 
   create_table "comments", force: :cascade do |t|
     t.integer  "order_id",    limit: 4
@@ -203,18 +203,20 @@ ActiveRecord::Schema.define(version: 20160504083221) do
   end
 
   create_table "prices", force: :cascade do |t|
-    t.integer  "year_month_id",           limit: 4
-    t.integer  "customer_id",             limit: 4
-    t.integer  "product_id",              limit: 4
-    t.float    "price",                   limit: 24
+    t.integer  "year_month_id",               limit: 4
+    t.integer  "customer_id",                 limit: 4
+    t.integer  "product_id",                  limit: 4
+    t.float    "price",                       limit: 24
     t.boolean  "is_used"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "true_spec",               limit: 255
-    t.integer  "supplier_id",             limit: 4
-    t.integer  "print_times",             limit: 4,   default: 0
-    t.float    "ratio",                   limit: 24
+    t.string   "true_spec",                   limit: 255
+    t.integer  "supplier_id",                 limit: 4
+    t.integer  "print_times",                 limit: 4,   default: 0
+    t.float    "ratio",                       limit: 24
     t.date     "according_purchase_date"
+    t.date     "pre_according_purchase_date"
+    t.float    "pre_price",                   limit: 24
   end
 
   create_table "print_order_notices", force: :cascade do |t|
