@@ -27,6 +27,7 @@ class Purchase::EmployeeFoodsController < BaseController
       order_type = OrderType.match_types(params[:supplier_id], customer.id).where(name: '员工餐').first
       BusinessException.raise '没有员工餐这个单据类型' if order_type.blank?
       order_message = ''
+      BusinessException.raise '请填写订货信息' if params[:data].blank?
       params[:data].values.select{|x|!x[1].blank?}.each do |data|
         order_message += "#{data[0]}#{data[1]}#{data[2]},"
       end
@@ -42,9 +43,14 @@ class Purchase::EmployeeFoodsController < BaseController
       flash[:success] = '发送成功'
       redirect_to action: :index
     rescue Exception => e
+      @no_nav = true
       flash[:alert] = dispose_exception e
+      @suppliers = current_user.company.now_supplies
       @reach_date = params[:reach_date]
       @default_supplier = Company.find_by_id params[:supplier_id]
+      @employee_foods = @default_supplier.employee_foods.is_valid
+      @employee_foods = @employee_foods.joins(:product)
+      @employee_foods = @employee_foods.order("products.mark")
       render :index
     end
   end
