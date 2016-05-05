@@ -78,7 +78,7 @@ class PurchaseOrderItem < ActiveRecord::Base
                 new_price.according_purchase_date = purchase_order.purchase_date.to_date
                 BusinessException.raise "id为#{price.id}的出货价格，产品名为#{product.chinese_name},对应的相对于标准单位比率为空或为0，不能做根据进货价格更新出货价格操作" if price.ratio.blank? || price.ratio == 0
                 BusinessException.raise "id为#{purchase_price.id}进货价格，产品名为#{product.chinese_name},对应的相对于标准单位比率为空或为0，不能做根据进货价格更新出货价格操作" if purchase_price.ratio.blank? || purchase_price.ratio == 0
-                new_price.price = purchase_price.price/(purchase_price.ratio/price.ratio)*product.sale_ratio
+                new_price.price = (purchase_price.price/(purchase_price.ratio/price.ratio)*product.sale_ratio).round(2)
                 new_price.save!
               end
             end
