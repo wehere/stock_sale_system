@@ -1,3 +1,4 @@
+<div class="cxp_min_width">
 <br/>
 <h4>第一步、选择月份：</h4>
 &nbsp&nbsp<%= select_tag 'year_month', options_from_collection_for_select( @year_months, 'id', 'val', @current_year_month_id )%>
@@ -13,7 +14,7 @@
     </div>
     <%= "<br/><br>".html_safe if (index+1)%6 == 0 %>
 <% end %>
-
+</div>
 <script>
     function replace_year_month_id(e) {
         $(".t_year_month_id").val(e.value)

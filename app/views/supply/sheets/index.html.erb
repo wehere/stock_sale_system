@@ -1,3 +1,4 @@
+<div class="cxp_min_width">
 <br/>
 <h3>导出客户月清单</h3>
 <%= form_tag export_order_total_for_specified_days_supply_sheets_path, method: :post do %>
@@ -72,3 +73,4 @@
     <%= date_field_tag 'end_date', params[:end_date] %>
     <%= submit_tag '导出', class: 'btn btn-primary' %>
 <% end %>
+</div>

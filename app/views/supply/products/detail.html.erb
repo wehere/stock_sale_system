@@ -1,3 +1,4 @@
+<div class="cxp_min_width">
 <h3>查询产品详细信息</h3>
 <%= form_tag '/supply/products/detail', method: :get do %>
 <div class="row">
@@ -173,7 +174,7 @@
     </table>
 
 <% end unless @products.blank? %>
-
+</div>
 <script language="javascript">
     function focus_key(){
         $("#key").focus();
