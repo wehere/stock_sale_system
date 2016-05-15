@@ -28,6 +28,25 @@ class Supply::PurchaseOrdersController < BaseController
     @purchase_order_items = PurchaseOrderItem.where(purchase_order_id: params[:id])
   end
 
+  def edit_seller
+    @purchase_order = PurchaseOrder.find_by_id(params[:id])
+    @sellers = Seller.valid.where(supplier_id: current_user.company.id)
+  end
+
+  def update_seller
+    begin
+      purchase_order = PurchaseOrder.find_by_id(params[:id])
+      purchase_order.update_seller params[:seller_id]
+      flash[:success] = '更新成功'
+      redirect_to "/supply/purchase_orders/#{purchase_order.id}/edit"
+    rescue Exception => e
+      flash[:alert] = dispose_exception e
+      @purchase_order = PurchaseOrder.find_by_id(params[:id])
+      @sellers = Seller.valid.where(supplier_id: current_user.company.id)
+      render :edit_seller
+    end
+  end
+
   def change_order_item
     begin
       purchase_order_item = PurchaseOrderItem.find_by_id(params[:purchase_order_item_id])

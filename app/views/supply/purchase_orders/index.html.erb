@@ -14,7 +14,7 @@
 <table class="table">
 <thead>
 <th>单据ID</th>
-<th>卖家</th>
+<th>供应商</th>
 <th>进货日期</th>
 <th>进货金额</th>
 <th>备注</th>
@@ -27,7 +27,10 @@
   <td><%= purchase_order.purchase_date.strftime("%Y年%m月%d日") %></td>
   <td><%= purchase_order.sum_money %></td>
   <td><%= purchase_order.memo %></td>
-  <td><%= link_to '查看&编辑', "/supply/purchase_orders/#{purchase_order.id}/edit" %></td>
+  <td>
+    <%= link_to '查看&编辑', "/supply/purchase_orders/#{purchase_order.id}/edit" %>
+    <%= link_to '更改供应商', "/supply/purchase_orders/#{purchase_order.id}/edit_seller" if current_user.admin? %>
+  </td>
 </tr>
 <% end %>
 </table>

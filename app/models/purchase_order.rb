@@ -46,4 +46,9 @@ class PurchaseOrder < ActiveRecord::Base
     end
   end
 
+  def update_seller seller_id
+    seller = Seller.find(seller_id)
+    self.seller = seller
+    self.save!
+  end
 end

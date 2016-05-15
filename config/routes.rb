@@ -69,6 +69,10 @@ Rails.application.routes.draw do
         get :change_order_item
         get :search_item
       end
+      member do
+        get :edit_seller
+        post :update_seller
+      end
     end
     resources :loss_orders do
       collection do
@@ -115,6 +119,7 @@ Rails.application.routes.draw do
         post :export_stocks
         post :export_product_in_out
         post :export_total_day_money_by_vendor
+        post :export_total_day_money_by_seller
       end
       member do
         post :change_stores

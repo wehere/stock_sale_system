@@ -1,9 +1,9 @@
 <br/>
-<%= link_to '创建卖家', new_supply_seller_path, class: 'btn btn-primary' %>
+<%= link_to '创建供应商', new_supply_seller_path, class: 'btn btn-primary' %>
 <br/>
 <table class="table">
   <thead>
-    <th>卖家名字</th><th>店铺名称</th><th>手机</th><th>地址</th><th>排序</th><th>操作</th>
+    <th>供应商名字</th><th>店铺名称</th><th>手机</th><th>地址</th><th>排序</th><th>操作</th>
   </thead>
   <tbody>
     <% @sellers.each do |seller| %>
@@ -15,9 +15,9 @@
           <td><%= seller.sort_number %></td>
           <td>
               <%= link_to '编辑', edit_supply_seller_path(seller.id)  %>
-              <%= link_to '查看与更新通用产品', "/supply/sellers/prepare_set_general_products?seller_id=#{seller.id}" %>
-              <%= link_to "向上", "/supply/sellers/up/?id=#{seller.id}" %>
-              <%= link_to "向下", "/supply/sellers/down?id=#{seller.id}" %>
+              <%#= link_to '查看与更新通用产品', "/supply/sellers/prepare_set_general_products?seller_id=#{seller.id}" %>
+              <%#= link_to "向上", "/supply/sellers/up/?id=#{seller.id}" %>
+              <%#= link_to "向下", "/supply/sellers/down?id=#{seller.id}" %>
           </td>
         </tr>
     <% end %>

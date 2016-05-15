@@ -12,7 +12,7 @@ class Supply::SellersController < BaseController
   def create
     begin
       Seller.create_seller seller_params, current_user.company.id
-      flash[:notice] = '创建卖家成功。'
+      flash[:notice] = '创建供应商成功。'
       redirect_to supply_sellers_path
     rescue Exception=>e
       flash[:alert] = dispose_exception e
@@ -24,7 +24,7 @@ class Supply::SellersController < BaseController
   def update
     begin
       Seller.find(params[:id]).update_seller seller_params
-      flash[:notice] = '修改卖家信息成功。'
+      flash[:notice] = '修改供应商信息成功。'
       redirect_to supply_sellers_path
     rescue Exception=>e
       flash[:alert] = dispose_exception e
