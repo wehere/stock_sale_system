@@ -29,11 +29,13 @@ class Supply::PurchaseOrdersController < BaseController
   end
 
   def edit_seller
+    need_admin
     @purchase_order = PurchaseOrder.find_by_id(params[:id])
     @sellers = Seller.valid.where(supplier_id: current_user.company.id)
   end
 
   def update_seller
+    need_admin
     begin
       purchase_order = PurchaseOrder.find_by_id(params[:id])
       purchase_order.update_seller params[:seller_id]
