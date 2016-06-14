@@ -112,7 +112,7 @@ class OrderDetail < ActiveRecord::Base
     result.each do |key, value|
       g_p = GeneralProduct.find_by_id(key)
       last_price = value[:purchase_price].blank? ? (value[:sale_price].blank? ? 0.0 : value[:sale_price]) : value[:purchase_price]
-      sheet.row(current_row).push g_p.name, g_p.mini_spec, last_price, value[:real_weight]
+      sheet.row(current_row).push g_p.name, g_p.mini_spec, last_price, value[:real_weight].round(2)
       sum += (last_price||0.0)*value[:real_weight]
       current_row += 1
     end
