@@ -4,7 +4,7 @@ class Supply::SheetsController < BaseController
   def index
     @start_date = Time.now.to_date.last_month.beginning_of_month
     @end_date = Time.now.to_date.last_month.end_of_month
-    @customers = current_user.company.customers.order(:simple_name)
+    @customers = current_user.company.now_customers.order(:simple_name)
     @customer_id = @customers.first.id rescue ''
     @stores = @customers.first.stores rescue ''
     @store_id = @stores.first.id rescue ''

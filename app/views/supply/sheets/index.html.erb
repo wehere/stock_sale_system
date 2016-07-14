@@ -12,7 +12,7 @@
     <% end %>
     <label>门店</label>
     <% unless @stores.blank? %>
-    <%= select_tag 'store_id', options_from_collection_for_select(@stores, 'id', 'name', @store_id) %>
+    <label><div id="store_select"><%= select_tag 'store_id', options_from_collection_for_select(@stores, 'id', 'name', @store_id) %></div></label>
     <% end %>
     <%= submit_tag '导出', class: 'btn btn-primary' %>
 <% end %>
@@ -91,7 +91,7 @@
       <% end %>
       <label>门店</label>
       <% unless @stores.blank? %>
-          <%= select_tag 'store_id', options_from_collection_for_select(@stores, 'id', 'name', @store_id) %>
+          <label><div id="store_select"><%= select_tag 'store_id', options_from_collection_for_select(@stores, 'id', 'name', @store_id) %></div></label>
       <% end %>
   <%= submit_tag '导出', class: 'btn btn-primary' %>
 <% end %>
