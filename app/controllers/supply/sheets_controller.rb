@@ -90,4 +90,11 @@ class Supply::SheetsController < BaseController
     flash[:notice] = "正在下载，下载完毕后，您可以在下载页看到您需要的文件"
     redirect_to action: :index
   end
+
+  def export_product_list_by_store
+    supplier_id = current_user.company.id
+    Product.delay.export_product_list_by_store supplier_id, params[:store_id]
+    flash[:notice] = "正在下载，下载完毕后，您可以在下载页看到您需要的文件"
+    redirect_to action: :index
+  end
 end

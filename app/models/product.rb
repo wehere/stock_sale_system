@@ -322,4 +322,91 @@ class Product < ActiveRecord::Base
     file_path
   end
 
+  def self.export_product_list_by_store supplier_id, store_id
+    customer_id = Store.find(store_id).company_id
+    Spreadsheet.client_encoding = 'UTF-8'
+    book = Spreadsheet::Workbook.new
+    in_center = Spreadsheet::Format.new horizontal_align: :center, vertical_align: :center, border: :thin
+    in_left = Spreadsheet::Format.new horizontal_align: :left, border: :thin
+    sheet = book.create_worksheet name: '盘点'
+
+    # 查出所有分类
+
+    order_items = OrderItem.joins(:order)
+    order_items = order_items.where("orders.store_id = ? and orders.supplier_id = ? ", store_id, supplier_id)
+    product_ids = order_items.pluck("order_items.product_id").uniq
+    all_product = Product.where("id in (?)", product_ids).where(supplier_id: supplier_id).is_valid
+
+    marks = all_product.pluck(:mark).uniq
+
+    row_index = 1
+    marks.each do |mark|
+      sheet.row(row_index).push '品类',	'品名',	'数量',	'单价/元',	'金额/元', '', '品类',	'品名',	'数量',	'单价/元',	'金额/元'
+      sheet.row(row_index).set_format(0, in_center)
+      sheet.row(row_index).set_format(1, in_center)
+      sheet.row(row_index).set_format(2, in_center)
+      sheet.row(row_index).set_format(3, in_center)
+      sheet.row(row_index).set_format(4, in_center)
+
+      sheet.row(row_index).set_format(6, in_center)
+      sheet.row(row_index).set_format(7, in_center)
+      sheet.row(row_index).set_format(8, in_center)
+      sheet.row(row_index).set_format(9, in_center)
+      sheet.row(row_index).set_format(10, in_center)
+
+      row_index += 1
+      products = all_product.where(mark: mark)
+      mark_start_row_index = row_index
+      is_1 = true
+      products.each_with_index do |product, index|
+        price_data = Price.where(customer_id: customer_id, product_id: product.id).where("prices.price is not null").order(year_month_id: :desc, is_used: :desc, according_purchase_date: :desc).first
+        price = if price_data.blank?
+                  ''
+                else
+                  price_data.price
+                end
+        if index%2 == 0
+          sheet.row(row_index)[1], sheet.row(row_index)[2], sheet.row(row_index)[3], sheet.row(row_index)[4] = product.chinese_name, '', price, ''
+          sheet.row(row_index).set_format(1, in_center)
+          sheet.row(row_index).set_format(2, in_center)
+          sheet.row(row_index).set_format(3, in_center)
+          sheet.row(row_index).set_format(4, in_center)
+          is_1 = true
+        else
+          sheet.row(row_index)[7], sheet.row(row_index)[8], sheet.row(row_index)[9], sheet.row(row_index)[10] = product.chinese_name, '', price, ''
+          sheet.row(row_index).set_format(7, in_center)
+          sheet.row(row_index).set_format(8, in_center)
+          sheet.row(row_index).set_format(9, in_center)
+          sheet.row(row_index).set_format(10, in_center)
+          row_index += 1
+          is_1 = false
+        end
+      end
+      mark_end_row_index = if is_1
+                             row_index
+                           else
+                             row_index - 1
+                           end
+      row_index += 1 if is_1
+
+      sheet.merge_cells(row_index, 0, row_index, 8)
+      sheet.row(row_index)[0] = '合计'
+      sheet.row(row_index).set_format(0, in_center)
+
+      sheet.merge_cells(mark_start_row_index, 0, mark_end_row_index, 0)
+      sheet.row(mark_start_row_index)[0] = mark
+      sheet.row(row_index).set_format(0, in_center)
+
+      sheet.merge_cells(mark_start_row_index, 6, mark_end_row_index, 6)
+      sheet.row(mark_start_row_index)[6] = mark
+      sheet.row(row_index).set_format(6, in_center)
+
+      row_index += 2
+    end
+    file_path = "#{Rails.root}/public/downloads/#{supplier_id}/#{Store.find(store_id).name}_#{Time.now.to_i}_产品盘点表.xls"
+    Dir.mkdir Rails.root.join("public","downloads/#{supplier_id}/") unless Dir.exist? Rails.root.join("public","downloads/#{supplier_id}/")
+    book.write file_path
+    file_path
+  end
+
 end

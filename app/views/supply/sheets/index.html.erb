@@ -82,4 +82,17 @@
   <%= date_field_tag 'end_date', params[:end_date] %>
   <%= submit_tag '导出', class: 'btn btn-primary' %>
 <% end %>
+<br/>
+<h3>每家门店所用产品－盘点表</h3>
+<%= form_tag '/supply/sheets/export_product_list_by_store', method: :post do %>
+      <label>单位</label>
+      <% unless @customers.blank? %>
+          <%= select_tag 'customer_id', options_from_collection_for_select(@customers, 'id', 'simple_name', @customer_id), id: "customers_select" %>
+      <% end %>
+      <label>门店</label>
+      <% unless @stores.blank? %>
+          <div id="store_select"><%= select_tag 'store_id', options_from_collection_for_select(@stores, 'id', 'name', @store_id) %></div>
+      <% end %>
+  <%= submit_tag '导出', class: 'btn btn-primary' %>
+<% end %>
 </div>
