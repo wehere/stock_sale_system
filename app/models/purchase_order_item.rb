@@ -120,7 +120,49 @@ class PurchaseOrderItem < ActiveRecord::Base
           stock.update_attributes real_weight: current_weight + (real_weight.to_f - order_detail.real_weight)*ratio
           order_detail.update_attributes real_weight: real_weight, price: price, money: (price.to_f * real_weight.to_f).round(2)
           self.update_attributes real_weight: real_weight, price: price, money: (price.to_f * real_weight.to_f).round(2)
+          #TODO 更新入库价格
+          #TODO 更新出库价格
         end
+        #TODO 更新入库价格
+        self.purchase_price.update_attributes price: price
+        # 更新general_products的最新入库价格
+        g_p = self.product.general_product
+        if g_p.purchase_price_date.blank? || g_p.purchase_price_date <= self.purchase_order.purchase_date.to_date
+          g_p.purchase_price_date = self.purchase_order.purchase_date.to_date
+          g_p.current_purchase_price = self.purchase_price.price
+          g_p.save!
+        end
+
+        #TODO 更新出库价格
+        if supplier.use_sale_ratio
+          product = self.product
+          sale_ratio = product.sale_ratio
+          BusinessException.raise "#{product.chinese_name}的售出系数必须填写，大于1且小于2" if sale_ratio.blank? || sale_ratio < 1.0 || sale_ratio >= 2.0
+          months = []
+          months << YearMonth.current_year_month
+          months << YearMonth.next_year_month
+          supplier.now_customers.each do |customer|
+            months.each do |month|
+              price = Price.where(year_month_id: month.id, customer_id: customer.id, product_id: product.id, is_used: 1, supplier_id: supplier.id).first
+              next if price.blank?
+              # 上次更新价格依据的进货日期，为空则更新价格
+              # 比本次进货日期较早，更新价格
+              if price.according_purchase_date.blank? || price.according_purchase_date <= purchase_order.purchase_date.to_date
+                new_price = price.dup
+                price.update_attributes is_used: 0
+                new_price.pre_according_purchase_date = new_price.according_purchase_date
+                new_price.pre_price = new_price.price
+                new_price.according_purchase_date = purchase_order.purchase_date.to_date
+                BusinessException.raise "id为#{price.id}的出货价格，产品名为#{product.chinese_name},对应的相对于标准单位比率为空或为0，不能做根据进货价格更新出货价格操作" if price.ratio.blank? || price.ratio == 0
+                BusinessException.raise "id为#{purchase_price.id}进货价格，产品名为#{product.chinese_name},对应的相对于标准单位比率为空或为0，不能做根据进货价格更新出货价格操作" if purchase_price.ratio.blank? || purchase_price.ratio == 0
+                new_price.price = (purchase_price.price/(purchase_price.ratio/price.ratio)*product.sale_ratio).round(2)
+                new_price.save!
+              end
+            end
+          end
+
+        end
+
       end
     end
   end
