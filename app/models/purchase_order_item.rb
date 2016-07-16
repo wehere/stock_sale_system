@@ -200,10 +200,12 @@ class PurchaseOrderItem < ActiveRecord::Base
         months.each do |month|
           price = Price.where(year_month_id: month.id, customer_id: customer.id, product_id: self.product_id, is_used: 1, supplier_id: purchase_order.supplier_id).first
           next if price.blank?
-          price.according_purchase_date = price.pre_according_purchase_date
-          price.pre_according_purchase_date = nil
-          price.price = price.pre_price
-          price.save!
+          if price.according_purchase_date ==  purchase_order.purchase_date.to_date
+            price.according_purchase_date = price.pre_according_purchase_date
+            price.pre_according_purchase_date = nil
+            price.price = price.pre_price
+            price.save!
+          end
         end
       end
     end
