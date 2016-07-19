@@ -312,14 +312,14 @@ class OrderItem < ActiveRecord::Base
         sheet1.row(current_row)[current_col] = t_general_product.name
         sheet1.row(current_row).set_format(current_col, format)
         current_col += 1
-        sheet1.row(current_row)[current_col] = order_item.order.customer.simple_name[0,2] + ":" + order_item.order.store.name[0,2]
+        sheet1.row(current_row)[current_col] = order_item.order.store.name #order_item.order.customer.simple_name[0,2] + ":" + order_item.order.store.name[0,2]
         sheet1.row(current_row).set_format(current_col, format)
         sheet1.row(current_row+1)[current_col] = order_item.plan_weight
         sheet1.row(current_row+1).set_format(current_col, format)
         current_col += 1
         temp_general_product_id = t_general_product.id
       else
-        sheet1.row(current_row)[current_col] = order_item.order.customer.simple_name[0,2] + ":" + order_item.order.store.name[0,2]
+        sheet1.row(current_row)[current_col] = order_item.order.store.name #order_item.order.customer.simple_name[0,2] + ":" + order_item.order.store.name[0,2]
         sheet1.row(current_row).set_format(current_col, format)
         sheet1.row(current_row+1)[current_col] = order_item.plan_weight
         sheet1.row(current_row+1).set_format(current_col, format)

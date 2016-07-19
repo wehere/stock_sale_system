@@ -1,5 +1,5 @@
 # source 'https://rubygems.org'
-source 'https://ruby.taobao.org'
+source 'https://gems.ruby-china.org/'
 ruby '2.0.0'
 #ruby-gemset=stock_sale
 

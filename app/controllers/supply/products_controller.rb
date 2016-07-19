@@ -20,6 +20,14 @@ class Supply::ProductsController < BaseController
     @general_product = @product.general_product
   end
 
+  def go
+    need_admin
+    product = current_user.company.products.is_valid.find(params[:id])
+    product.general_product.update_attributes need_check: false
+    flash[:success] = "#{product.chinese_name}已经放行"
+    redirect_to "/supply/products/#{product.id}"
+  end
+
   def change_sale_ratio
     need_admin
     if request.post?

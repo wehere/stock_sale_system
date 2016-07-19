@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160505060828) do
+ActiveRecord::Schema.define(version: 20160719034802) do
 
   create_table "comments", force: :cascade do |t|
     t.integer  "order_id",    limit: 4
@@ -88,6 +88,7 @@ ActiveRecord::Schema.define(version: 20160505060828) do
     t.string   "barcode",                limit: 255
     t.float    "current_purchase_price", limit: 24,   default: 0.0
     t.date     "purchase_price_date"
+    t.boolean  "need_check",                          default: true
   end
 
   create_table "loss_order_items", force: :cascade do |t|

@@ -149,6 +149,7 @@ Rails.application.routes.draw do
         get :update_sale_ratio_by_mark
         post :update_sale_ratio_by_mark
         post :force_update_sale_ratio_by_mark
+        get :go
       end
     end
     resources :prices do
