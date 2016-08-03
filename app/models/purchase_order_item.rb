@@ -193,6 +193,11 @@ class PurchaseOrderItem < ActiveRecord::Base
         self.destroy!
       end
 
+      # 更新general_products的最新入库价格
+      g_p = self.product.general_product
+      g_p.purchase_price_date = "2016-01-01".to_date
+      g_p.save!
+
       months = []
       months << YearMonth.current_year_month
       months << YearMonth.next_year_month
