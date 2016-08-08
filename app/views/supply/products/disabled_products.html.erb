@@ -1,0 +1,16 @@
+<h3>无效的产品查询</h3>
+<%= form_tag '/supply/products/disabled_products', method: :get do %>
+    <label>产品名称</label><%= text_field_tag :name, params[:name] %><%= submit_tag '查询', class: 'btn btn-primary' %>
+<% end %>
+<table class="table">
+  <thead><th>产品ID</th><th>禁用的产品</th><th>操作</th></thead>
+  <tbody>
+  <% @disabled_products.each do |product| %>
+    <tr>
+      <td><%= product.id %></td>
+      <td><%= product.chinese_name %></td>
+      <td><%= link_to '解除禁用', "/supply/products/remove_disable?id=#{product.id}" %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

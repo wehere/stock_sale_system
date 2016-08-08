@@ -359,6 +359,24 @@ class Supply::ProductsController < BaseController
     end
   end
 
+  def disabled_products
+    need_admin
+    @disabled_products = current_user.company.products.where(is_valid: false)
+    @disabled_products = if params[:name].blank?
+                           @disabled_products
+                         else
+                           @disabled_products.where("chinese_name like ? or simple_abc like ?", "%#{params[:name]}%", "%#{params[:name]}%")
+                         end
+  end
+
+  def remove_disable
+    need_admin
+    product = Product.find(params[:id])
+    product.update_attributes is_valid: true
+    flash[:success] = "#{product.chinese_name} 已经置为有效！"
+    redirect_to action: :disabled_products
+  end
+
   private
 
     def product_params

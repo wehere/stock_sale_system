@@ -150,6 +150,8 @@ Rails.application.routes.draw do
         post :update_sale_ratio_by_mark
         post :force_update_sale_ratio_by_mark
         get :go
+        get :disabled_products
+        get :remove_disable
       end
     end
     resources :prices do
