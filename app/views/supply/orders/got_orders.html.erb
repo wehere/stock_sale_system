@@ -3,7 +3,7 @@
     <%= select_tag :dealt_status, options_from_collection_for_select(SendOrderMessage::DEALT_STATUS,'first','second',params[:dealt_status]), prompt: '全部' %>
     <label>时间区间</label><%= date_field_tag :start_date, params[:start_date] %><label>至</label><%= date_field_tag :end_date, params[:end_date] %>
     <%= submit_tag '查询', class: 'btn btn-primary' %>
-    <label>温馨提示：订货信息，在点击全选后，可以Ctrl+C复制</label>
+    <label style="color: red">温馨提示：订货信息，在点击全选后，可以Ctrl+C复制</label>
 <% end %>
 
 <table class="table">
