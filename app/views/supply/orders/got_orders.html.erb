@@ -3,6 +3,7 @@
     <%= select_tag :dealt_status, options_from_collection_for_select(SendOrderMessage::DEALT_STATUS,'first','second',params[:dealt_status]), prompt: '全部' %>
     <label>时间区间</label><%= date_field_tag :start_date, params[:start_date] %><label>至</label><%= date_field_tag :end_date, params[:end_date] %>
     <%= submit_tag '查询', class: 'btn btn-primary' %>
+    <label>温馨提示：订货信息，在点击全选后，可以Ctrl+C复制</label>
 <% end %>
 
 <table class="table">
@@ -41,9 +42,11 @@
           <td><%= Tools.distance_of_time_in_words(message.created_at) rescue 'error' %></td>
           <td><%= text_area_tag "main_message_#{index}", message.main_message rescue 'error' %></td>
           <td>
-            <button class='my_clip_button' data-clipboard-target="<%= "main_message_#{index}" %>" data-clipboard-text='Default clipboard text from attribute' id="<%= "clip_button_#{index}" %>" title='点击复制前面的订货信息'>
-            <b>复制</b>
-          </button></td>
+            <!--<button class='my_clip_button' data-clipboard-target="<%= "main_message_#{index}" %>" data-clipboard-text='Default clipboard text from attribute' id="<%#= "clip_button_#{index}" %>" title='点击复制前面的订货信息'>-->
+            <!--<b>全选</b>-->
+            <!--/button-->
+            <input type="button" onclick="selectText('<%= index %>')"  value="全选"/>
+          </td>
           <td><%= message.secondary_message rescue 'error' %></td>
           <td>
             <%= image_tag message.is_dealt? ? "ok.jpg" : "wenhao.jpg", size: '50x50' %>
@@ -57,7 +60,12 @@
 
 <script>
     $(document).ready(function() {
-        var clip = new ZeroClipboard($(".my_clip_button"))
+//        var clip = new ZeroClipboard($(".my_clip_button"))
     });
+    function selectText(index)
+    {    var st=document.getElementById("main_message_"+index);
+        st.focus();
+        st.select();
+    }
 
 </script>
