@@ -372,7 +372,7 @@ class Supply::ProductsController < BaseController
   def remove_disable
     need_admin
     product = Product.find(params[:id])
-    product.update_attributes is_valid: true
+    product.remove_disable
     flash[:success] = "#{product.chinese_name} 已经置为有效！"
     redirect_to action: :disabled_products
   end

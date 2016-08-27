@@ -88,6 +88,28 @@ class Product < ActiveRecord::Base
     end
   end
 
+  def remove_disable
+    Product.transaction do
+
+      #当前产品置为有效
+      self.is_valid = 1
+      self.save!
+
+      #如果当前产品关联的通用产品有效
+      general_product.is_valid = 1
+      general_product.save!
+
+      #置该产品相关的进货价格有效
+      p = if self.purchase_price.present?
+            self.purchase_price
+          else
+            PurchasePrice.where(supplier_id: self.supplier_id, product_id: self.id).order(created_at: :desc).first
+          end
+      p.is_used = 1
+      p.save!
+
+    end
+  end
 
   def self.export supplier_id, customer_id, year_month_id
     supplier = Company.find(supplier_id)
