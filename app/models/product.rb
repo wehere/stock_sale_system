@@ -71,8 +71,10 @@ class Product < ActiveRecord::Base
 
       #置该产品相关的进货价格无效
       p = self.purchase_price
-      p.is_used = 0
-      p.save!
+      if p.present?
+        p.is_used = 0
+        p.save!
+      end
 
       #如果当前产品关联的通用产品只有一个，置该通用产品无效
       gps = general_product.products
@@ -105,8 +107,10 @@ class Product < ActiveRecord::Base
           else
             PurchasePrice.where(supplier_id: self.supplier_id, product_id: self.id).order(created_at: :desc).first
           end
-      p.is_used = 1
-      p.save!
+      if p.present?
+        p.is_used = 1
+        p.save!
+      end
 
     end
   end
