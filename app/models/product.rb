@@ -112,6 +112,18 @@ class Product < ActiveRecord::Base
         p.save!
       end
 
+      #置该产品相关出货价格有效
+      current_year_month = YearMonth.current_year_month
+      customers = self.supplier.now_customers
+
+      customers.each do |customer|
+        price = Price.where(customer_id: customer.id, product_id: self.id, supplier_id: self.supplier_id).order(created_at: :desc).first
+        current_year_month_price = price.dup
+        current_year_month_price.year_month_id = current_year_month.id
+        current_year_month_price.is_used = 1
+        current_year_month_price.save!
+      end
+
     end
   end
 
