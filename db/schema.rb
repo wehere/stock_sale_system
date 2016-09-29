@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160719034802) do
+ActiveRecord::Schema.define(version: 20160929081430) do
 
   create_table "comments", force: :cascade do |t|
     t.integer  "order_id",    limit: 4
@@ -344,6 +344,13 @@ ActiveRecord::Schema.define(version: 20160719034802) do
     t.string   "name",       limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "system_configs", force: :cascade do |t|
+    t.string   "k",          limit: 255
+    t.string   "v",          limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "test", force: :cascade do |t|
