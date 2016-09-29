@@ -96,6 +96,8 @@ class Supply::OrderItemsController < BaseController
         Company.all_suppliers.each do |supplier|
           Price.delay.g_next_month_price YearMonth.current_year_month.id, YearMonth.next_year_month.id, supplier.id
         end
+        k = SystemConfig.find_by_k '更新下月价格时间'
+        k.update_attributes v: Time.now.to_s unless k.blank?
       end
     end
 
