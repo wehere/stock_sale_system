@@ -6,7 +6,7 @@ SimpleNavigation::Configuration.run do |navigation|
   # The renderer can also be specified as option in the render_navigation call.
   #navigation.renderer = Your::Custom::Renderer
 
-  # Specify the class that will be applied to active navigation items. Defaults to 'selected' 
+  # Specify the class that will be applied to active navigation items. Defaults to 'selected'
   #navigation.selected_class = 'selected'
 
   # Specify the class that will be applied to the current leaf of
@@ -28,12 +28,12 @@ SimpleNavigation::Configuration.run do |navigation|
 
   # Specify if the auto highlight feature is turned on (globally, for the whole navigation). Defaults to true
   #navigation.auto_highlight = true
-  
-  # Specifies whether auto highlight should ignore query params and/or anchors when 
-  # comparing the navigation items with the current URL. Defaults to true 
+
+  # Specifies whether auto highlight should ignore query params and/or anchors when
+  # comparing the navigation items with the current URL. Defaults to true
   navigation.ignore_query_params_on_auto_highlight = false
   #navigation.ignore_anchors_on_auto_highlight = true
-  
+
   # If this option is set to true, all item names will be considered as safe (passed through html_safe). Defaults to false.
   #navigation.consider_item_names_as_safe = false
 
@@ -60,7 +60,7 @@ SimpleNavigation::Configuration.run do |navigation|
       sub_nav.item :key_1_10, '价格查询', "/supply/prices", if: -> { true }
       sub_nav.item :key_1_1, '修改价格', '/supply/prices/search', if: -> { true }
       # sub_nav.item :key_1_2, '新增价格', '/supply/prices/prepare_create_price', if: -> { true }
-      sub_nav.item :key_1_3, '更新次月价格', '/supply/prices/generate_next_month', if: -> { true}
+      # sub_nav.item :key_1_3, '更新次月价格', '/supply/prices/generate_next_month', if: -> { true}
       # sub_nav.item :key_1_4, '用excel导入价格', '/supply/prices/import_prices_from_xls', if: -> { true}
       sub_nav.item :key_1_5, '导出价格', '/supply/prices/export_xls_of_prices', if: -> { true}
       # sub_nav.item :key_1_6, '进货价格', '/purchase/purchase_price', if: -> { true}
