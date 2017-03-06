@@ -101,6 +101,7 @@ class Supply::PurchaseOrdersController < BaseController
       #  "action"=>"create_purchase_order"}
       begin
         PurchaseOrder.transaction do
+          percent = SystemConfig.v('允许浮动的差价百分比', '10').to_f
           # 创建purchase_orders
           store = current_user.store
           BusinessException.raise '当前用户没有绑定门店' if store.blank?
@@ -123,7 +124,7 @@ class Supply::PurchaseOrdersController < BaseController
             # 检测价格是否有问题
             general_product = purchase_price.product.general_product
             if !general_product.current_purchase_price.blank? && general_product.current_purchase_price != 0
-              BusinessException.raise "#{purchase_price.product.chinese_name}价格比上一次价格浮动超过30%，上次价格是#{general_product.current_purchase_price}" if general_product.need_check && ((general_product.current_purchase_price-param_purchase_price.to_f)/general_product.current_purchase_price).abs > 0.3
+              BusinessException.raise "#{purchase_price.product.chinese_name}价格比上一次价格浮动超过#{percent}%，上次价格是#{general_product.current_purchase_price}" if general_product.need_check && ((general_product.current_purchase_price-param_purchase_price.to_f)/general_product.current_purchase_price).abs > percent/100.0
               general_product.update_attributes need_check: true
             end
 
