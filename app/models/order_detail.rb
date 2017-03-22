@@ -47,7 +47,9 @@ class OrderDetail < ActiveRecord::Base
     order_details = order_details.where("detail_date>= ?", start_date.to_time.change(hour:0,min:0,sec:0)) unless start_date.blank?
     order_details = order_details.where("detail_date<=?", end_date.to_time.change(hour:23,min:59,sec:59)) unless end_date.blank?
     result = {}
-    order_details.each do |order_detail|
+    puts "total_detail_count:#{order_details.count}"
+    order_details.eager_load(:product).each_with_index do |order_detail, index|
+      puts "detail: #{index}"
       if result[order_detail.product.general_product_id].blank?
         if order_detail.detail_type == 2
           # 出库
