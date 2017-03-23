@@ -58,7 +58,7 @@ class OrderDetail < ActiveRecord::Base
           h[:purchase_date] = ''
           h[:sale_price] = order_detail.price
           h[:purchase_price] = 0
-          ratio = OrderItem.find_by_id(order_detail.item_id).price.ratio||0.0 rescue 0.0
+          ratio = OrderItem.eager_load(:price).where('order_items.id = ?', order_detail.item_id).first.price.ratio||0.0 rescue 0.0
           h[:real_weight] = 0.0-(order_detail.real_weight||0)*ratio
           result[order_detail.product.general_product_id] = h
         elsif order_detail.detail_type == 1
@@ -68,13 +68,13 @@ class OrderDetail < ActiveRecord::Base
           h[:purchase_date] = order_detail.detail_date
           h[:sale_price] = 0
           h[:purchase_price] = order_detail.price
-          ratio = PurchaseOrderItem.find_by_id(order_detail.item_id).purchase_price.ratio||0.0 rescue 0.0
+          ratio = PurchaseOrderItem.eager_load(:purchase_price).where('purchase_order_items.id = ?', order_detail.item_id).first.purchase_price.ratio||0.0 rescue 0.0
           h[:real_weight] = (order_detail.real_weight||0)*ratio
           result[order_detail.product.general_product_id] = h
         else
           # 损耗
           h = {}
-          ratio = LossOrderItem.find_by_id(order_detail.item_id).loss_price.ratio||0.0 rescue 0.0
+          ratio = LossOrderItem.eager_load(:loss_price).where('loss_order_items.id = ?', order_detail.item_id).first.loss_price.ratio||0.0 rescue 0.0
           h[:real_weight] = 0.0 - (order_detail.real_weight||0)*ratio
         end
       else
@@ -84,7 +84,7 @@ class OrderDetail < ActiveRecord::Base
             h[:sale_date] = order_detail.detail_date
             h[:sale_price] = order_detail.price
           end
-          ratio = OrderItem.find_by_id(order_detail.item_id).price.ratio||0.0 rescue 0.0
+          ratio = OrderItem.eager_load(:price).where('order_items.id = ?', order_detail.item_id).first.price.ratio||0.0 rescue 0.0
           h[:real_weight] -= (order_detail.real_weight||0)*ratio
         elsif order_detail.detail_type == 1
           h = result[order_detail.product.general_product_id]
@@ -92,11 +92,11 @@ class OrderDetail < ActiveRecord::Base
             h[:purchase_date] = order_detail.detail_date
             h[:purchase_price] = order_detail.price
           end
-          ratio = PurchaseOrderItem.find_by_id(order_detail.item_id).purchase_price.ratio||0.0 rescue 0.0
+          ratio = PurchaseOrderItem.eager_load(:purchase_price).where('purchase_order_items.id = ?', order_detail.item_id).first.purchase_price.ratio||0.0 rescue 0.0
           h[:real_weight] += (order_detail.real_weight||0)*ratio
         elsif order_detail.detail_type == 3 or order_detail.detail_type == 4
           h = result[order_detail.product.general_product_id]
-          ratio = LossOrderItem.find_by_id(order_detail.item_id).loss_price.ratio||0.0 rescue 0.0
+          ratio = LossOrderItem.eager_load(:loss_price).where('loss_order_items.id = ?', order_detail.item_id).first.loss_price.ratio||0.0 rescue 0.0
           h[:real_weight] -= (order_detail.real_weight||0)*ratio
         end
       end
