@@ -20,7 +20,7 @@ class Supply::LossOrdersController < BaseController
     unless params[:memo].blank?
       @loss_orders = @loss_orders.where("loss_orders.memo like ? ", "%#{params[:memo]}%")
     end
-    @loss_orders = @loss_orders.order(loss_date: :desc).paginate(page: params[:page]||1, per_page: params[:per_page]||10)
+    @loss_orders = @loss_orders.order(updated_at: :desc).paginate(page: params[:page]||1, per_page: params[:per_page]||10)
   end
 
   def edit

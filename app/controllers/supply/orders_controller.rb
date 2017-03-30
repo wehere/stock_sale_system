@@ -16,7 +16,7 @@ class Supply::OrdersController < BaseController
       company = Company.find_by_simple_name(@key)
       @orders = @orders.where("id = ? or customer_id = ? or customer_id = ?", @key, @key, company.blank? ? nil : company.id)
     end
-    @orders = @orders.paginate(page: params[:page], per_page: 10)
+    @orders = @orders.order(updated_at: :desc).paginate(page: params[:page], per_page: 10)
   end
 
   def destroy

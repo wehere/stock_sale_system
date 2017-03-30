@@ -8,7 +8,7 @@ class Supply::ProductsController < BaseController
       else
         @products = current_user.company.products
       end
-      @products = @products.is_valid.order(id: :desc).paginate(page: params[:page]||1, per_page: params[:per_page]||10)
+      @products = @products.is_valid.order(updated_at: :desc).paginate(page: params[:page]||1, per_page: params[:per_page]||10)
       @marks = current_user.company.marks.split(",")
     rescue Exception=>e
       flash[:alert] = '查询失败，' + dispose_exception(e)

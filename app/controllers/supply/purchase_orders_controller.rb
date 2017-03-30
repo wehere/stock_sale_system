@@ -20,7 +20,7 @@ class Supply::PurchaseOrdersController < BaseController
     unless params[:memo].blank?
       @purchase_orders = @purchase_orders.where("purchase_orders.memo like ? ", "%#{params[:memo]}%")
     end
-    @purchase_orders = @purchase_orders.order(purchase_date: :desc).paginate(page: params[:page]||1, per_page: params[:per_page]||10)
+    @purchase_orders = @purchase_orders.order(updated_at: :desc).paginate(page: params[:page]||1, per_page: params[:per_page]||10)
   end
 
   def edit
