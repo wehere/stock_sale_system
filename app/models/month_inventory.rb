@@ -11,7 +11,7 @@ class MonthInventory < ActiveRecord::Base
   def self.init
     supplier = Company.find(52)
     # Company.all_suppliers.each do |supplier|
-    YearMonth.where('value >= 201603 and value <= 201702').each do |year_month|
+    YearMonth.where('value >= 201703 and value <= 201705').each do |year_month|
       MonthInventory.where(storage_id: supplier.stores.first.storage.id,
       year_month_id: YearMonth.find_by(val: YearMonth.chinese_month_format(year_month.beginning_date.last_month)).id,
       supplier_id: supplier.id).each do |m_i|
