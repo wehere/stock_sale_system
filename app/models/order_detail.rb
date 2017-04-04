@@ -22,11 +22,12 @@ class OrderDetail < ActiveRecord::Base
     year_month = YearMonth.year_month(self.detail_date)
     last_year_month = YearMonth.year_month(Time.now.to_date)
     YearMonth.where('value >= ? and value <= ?', year_month.value, last_year_month.value).each do |_year_month|
-      month_inventory = MonthInventory.find_or_create_by( year_month_id: _year_month.id,
+      month_inventory = MonthInventory.where( year_month_id: _year_month.id,
                             storage_id: supplier.stores.first.storage.id,
                             general_product_id: product.general_product_id,
                             supplier_id: supplier.id
-                          )
+                          ).first
+      next if month_inventory.blank?
       case detail_type
       when 1 # 入库
         purchase_order_item = PurchaseOrderItem.eager_load(:purchase_price).find(item_id)
@@ -52,11 +53,12 @@ class OrderDetail < ActiveRecord::Base
     year_month = YearMonth.year_month(self.detail_date)
     last_year_month = YearMonth.year_month(Time.now.to_date)
     YearMonth.where('value >= ? and value <= ?', year_month.value, last_year_month.value).each do |_year_month|
-      month_inventory = MonthInventory.find_or_create_by( year_month_id: _year_month.id,
+      month_inventory = MonthInventory.where( year_month_id: _year_month.id,
                             storage_id: supplier.stores.first.storage.id,
                             general_product_id: product.general_product_id,
                             supplier_id: supplier.id
-                          )
+                          ).first
+      next if month_inventory.blank?
       case detail_type
       when 1 # 入库
         purchase_order_item = PurchaseOrderItem.eager_load(:purchase_price).find(item_id)
@@ -78,11 +80,12 @@ class OrderDetail < ActiveRecord::Base
     year_month = YearMonth.year_month(self.detail_date)
     last_year_month = YearMonth.year_month(Time.now.to_date)
     YearMonth.where('value >= ? and value <= ?', year_month.value, last_year_month.value).each do |_year_month|
-      month_inventory = MonthInventory.find_or_create_by( year_month_id: _year_month.id,
+      month_inventory = MonthInventory.where( year_month_id: _year_month.id,
                             storage_id: supplier.stores.first.storage.id,
                             general_product_id: product.general_product_id,
                             supplier_id: supplier.id
-                          )
+                          ).first
+      next if month_inventory.blank?
       case detail_type
       when 1 # 入库
         purchase_order_item = PurchaseOrderItem.eager_load(:purchase_price).find(item_id)
