@@ -8,6 +8,22 @@ class MonthInventory < ActiveRecord::Base
 
   belongs_to :supplier
 
+  def self.copy_month_inventory
+    return if Time.now.to_date.day != 1
+    supplier = Company.find(52)
+    year_month = YearMonth.year_month(Time.now.to_date)
+
+    return if MonthInventory.where(storage_id: supplier.stores.first.storage.id, year_month_id: year_month.id, supplier_id: supplier.id).count > 0
+
+    MonthInventory.where(storage_id: supplier.stores.first.storage.id,
+    year_month_id: YearMonth.find_by(val: YearMonth.chinese_month_format(year_month.beginning_date.last_month)).id,
+    supplier_id: supplier.id).each do |m_i|
+      mi = m_i.dup
+      mi.year_month_id = year_month.id
+      mi.save
+    end
+  end
+
   def self.init
     supplier = Company.find(52)
     # Company.all_suppliers.each do |supplier|
