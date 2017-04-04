@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170404140433) do
+ActiveRecord::Schema.define(version: 20170404163820) do
 
   create_table "comments", force: :cascade do |t|
     t.integer  "order_id",    limit: 4
@@ -138,11 +138,13 @@ ActiveRecord::Schema.define(version: 20170404140433) do
   end
 
   create_table "month_inventories", force: :cascade do |t|
-    t.integer "year_month_id",      limit: 4
-    t.integer "storage_id",         limit: 4
-    t.integer "general_product_id", limit: 4
-    t.float   "real_weight",        limit: 24, default: 0.0
-    t.integer "supplier_id",        limit: 4
+    t.integer  "year_month_id",      limit: 4
+    t.integer  "storage_id",         limit: 4
+    t.integer  "general_product_id", limit: 4
+    t.float    "real_weight",        limit: 24, default: 0.0
+    t.integer  "supplier_id",        limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "order_details", force: :cascade do |t|

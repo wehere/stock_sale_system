@@ -1,0 +1,21 @@
+<h3>月库存状况</h3>
+<%= form_tag '/supply/month_inventories', method: :get do %>
+    <label>月份</label>
+    <%= select_tag :year_month_id, options_from_collection_for_select(@year_months, :id, :val, params[:year_month_id]) %>
+    <%= submit_tag '查询', class: "btn btn-primary" %>
+<% end %>
+<table class="table">
+  <thead>
+    <th>产品名称</th><th>仓库</th><th>单位</th><th>库存量</th>
+  </thead>
+  <tbody>
+    <% @month_inventories.eager_load(:general_product, :storage).each do |month_inventory| %>
+        <tr>
+          <td><%= month_inventory.general_product.name %></td>
+          <td><%= month_inventory.storage.name %></td>
+          <td><%= month_inventory.general_product.mini_spec %></td>
+          <td><%= month_inventory.real_weight %></td>
+        </tr>
+    <% end %>
+  </tbody>
+</table>
