@@ -1,4 +1,7 @@
 class YearMonth < ActiveRecord::Base
+
+  has_many :month_inventories
+
   has_many :orders
   has_many :order_items, through: :orders
   scope :current_year_month, -> { where(val: self.chinese_month_format(Time.now.to_date)).first }

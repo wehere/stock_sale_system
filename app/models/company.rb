@@ -30,6 +30,8 @@ class Company < ActiveRecord::Base
   has_many :general_products, foreign_key: :supplier_id
   has_many :stocks, foreign_key: :supplier_id
 
+  has_many :month_inventories, foreign_key: :supplier_id
+
   has_many :employee_foods, foreign_key: :supplier_id
 
   #由eric添加

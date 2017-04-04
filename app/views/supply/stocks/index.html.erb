@@ -8,7 +8,7 @@
     <th>产品名称</th><th>仓库</th><th>单位</th><th>库存量</th>
   </thead>
   <tbody>
-    <% @stocks.order(updated_at: :desc).eager_load(:general_product).each do |stock| %>
+    <% @stocks.order(updated_at: :desc).eager_load(:general_product, :storage).each do |stock| %>
         <tr>
           <td><%= stock.general_product.name %></td>
           <td><%= stock.storage.name %></td>

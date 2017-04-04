@@ -3,6 +3,9 @@ class GeneralProduct < ActiveRecord::Base
   belongs_to :company, foreign_key: :supplier_id
   has_many :products
   has_one :stock
+
+  has_many :month_inventories
+
   scope :is_valid, ->{where(is_valid: true)}
   attr_accessor :skip_mini_spec_check
   validates_presence_of :name, message: '名称不可以为空。'

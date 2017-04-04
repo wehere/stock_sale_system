@@ -48,7 +48,8 @@ class OrderDetail < ActiveRecord::Base
     order_details = order_details.where("detail_date<=?", end_date.to_time.change(hour:23,min:59,sec:59)) unless end_date.blank?
     result = {}
     puts "total_detail_count:#{order_details.count}"
-    order_details.eager_load(:product).each_with_index do |order_detail, index|
+    index = 0
+    order_details.eager_load(:product).find_each do |order_detail|
       puts "detail: #{index}"
       if result[order_detail.product.general_product_id].blank?
         if order_detail.detail_type == 2
@@ -100,6 +101,7 @@ class OrderDetail < ActiveRecord::Base
           h[:real_weight] -= (order_detail.real_weight||0)*ratio
         end
       end
+      index += 1
     end
     result
     Spreadsheet.client_encoding = 'UTF-8'
