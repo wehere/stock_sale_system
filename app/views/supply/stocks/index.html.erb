@@ -5,27 +5,16 @@
 <% end %>
 <table class="table">
   <thead>
-    <th>产品名称</th><th>仓库</th><th>单位</th><th>库存量</th><th>最后一次进货价格</th>
+    <th>产品名称</th><th>仓库</th><th>单位</th><th>库存量</th>
   </thead>
   <tbody>
-    <% sum_money = 0.0 %>
-    <% @stocks.each do |stock| %>
+    <% @stocks.order(updated_at: :desc).eager_load(:general_product).each do |stock| %>
         <tr>
-          <% latest_purchase_price = stock.general_product.current_purchase_price %>
           <td><%= stock.general_product.name %></td>
           <td><%= stock.storage.name %></td>
-          <td><%= stock.purchase_price.true_spec rescue 'error' %></td>
-          <td><%= (stock.real_weight/stock.purchase_price.ratio).round(2) rescue 'error' %></td>
-          <td><%= latest_purchase_price == 0.0 ? '' : latest_purchase_price %></td>
-
-
-          <%
-             weight = stock.real_weight/stock.purchase_price.ratio rescue 0
-             sum_money += latest_purchase_price*weight
-          %>
-
+          <td><%= stock.general_product.mini_spec %></td>
+          <td><%= stock.real_weight %></td>
         </tr>
     <% end %>
   </tbody>
 </table>
-<h2>以上库存总价值:<%= sum_money.round(2) %></h2>
