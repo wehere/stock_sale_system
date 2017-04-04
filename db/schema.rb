@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170404123020) do
+ActiveRecord::Schema.define(version: 20170404140433) do
 
   create_table "comments", force: :cascade do |t|
     t.integer  "order_id",    limit: 4
@@ -163,8 +163,6 @@ ActiveRecord::Schema.define(version: 20170404123020) do
     t.string   "true_spec",          limit: 255
     t.string   "memo",               limit: 500
   end
-
-  add_index "order_details", ["supplier_id", "delete_flag", "detail_date"], name: "supplier_id", using: :btree
 
   create_table "order_items", force: :cascade do |t|
     t.integer  "order_id",    limit: 4
@@ -411,6 +409,7 @@ ActiveRecord::Schema.define(version: 20170404123020) do
     t.string   "val",        limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "value",      limit: 4
   end
 
 end

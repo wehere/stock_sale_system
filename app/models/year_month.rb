@@ -33,4 +33,16 @@ class YearMonth < ActiveRecord::Base
   def self.chinese_month_format date
     date.to_date.to_s(:db)[0..-4].gsub('-','年')+'月'
   end
+
+  def beginning_date
+    "#{value}01".to_date
+  end
+
+  def ending_date
+    "#{value}01".to_date.end_of_month
+  end
+
+  def self.year_month date
+    self.find_by(val: self.chinese_month_format(date))
+  end
 end

@@ -10,7 +10,95 @@ class OrderDetail < ActiveRecord::Base
       3 => '损耗'
   }
 
+  after_create :change_month_inventory_for_create
+
+  after_update :change_month_inventory_for_update
+
+  after_destroy :change_month_inventory_for_destroy
+
   scope :valid, ->{where("delete_flag is null or delete_flag = 0")}
+
+  def change_month_inventory_for_create
+    year_month = YearMonth.year_month(self.detail_date)
+    last_year_month = YearMonth.year_month(Time.now.to_date)
+    YearMonth.where('value >= ? and value <= ?', year_month.value, last_year_month.value).each do |_year_month|
+      month_inventory = MonthInventory.find_or_create_by( year_month_id: _year_month.id,
+                            storage_id: supplier.stores.first.storage.id,
+                            general_product_id: product.general_product_id,
+                            supplier_id: supplier.id
+                          )
+      case detail_type
+      when 1 # 入库
+        purchase_order_item = PurchaseOrderItem.eager_load(:purchase_price).find(item_id)
+        month_inventory.real_weight += purchase_order_item.real_weight * purchase_order_item.purchase_price.ratio
+        month_inventory.save!
+      when 2 # 出库
+        order_item = OrderItem.eager_load(:price).find(item_id)
+        month_inventory.real_weight -= order_item.real_weight * order_item.price.ratio
+        month_inventory.save!
+      when 3 # 损耗
+        loss_order_item = LossOrderItem.eager_load(:loss_price).find(item_id)
+        month_inventory.real_weight -= loss_order_item.real_weight * loss_order_item.loss_price.ratio
+        month_inventory.save!
+      end
+    end
+  end
+
+  def change_month_inventory_for_update
+    if delete_flag && !delete_flag_was
+      change_month_inventory_for_destroy
+      return
+    end
+    year_month = YearMonth.year_month(self.detail_date)
+    last_year_month = YearMonth.year_month(Time.now.to_date)
+    YearMonth.where('value >= ? and value <= ?', year_month.value, last_year_month.value).each do |_year_month|
+      month_inventory = MonthInventory.find_or_create_by( year_month_id: _year_month.id,
+                            storage_id: supplier.stores.first.storage.id,
+                            general_product_id: product.general_product_id,
+                            supplier_id: supplier.id
+                          )
+      case detail_type
+      when 1 # 入库
+        purchase_order_item = PurchaseOrderItem.eager_load(:purchase_price).find(item_id)
+        month_inventory.real_weight += (real_weight - real_weight_was) * purchase_order_item.purchase_price.ratio
+        month_inventory.save!
+      when 2 # 出库
+        order_item = OrderItem.eager_load(:price).find(item_id)
+        month_inventory.real_weight -= (real_weight - real_weight_was) * order_item.price.ratio
+        month_inventory.save!
+      when 3 # 损耗
+        loss_order_item = LossOrderItem.eager_load(:loss_price).find(item_id)
+        month_inventory.real_weight -= (real_weight - real_weight_was) * loss_order_item.loss_price.ratio
+        month_inventory.save!
+      end
+    end
+  end
+
+  def change_month_inventory_for_destroy
+    year_month = YearMonth.year_month(self.detail_date)
+    last_year_month = YearMonth.year_month(Time.now.to_date)
+    YearMonth.where('value >= ? and value <= ?', year_month.value, last_year_month.value).each do |_year_month|
+      month_inventory = MonthInventory.find_or_create_by( year_month_id: _year_month.id,
+                            storage_id: supplier.stores.first.storage.id,
+                            general_product_id: product.general_product_id,
+                            supplier_id: supplier.id
+                          )
+      case detail_type
+      when 1 # 入库
+        purchase_order_item = PurchaseOrderItem.eager_load(:purchase_price).find(item_id)
+        month_inventory.real_weight -= purchase_order_item.real_weight * purchase_order_item.purchase_price.ratio
+        month_inventory.save!
+      when 2 # 出库
+        order_item = OrderItem.eager_load(:price).find(item_id)
+        month_inventory.real_weight += order_item.real_weight * order_item.price.ratio
+        month_inventory.save!
+      when 3 # 损耗
+        loss_order_item = LossOrderItem.eager_load(:loss_price).find(item_id)
+        month_inventory.real_weight += loss_order_item.real_weight * loss_order_item.loss_price.ratio
+        month_inventory.save!
+      end
+    end
+  end
 
   def self.write_stock_from_start_to_end start_id, end_id
     BusinessException.raise '有问题，需要改正'
