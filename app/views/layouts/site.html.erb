@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>591库存</title>
+
+  <%= javascript_include_tag 'application' %>
+  <%= stylesheet_link_tag 'login' %>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <%= csrf_meta_tags %>
+</head>
+<body id="<%= "#{params[:controller]}_#{params[:action]}" rescue '' %>">
+<div id="ys-layout-message">
+  <% flash.each do |name, msg| %>
+      <% if msg.is_a?(String) && msg.present? %>
+
+          <div class="alert callout ys-layout-message" data-closable style="background-color: <%= name.to_s == 'notice'|| name.to_s == 'success' ? '#43ac6a' : '#f04124' %>">
+            <div><span><%= msg %></span></div>
+          </div>
+          <% flash[name] = nil %>
+      <% end %>
+  <% end %>
+</div>
+<%= yield %>
+
+<script>
+    setTimeout(function(){$('#ys-layout-message').remove()}, 3000)
+</script>
+</body>
+</html>

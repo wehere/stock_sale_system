@@ -12,6 +12,9 @@
  *
  *= require_tree .
  *= require_self
+ *= require font-awesome
+ *= require foundation_and_overrides
+
  */
 
 .cxp_min_width {

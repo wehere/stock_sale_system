@@ -32,11 +32,18 @@
 <!--<a id="go" href="#pos_<%= @pos_id %>">GO</a>-->
 <!--<br/><br/><br/>-->
 <%= form_tag search_supply_prices_path, method: :post do %>
-<%= label_tag 'year_month_id', '月份' %>
-<%= select_tag 'year_month_id', options_from_collection_for_select(@year_months, 'id', 'val', @year_month_id) %>
-<%= label_tag 'customer_id', '客户' %>
-<%= select_tag 'customer_id', options_from_collection_for_select(@customers, 'id', 'simple_name', @customer_id) %>
-<%= submit_tag '查询', class: 'btn btn-info' %>
+  <div class="row">
+    <div class="columns small-1 text-right"><%= label_tag 'year_month_id', '月份' %></div>
+    <div class="columns small-2">
+      <%= select_tag 'year_month_id', options_from_collection_for_select(@year_months, 'id', 'val', @year_month_id) %>
+    </div>
+    <div class="columns small-1 text-right"><%= label_tag 'customer_id', '客户' %></div>
+    <div class="columns small-2">
+      <%= select_tag 'customer_id', options_from_collection_for_select(@customers, 'id', 'simple_name', @customer_id) %>
+    </div>
+    <div class="columns small-1 end text-left"><%= submit_tag '查询', class: 'button primary' %></div>
+  </div>
+
 <% end %>
 <br/>
 <% if @search_results.blank? %>
@@ -61,7 +68,7 @@
                 <%= hidden_field_tag 'pos_id', index %>
                 <td>
                 <%= text_field_tag "submitted_price", price.price, size: 7, class: 'price_text_field', onclick: "select();", onchange: "update_price(#{price.id},this.value);", onfocus: "select();" %>
-                <%#= submit_tag '保存修改', class: 'btn btn-primary' %>
+                <%#= submit_tag '保存修改', class: 'button primary' %>
                 </td>
                 <td id="msg_<%= price.id %>" style="text-align: left">
 
@@ -72,7 +79,7 @@
         <% end %>
     </table>
 <% end %>
-<%= link_to '回到顶部', '#go', class: 'btn btn-lg btn-primary', style: "position: fixed;bottom:0;right:300px" %>
+<%= link_to '回到顶部', '#go', class: 'button primary', style: "position: fixed;bottom:0;right:300px" %>
 
 <script language="javascript">
   function update_price(id, new_price){

@@ -1,16 +1,23 @@
-<h4 style="text-align: center"><%= "#{@customer.simple_name}-#{@store.name}－后台下订单系统" %>&nbsp;&nbsp;&nbsp;&nbsp;<%= link_to '（去订员工餐）', '/purchase/employee_foods' %></h4>
+<h2 style="text-align: center"><%= "#{@customer.simple_name}-#{@store.name}－后台下订单系统" %>&nbsp;&nbsp;&nbsp;&nbsp;<%= link_to '（去订员工餐）', '/purchase/employee_foods' %></h2>
 <% colors = ['#BBFFEE','#CCFF99','#FFEE99','#FFCCCC','#E8CCFF','#FFE4E1','	#FAEBD7'] %>
   <% left = 15 %>
 <div class="search_panel">
-  <label>拼音首字母</label>&nbsp;&nbsp;&nbsp;<%= text_field_tag :abc, params[:abc] %>&nbsp;&nbsp;&nbsp;<%= link_to '检索', '#', class: 'btn btn-primary', id: 'query_button', onclick: "query_product()" %>
+  <div class="row">
+    <div class="columns small-offset-2 small-2"><label>拼音首字母</label></div>
+    <div class="columns small-3"><%= text_field_tag :abc, params[:abc] %></div>
+    <div class="columns small-5 text-left end">
+      <%= link_to '检索', '#', class: 'button primary', id: 'query_button', onclick: "query_product()" %>
+    </div>
+  </div>
+
 </div>
   <% @big_marks.each_with_index do |mark,index| %>
       <div class="panel" style="left:<%= left %>px;background-color: <%= colors[index] %>;">
         <h3 style="text-align: center"><%= mark %></h3>
         <div id="<%= mark %>" class="fixed_panel">
             <% @products.where(mark: mark).limit(16).each_with_index do |product,index| %>
-                <div onclick="choose_this('<%= product.chinese_name %>')" style="cursor:hand;width: 100%;height: 15px; "  >
-                    <h6><a href='#'><%= product.chinese_name %></a></h6>
+                <div onclick="choose_this('<%= product.chinese_name %>')" style="cursor:hand;width: 100%;height: 20px; "  >
+                    <span class="elipsis"><a href='javascript:void(0)'><%= product.chinese_name %></a></span>
                 </div>
                 <div style="height: 2px"></div>
             <% end %>
@@ -24,7 +31,7 @@
   <div id="others" class="fixed_panel">
       <% @products.where("mark in (?)", @small_marks).limit(16).each_with_index do |product,index| %>
           <div onclick="choose_this('<%= product.chinese_name %>')" style="width: 100%;height: 15px;cursor:hand;">
-            <h6><a href='#'><%= product.chinese_name %></a></h6>
+            <div class="elipsis"><a href='javascript:void(0)' class="elipsis"><%= product.chinese_name %></a></div>
           </div>
           <div style="height: 2px"></div>
       <% end %>
@@ -32,11 +39,32 @@
 </div>
 <% left = left + 130 + 5 %>
 <div class="order_panel" style="left:<%= left %>px;">
-  <label>供应商</label><%= select_tag :supplier_id, options_from_collection_for_select(@suppliers, 'id', 'simple_name', params[:supplier_id]||@supplier_id), onchange: 'change_supplier()'%>
-  <label>单据类型</label><%= select_tag :order_type_id, options_from_collection_for_select(@order_types, 'id', 'name', params[:order_type_id]||@order_type_id) %>
-  <br/>
+  <div class="row">
+    <!--<div class="columns small-2"><label></label></div>-->
+    <div class="columns small-6">
+      <span class="sx-margin-top-5 sx-width-percent-40">供应商</span>
+      <%= select_tag :supplier_id,
+                     options_from_collection_for_select(@suppliers, 'id', 'simple_name', params[:supplier_id]||@supplier_id),
+                     onchange: 'change_supplier()',
+                     class: 'sx-width-percent-60'
+      %>
+    </div>
+    <div class="columns small-6">
+      <span class="sx-margin-top-5 sx-width-percent-40">单据类型</span>
+      <%= select_tag :order_type_id,
+                     options_from_collection_for_select(@order_types, 'id', 'name', params[:order_type_id]||@order_type_id),
+                     class: 'sx-width-percent-50'
+      %>
+    </div>
+  </div>
 
-  <label>到货日期</label><%= date_field_tag :reach_date, params[:reach_date]||Time.now.tomorrow.to_date %>
+  <div class="row">
+    <div class="columns small-3"><label class="sx-margin-top-5">到货日期</label></div>
+    <div class="columns small-6 end">
+      <%= date_field_tag :reach_date, params[:reach_date]||Time.now.tomorrow.to_date %>
+    </div>
+  </div>
+
   <table class="bordered">
     <thead>
     <th width="150px">品名</th><th width="50px">规格</th><th width="100px">数量</th>
@@ -51,7 +79,7 @@
   <label>其他信息</label><br/><%= text_area_tag :secondary_message, params[:secondary_message], class: 'memo_area' %>
 </div>
 <div style="position: fixed;bottom: 50px;left:<%= left+100 %>px;">
-  <%= link_to '发送订单', "javascript:send_order()", class: 'btn btn-primary' %>
+  <%= link_to '发送订单', "javascript:send_order()", class: 'button primary' %>
 </div>
 
 <script language="javascript">
@@ -70,7 +98,7 @@
               function (result) {
                   r = result.split('|');
                   if(r[0]=='0'){
-                      str = '<tr id="item_'+index+'" class="product"><td id="product_name_'+index+'">'+product_name+'</td><td id="spec_'+index+'">'+r[1]+'</td><td><input type="text" id="num_'+index+'" name="num_'+index+'" size=5 />&nbsp;&nbsp;<a href="javascript:delete_item('+index+')">X</a></td></tr>';
+                      str = '<tr id="item_'+index+'" class="product"><td id="product_name_'+index+'">'+product_name+'</td><td id="spec_'+index+'">'+r[1]+'</td><td><input type="text" id="num_'+index+'" name="num_'+index+'" size=5 class= "sx-display-inline sx-width-percent-80" />&nbsp;&nbsp;<a href="javascript:delete_item('+index+')">X</a></td></tr>';
                       $("#order_item_container").append(str);
                       index += 1;
                   }else{

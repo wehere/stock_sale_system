@@ -122,6 +122,7 @@ SimpleNavigation::Configuration.run do |navigation|
       sub_nav.item :key_6_1, '分菜', '/supply/order_items/prepare_classify', if: -> { true}
       sub_nav.item :key_6_2, '产品清单', '/supply/products/prepare_export_products', if: -> { true}
     end
+
     primary.item :key_7, '库存', "/supply/stocks", class: 'special', if: -> { current_user.employee?} do |sub_nav|
       sub_nav.item :month_inventory, '每月月底库存', '/supply/month_inventories'
     end

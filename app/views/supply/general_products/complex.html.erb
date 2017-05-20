@@ -1,24 +1,24 @@
 
 <%= form_tag '/supply/general_products/complex', method: :get do %>
 <div class="row">
-  <div class="col-sm-2 text-right">
+  <div class="columns small-2 text-right">
     <label class="inline text-right">产品名称</label>
   </div>
-  <div class="columns col-sm-2">
+  <div class="columns columns small-2">
     <%= text_field_tag 'name', params[:name] %>
   </div>
-  <div class="col-sm-2 text-right">
+  <div class="columns small-2 text-right">
     <label class="inline text-right">状态</label>
   </div>
-  <div class="col-sm-2">
+  <div class="columns small-2">
     <% p_s = {-1=>"所有",0=>"没看过",1=>"看过"} %>
     <%= select_tag 'pass_status', options_from_collection_for_select(p_s, 'first','second', (params[:pass_status]||-1).to_i) %>
   </div>
-  <div class="col-sm-2">
+  <div class="columns small-2">
     <%= text_field_tag :password, params[:password] %>
   </div>
-  <div class="col-sm-2 text-right end">
-    <%= submit_tag '查询', class: 'btn btn-primary' %>
+  <div class="columns small-2 text-right end">
+    <%= submit_tag '查询', class: 'button primary' %>
   </div>
 </div>
 <% end %>

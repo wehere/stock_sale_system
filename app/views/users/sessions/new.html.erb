@@ -1,0 +1,24 @@
+<%= form_tag user_session_path, method: :post, class: 'login' do %>
+
+    <p>
+      <label for="login">邮箱:</label>
+      <%= text_field_tag 'user[email]', (params[:user][:email] rescue ''), prompt: '请输入邮箱' %>
+    </p>
+
+    <p>
+      <label for="password">密码:</label>
+      <%= password_field_tag 'user[password]', (params[:user][:password] rescue ''), size: 50 %>
+    </p>
+
+    <p class="login-submit">
+      <button type="submit" class="login-button">登录</button>
+    </p>
+
+    <!--<p class="forgot-password"><a href="/authority/users/reset_password">忘记密码?</a></p>-->
+
+<% end %>
+
+<section class="about">
+  <p class="about-author">
+    &copy; 2016&ndash;2017 <a href="javascript:void(0)" >591库存</a> 版权所有
+</section>

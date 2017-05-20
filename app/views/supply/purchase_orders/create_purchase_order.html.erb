@@ -1,8 +1,8 @@
-<h4 style="text-align: center"><%= "#{@company.simple_name}进货" %></h4>
+<h2 style="text-align: center"><%= "#{@company.simple_name}进货" %></h2>
 <% colors = ['#BBFFEE','#CCFF99','#FFEE99','#FFCCCC','#E8CCFF','#FFE4E1','	#FAEBD7'] %>
 <% left = 15 %>
 <div class="search_panel">
-  <label>拼音首字母</label>&nbsp;&nbsp;&nbsp;<%= text_field_tag :abc, params[:abc] %>&nbsp;&nbsp;&nbsp;<%= link_to '检索', '#', class: 'btn btn-primary', id: 'query_button', onclick: "query_product()" %>
+  <span>拼音首字母</span>&nbsp;&nbsp;&nbsp;<%= text_field_tag :abc, params[:abc], class: 'sx-display-inline sx-width-auto'  %>&nbsp;&nbsp;&nbsp;<%= link_to '检索', '#', class: 'button primary', id: 'query_button', onclick: "query_product()" %>
 </div>
 <% @big_marks.each_with_index do |mark,index| %>
     <div class="panel" style="left:<%= left %>px;background-color: <%= colors[index] %>;">
@@ -10,7 +10,7 @@
       <div id="<%= mark %>" class="fixed_panel">
         <% @purchase_prices.where("products.mark = ?", mark).limit(16).each_with_index do |purchase_price, index| %>
             <div onclick="choose_this('<%= purchase_price.product.chinese_name %>')" style="cursor:hand;width: 100%;height: 15px; "  >
-              <h6><a href='#'><%= purchase_price.product.chinese_name %></a></h6>
+              <h6><a href='javascript:void(0)'><%= purchase_price.product.chinese_name %></a></h6>
             </div>
             <div style="height: 2px"></div>
         <% end %>
@@ -24,7 +24,7 @@
   <div id="others" class="fixed_panel">
     <% @purchase_prices.where("products.mark in (?)", @small_marks).limit(16).each_with_index do |purchase_price, index| %>
         <div onclick="choose_this('<%= purchase_price.product.chinese_name %>')" style="width: 100%;height: 15px;cursor:hand;">
-          <h6><a href='#'><%= purchase_price.product.chinese_name %></a></h6>
+          <h6><a href='javascript:void(0)'><%= purchase_price.product.chinese_name %></a></h6>
         </div>
         <div style="height: 2px"></div>
     <% end %>
@@ -32,8 +32,10 @@
 </div>
 <% left = left + 130 + 5 %>
 <div class="order_panel" style="left:<%= left %>px;">
-  <label>买自</label><%= select_tag :seller_id, options_from_collection_for_select(@sellers, 'id', 'name', params[:seller_id]||(@sellers.first.id rescue '')) %>
-  <label>进货日期</label><%= date_field_tag :purchase_date, params[:purchase_date]||Time.now.tomorrow.to_date %>
+  <span>买自</span>
+  <%= select_tag :seller_id, options_from_collection_for_select(@sellers, 'id', 'name', params[:seller_id]||(@sellers.first.id rescue '')), class: 'sx-display-inline sx-width-auto'  %>
+  <br/>
+  <span>进货日期</span><%= date_field_tag :purchase_date, params[:purchase_date]||Time.now.tomorrow.to_date, class: 'sx-display-inline sx-width-auto'  %>
   <table class="bordered">
     <thead>
     <th width="150px">品名</th><th width="50px">规格</th><th width="50px">数量</th><th width="50px">价格</th><th></th>
@@ -50,7 +52,7 @@
   <label>备注</label><br/><%= text_area_tag :memo, params[:memo], class: 'memo_area' %>
 </div>
 <div style="position: fixed;bottom: 50px;left:<%= left+100 %>px;">
-  <%= link_to '保存进货单', "javascript:save_purchase_order()", class: 'btn btn-primary' %>
+  <%= link_to '保存进货单', "javascript:save_purchase_order()", class: 'button primary' %>
 </div>
 
 <script language="javascript">

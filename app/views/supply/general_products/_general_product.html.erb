@@ -1,62 +1,62 @@
 <div class="row">
-  <div class="col-sm-2 text-right">
+  <div class="columns small-2 text-right">
     <label>产品名称</label>
   </div>
-  <div class="col-sm-10">
+  <div class="columns small-10">
     <%= @general_product.name %>
   </div>
 </div>
 <br/>
 <div class="row">
-  <div class="col-sm-2 text-right">
+  <div class="columns small-2 text-right">
     <label>选择卖货人</label>
   </div>
-  <div class="col-sm-10">
+  <div class="columns small-10">
     <%= select_tag 'seller_id', options_from_collection_for_select( @sellers, 'id', 'name', (params[:seller_id]||@seller.id rescue '')) %>
   </div>
 </div>
 <br/>
 <div class="row">
-  <div class="col-sm-2 text-right">
+  <div class="columns small-2 text-right">
     <label>标准单位</label>
   </div>
-  <div class="col-sm-10">
+  <div class="columns small-10">
     <%= @general_product.mini_spec %>
   </div>
 </div>
 <br/>
 <div class="row">
-  <div class="col-sm-2 text-right">
+  <div class="columns small-2 text-right">
     <label>条码编号</label>
   </div>
-  <div class="col-sm-10">
+  <div class="columns small-10">
     <%= text_field_tag 'barcode', params[:barcode]||@general_product.barcode %>
   </div>
 </div>
 <br/>
 <div class="row">
-  <div class="col-sm-2 text-right">
+  <div class="columns small-2 text-right">
     <label>存放位置</label>
   </div>
-  <div class="col-sm-10">
+  <div class="columns small-10">
     <%= text_field_tag 'location', params[:location]||@general_product.location %>
   </div>
 </div>
 <br/>
 <div class="row">
-  <div class="col-sm-2 text-right">
+  <div class="columns small-2 text-right">
     <label>备注</label>
   </div>
-  <div class="col-sm-10">
+  <div class="columns small-10">
     <%= text_field_tag 'memo', params[:memo]||@general_product.memo %>
   </div>
 </div>
 <br/>
 <div class="row">
-  <div class="col-sm-1 text-left end">
-    <%#= submit_tag '保存&继续创建', class: 'btn btn-primary' %>
+  <div class="columns small-1 text-left end">
+    <%#= submit_tag '保存&继续创建', class: 'button primary' %>
   </div>
-  <div class="col-sm-1 col-sm-offset-1 text-left">
-    <%= submit_tag '保存', class: 'btn btn-primary' %>
+  <div class="columns small-1 columns small-offset-1 text-left">
+    <%= submit_tag '保存', class: 'button primary' %>
   </div>
 </div>

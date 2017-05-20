@@ -29,9 +29,9 @@
     <%= user.terminal_password %>
   </td>
   <td>
-    <%= link_to '修改', "/sp/users/#{user.id}/edit", class: 'btn btn-primary' %>&nbsp;
-    <%= link_to '设置所属公司', "/sp/users/link_company?id=#{user.id}", class: 'btn btn-primary'  %>
-    <%= link_to '设置角色', "/sp/users/set_role?id=#{user.id}", class: 'btn btn-primary'  %>
+    <%= link_to '修改', "/sp/users/#{user.id}/edit", class: 'button primary' %>&nbsp;
+    <%= link_to '设置所属公司', "/sp/users/link_company?id=#{user.id}", class: 'button primary'  %>
+    <%= link_to '设置角色', "/sp/users/set_role?id=#{user.id}", class: 'button primary'  %>
   </td>
 </tr>
 <% end %>

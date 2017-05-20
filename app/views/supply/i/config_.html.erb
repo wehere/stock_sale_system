@@ -4,15 +4,15 @@
     <% marks = @company.marks %>
     <% marks = marks.nil? ? '' : marks %>
     <% marks.split(",").each_with_index do |mark, index| %>
-        <div class="col-sm-2" id="mark_<%= index %>">
+        <div class="columns small-2" id="mark_<%= index %>">
             <label class="inline"><%= mark %></label><%= link_to 'X', "javascript:delete_mark('#{mark}',#{index})" %>
         </div>
     <% end %>
-    <div class="col-sm-2">
+    <div class="columns small-2">
       <%= text_field_tag "mark", '', size: 10 %>
     </div>
-    <div class="col-sm-2 text-center">
-      <%= link_to '添加', "javascript:add_mark()", class: 'btn btn-primary' %>
+    <div class="columns small-2 end text-center">
+      <%= link_to '添加', "javascript:add_mark()", class: 'button primary' %>
     </div>
 </div>
 <br/><br/>
@@ -21,15 +21,15 @@
   <% vendors = @company.vendors %>
   <% vendors = vendors.nil? ? '' : vendors %>
   <% vendors.split(",").each_with_index do |vendor, index| %>
-      <div class="col-sm-2" id="vendor_<%= index %>">
+      <div class="columns small-2" id="vendor_<%= index %>">
         <label class="inline"><%= vendor %></label><%= link_to 'X', "javascript:delete_vendor('#{vendor}',#{index})" %>
       </div>
   <% end %>
-  <div class="col-sm-2">
+  <div class="columns small-2">
     <%= text_field_tag "vendor", '', size: 10 %>
   </div>
-  <div class="col-sm-2 text-center">
-    <%= link_to '添加', "javascript:add_vendor()", class: 'btn btn-primary' %>
+  <div class="columns small-2 end text-center">
+    <%= link_to '添加', "javascript:add_vendor()", class: 'button primary' %>
   </div>
 </div>
 
@@ -64,7 +64,7 @@
       }).done(
               function(result){
                 if(result=="ok"){
-                    str = '<div class="col-sm-2"><label class="inline">'+$("#mark").val()+'</label></div>';
+                    str = '<div class="columns small-2"><label class="inline">'+$("#mark").val()+'</label></div>';
                     $("#mark_container").append(str);
                 } else {
                     alert(result);
@@ -103,7 +103,7 @@
       }).done(
               function(result){
                   if(result=="ok"){
-                      str = '<div class="col-sm-2"><label class="inline">'+$("#vendor").val()+'</label></div>';
+                      str = '<div class="columns small-2"><label class="inline">'+$("#vendor").val()+'</label></div>';
                       $("#vendor_container").append(str);
                   }else{
                       alert(result);

@@ -1,14 +1,14 @@
 <br/><br/>
 <%= form_tag '/supply/orders/not_return', method: :get do %>
     开始
-    <%= date_field_tag :start_date, params[:start_date] %>
+    <%= date_field_tag :start_date, params[:start_date], class: 'sx-display-inline sx-width-auto' %>
     结束
-    <%= date_field_tag :end_date, params[:end_date] %>
+    <%= date_field_tag :end_date, params[:end_date], class: 'sx-display-inline sx-width-auto'%>
     单位ID
-    <%= text_field_tag :customer_id, params[:customer_id] %>
+    <%= text_field_tag :customer_id, params[:customer_id], class: 'sx-display-inline sx-width-auto' %>
     排除单位ID
-    <%= text_field_tag :not_customer_id, params[:not_customer_id] %>
-    <%= submit_tag '查询没有拿回来的单子', class: 'btn btn-primary' %>
+    <%= text_field_tag :not_customer_id, params[:not_customer_id], class: 'sx-display-inline sx-width-auto' %>
+    <%= submit_tag '查询没有拿回来的单子', class: 'button primary' %>
 <% end %>
 
 <table class="table table-striped">
@@ -40,7 +40,7 @@
           <%= order.sum_money %>
         </td>
         <td>
-          <%= link_to '回来了', "javascript:come_back(#{order.id})", class: "btn btn-primary", data: { confirm: "你确定#{order.customer.simple_name+order.store.name+order.order_type.name rescue ''}单子回来了？"} %>
+          <%= link_to '回来了', "javascript:come_back(#{order.id})", class: "button primary", data: { confirm: "你确定#{order.customer.simple_name+order.store.name+order.order_type.name rescue ''}单子回来了？"} %>
         </td>
       </tr>
   <% end unless @orders.blank? %>

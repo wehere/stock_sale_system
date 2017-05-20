@@ -1,14 +1,14 @@
 
 <%= form_tag '/supply/general_products/complex', method: :get do %>
     <div class="row">
-      <div class="col-sm-2">
+      <div class="columns small-2">
         <label class="inline text-right">产品名称</label>
       </div>
-      <div class="columns col-sm-2">
+      <div class="columns columns small-2">
         <%= text_field_tag 'name', params[:name] %>
       </div>
-      <div class="col-sm-2 text-right end">
-        <%= submit_tag '查询', class: 'btn btn-primary' %>
+      <div class="columns small-2 text-right end">
+        <%= submit_tag '查询', class: 'button primary' %>
       </div>
     </div>
 <% end %>

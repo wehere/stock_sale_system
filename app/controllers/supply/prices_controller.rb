@@ -4,7 +4,7 @@ class Supply::PricesController < BaseController
 
   def index
     @customers = current_user.company.now_customers
-    @year_months = YearMonth.all
+    @year_months = YearMonth.all.order(val: :desc)
     params[:year_month_id] ||= YearMonth.current_year_month.id
 
     @prices = current_user.company.all_prices.where("customer_id in (?) ", @customers.ids)
@@ -34,7 +34,7 @@ class Supply::PricesController < BaseController
     price = Price.find(params[:id])
     price.update_attribute :is_used, false
     @customers = current_user.company.now_customers
-    @year_months = YearMonth.all
+    @year_months = YearMonth.all.order(val: :desc)
     render :index
   end
 
@@ -42,7 +42,7 @@ class Supply::PricesController < BaseController
     begin
       company = current_user.company
       @customers = company.now_customers
-      @year_months = YearMonth.all
+      @year_months = YearMonth.all.order(val: :desc)
       if request.post?
         @customer_id = params[:customer_id]
         @year_month_id = params[:year_month_id]
@@ -73,7 +73,7 @@ class Supply::PricesController < BaseController
     @chinese_name = Product.find(@product_id).chinese_name
     @supplier_id = company.id
     @customers = company.now_customers
-    @year_months = YearMonth.all
+    @year_months = YearMonth.all.order(val: :desc)
     @year_month_id = YearMonth.current_year_month.id
   end
 
@@ -189,7 +189,7 @@ class Supply::PricesController < BaseController
   end
 
   def import_prices_from_xls
-    @year_months = YearMonth.all
+    @year_months = YearMonth.all.order(val: :desc)
     @year_month_id = YearMonth.current_year_month.id
     company = current_user.company
     @customers = company.now_customers
@@ -206,13 +206,13 @@ class Supply::PricesController < BaseController
   def export_xls_of_prices
     @supplier_id = current_user.company.id
     @customers = current_user.company.customers.order(:simple_name)
-    @year_months = YearMonth.all.order(:id)
+    @year_months = YearMonth.all.order(val: :desc)
     @current_year_month_id = params[:year_month_id] || YearMonth.current_year_month.id
     if request.post?
       begin
         file_name = Price.delay.export_xls_of_prices @supplier_id, params[:id], params[:year_month_id]
         flash[:notice] = "正在下载，下载完毕后，您可以在下载页看到您需要的文件"
-        redirect_to action: :export_xls_of_prices
+        redirect_to '/supply/prices/export_xls_of_prices'
         # if File.exists? file_name
         #   io = File.open(file_name)
         #   io.binmode

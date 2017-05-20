@@ -1,15 +1,18 @@
 <br/>
 <%= form_tag supply_products_path, method: :get do %>
-    <%= label_tag 'key', '关键词' %>
-    <%= text_field_tag 'key', @key_value %>
-    <%= submit_tag '查询', class: 'btn btn-primary' %>
-    (关键词可以是产品ID、中文名称、缩写)
+    <div class="row">
+      <div class="columns small-1 text-left"><%= label_tag 'key', '关键词' %></div>
+      <div class="columns small-2"><%= text_field_tag 'key', @key_value %></div>
+      <div class="columns small-9 end text-left">
+        <%= submit_tag '查询', class: 'button primary' %>(关键词可以是产品ID、中文名称、缩写)
+      </div>
+    </div>
 <% end %>
 <br/>
 
   <% if @products.blank? %>
       <%= "没有找到该产品，是否创建一个新的产品？" %>
-      <%= link_to '创建', "/supply/products/new", class: 'btn btn-primary' %>
+      <%= link_to '创建', "/supply/products/new", class: 'button primary' %>
   <% else %>
     <table class="table table-striped">
       <thead>

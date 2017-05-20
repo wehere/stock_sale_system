@@ -2,14 +2,14 @@
 <h3>查询产品详细信息</h3>
 <%= form_tag '/supply/products/detail', method: :get do %>
 <div class="row">
-  <div class="col-sm-4 text-right">
+  <div class="columns small-4 text-right">
     <label class="inline">扫描条形码/输入产品名</label>
   </div>
-  <div class="col-sm-4">
+  <div class="columns small-4">
     <%= text_field_tag :key, params[:key] %>
   </div>
-  <div class="col-sm-4 text-left">
-    <%= submit_tag '查询', class: 'btn btn-primary' %>
+  <div class="columns small-4 text-left">
+    <%= submit_tag '查询', class: 'button primary' %>
   </div>
 </div>
 <% end %>
@@ -17,100 +17,100 @@
     <h5>基本信息</h5>
 
     <div class="row">
-      <div class="col-sm-4 text-right">
+      <div class="columns small-4 text-right">
         <label class="inline">
           产品名称:
         </label>
       </div>
-      <div class="col-sm-8 text-left">
+      <div class="columns small-8 text-left">
         <%= product.chinese_name %>
       </div>
     </div>
 
     <div class="row">
-      <div class="col-sm-4 text-right">
+      <div class="columns small-4 text-right">
         <label class="inline">
           拼音缩写:
         </label>
       </div>
-      <div class="col-sm-8 text-left">
+      <div class="columns small-8 text-left">
         <%= product.simple_abc %>
       </div>
     </div>
 
     <div class="row">
-      <div class="col-sm-4 text-right">
+      <div class="columns small-4 text-right">
         <label class="inline">
           条形码:
         </label>
       </div>
-      <div class="col-sm-8 text-left">
+      <div class="columns small-8 text-left">
         <%= product.barcode %>
       </div>
     </div>
 
     <div class="row">
-      <div class="col-sm-4 text-right">
+      <div class="columns small-4 text-right">
         <label class="inline">
           出入单位:
         </label>
       </div>
-      <div class="col-sm-8 text-left">
+      <div class="columns small-8 text-left">
         <%= product.general_product.mini_spec rescue 'error' %>
       </div>
     </div>
 
     <div class="row">
-      <div class="col-sm-4 text-right">
+      <div class="columns small-4 text-right">
         <label class="inline">
           使用次数:
         </label>
       </div>
-      <div class="col-sm-8 text-left">
+      <div class="columns small-8 text-left">
         <%= product.print_times %>
       </div>
     </div>
 
     <div class="row">
-      <div class="col-sm-4 text-right">
+      <div class="columns small-4 text-right">
         <label class="inline">
           分类:
         </label>
       </div>
-      <div class="col-sm-8 text-left">
+      <div class="columns small-8 text-left">
         <%= product.mark %>
       </div>
     </div>
 
     <div class="row">
-      <div class="col-sm-4 text-right">
+      <div class="columns small-4 text-right">
         <label class="inline">
           哪里买:
         </label>
       </div>
-      <div class="col-sm-8 text-left">
+      <div class="columns small-8 text-left">
         <%= product.general_product.vendor rescue 'error' %>
       </div>
     </div>
 
     <div class="row">
-      <div class="col-sm-4 text-right">
+      <div class="columns small-4 text-right">
         <label class="inline">
           存放位置:
         </label>
       </div>
-      <div class="col-sm-8 text-left">
+      <div class="columns small-8 text-left">
         <%= product.general_product.location rescue 'error' %>
       </div>
     </div>
 
     <div class="row">
-      <div class="col-sm-4 text-right">
+      <div class="columns small-4 text-right">
         <label class="inline">
           备注:
         </label>
       </div>
-      <div class="col-sm-8 text-left">
+      <div class="columns small-8 text-left">
         <%= product.general_product.memo rescue 'error' %>
       </div>
     </div>

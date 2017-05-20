@@ -1,17 +1,17 @@
 <br/>
-<%= link_to '创建通用产品', new_supply_general_product_path, class: 'btn btn-primary' %>
+<%= link_to '创建通用产品', new_supply_general_product_path, class: 'button primary' %>
 <br/>
 <br/>
 <%= form_tag supply_general_products_path, method: :get do %>
     <div class="row">
-      <div class="col-sm-2 text-right">
+      <div class="columns small-2 text-right">
         <label>通用产品名称</label>
       </div>
-      <div class="col-sm-2">
+      <div class="columns small-2">
         <%= text_field_tag 'name', @name %>
       </div>
-      <div class="col-sm-2">
-        <%= submit_tag '查询', class: 'btn btn-primary' %>
+      <div class="columns small-2 end">
+        <%= submit_tag '查询', class: 'button primary' %>
       </div>
     </div>
     <table class="table">

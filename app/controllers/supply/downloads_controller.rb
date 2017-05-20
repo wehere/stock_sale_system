@@ -10,10 +10,11 @@ class Supply::DownloadsController < BaseController
   end
 
   def download
-    io = File.open(params[:file])
-    io.binmode
-    send_data io.read, filename: params[:file], disposition: 'inline'
-    io.close
+    send_file params[:file]
+    # io = File.open(params[:file])
+    # io.binmode
+    # send_data io.read, filename: params[:file], disposition: 'inline'
+    # io.close
   end
 
 end

@@ -1,7 +1,7 @@
-<h3>库存状况</h3>
 <%= form_tag '/supply/stocks', method: :get do %>
-    <%= text_field_tag 'product_name', params[:product_name] %>
-    <%= submit_tag '查询', class: "btn btn-primary" %>
+    产品名称
+    <%= text_field_tag 'product_name', params[:product_name], class: 'sx-display-inline sx-width-auto'  %>
+    <%= submit_tag '查询', class: "button primary" %>
 <% end %>
 <table class="table">
   <thead>

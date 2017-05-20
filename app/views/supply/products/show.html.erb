@@ -14,8 +14,8 @@
   <tr><td>条形码</td><td><%= @general_product.barcode %></td></tr>
   <tr><td>入库时校验价格</td><td><%= @general_product.need_check ? '校验' : '不校验' %></td></tr>
 </table>
-<%= link_to '改名称', "/supply/products/strict_edit?id=#{@product.id}", class: 'btn btn-primary' %>
-<%= link_to '改其他信息', "/supply/general_products/#{@general_product.id}/edit", class: 'btn btn-primary' %>
-<%= link_to '置为无效', "/supply/products/soft_delete?id=#{@product.id}", data: {confirm: '确定置为无效吗？'}, class: 'btn btn-primary' if current_user.admin? %>
-<%= link_to '更改售出系数', "/supply/products/change_sale_ratio?id=#{@product.id}", class: 'btn btn-primary' if current_user.admin? %>
-<%= link_to '放行', "/supply/products/go?id=#{@product.id}", class: 'btn btn-primary' if current_user.admin? %>
+<%= link_to '改名称', "/supply/products/strict_edit?id=#{@product.id}", class: 'button primary' %>
+<%= link_to '改其他信息', "/supply/general_products/#{@general_product.id}/edit", class: 'button primary' %>
+<%= link_to '置为无效', "/supply/products/soft_delete?id=#{@product.id}", data: {confirm: '确定置为无效吗？'}, class: 'button primary' if current_user.admin? %>
+<%= link_to '更改售出系数', "/supply/products/change_sale_ratio?id=#{@product.id}", class: 'button primary' if current_user.admin? %>
+<%= link_to '放行', "/supply/products/go?id=#{@product.id}", class: 'button primary' if current_user.admin? %>

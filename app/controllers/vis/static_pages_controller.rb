@@ -1,7 +1,7 @@
 class Vis::StaticPagesController < ApplicationController
   layout :layout_
   def welcome
-
+    redirect_to '/users/sign_in' unless user_signed_in?
   end
 
   private

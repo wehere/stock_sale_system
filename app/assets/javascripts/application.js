@@ -13,7 +13,8 @@
 //= require jquery
 //= require bootstrap-sprockets
 //= require jquery_ujs
+//= require foundation
 //= require turbolinks
 //= require zeroclipboard
+//= require_tree ./pc
 //= require_tree .
-

@@ -1,12 +1,20 @@
 <div class="cxp_min_width">
 <h3>管理员工餐</h3>
 <div class="row">
-  <div class="col-sm-6">
+  <div class="columns small-6">
     <%= form_tag '/supply/employee_foods', method: :get do %>
-        <%= label_tag 'key', '关键词' %>
-        <%= text_field_tag 'key', @key_value %>
-        <%= submit_tag '查询', class: 'btn btn-primary' %>
-        (关键词可以是、中文名称、缩写)
+        <div class="row">
+          <div class="columns small-2 text-right">
+            <%= label_tag 'key', '关键词' %>
+          </div>
+          <div class="columns small-3 text-right">
+            <%= text_field_tag 'key', @key_value %>
+          </div>
+          <div class="columns small-7 end text-right">
+            <%= submit_tag '查询', class: 'button primary' %>(关键词可以是、中文名称、缩写)
+          </div>
+        </div>
+
     <% end %>
     <table class="table">
       <thead>
@@ -21,7 +29,7 @@
       <% end %>
     </table>
   </div>
-  <div class="col-sm-6">
+  <div class="columns small-6">
     <h5>员工餐菜单</h5>
     <table class="table">
       <thead>

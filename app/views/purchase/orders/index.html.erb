@@ -1,7 +1,7 @@
 <br/>
 <div class="row">
   <% @recent_months.each do |date| %>
-      <div class="col-sm-1">
+      <div class="columns small-1">
         <%= form_tag purchase_orders_path, method: :post do %>
             <%= hidden_field_tag 'query_date', date %>
             <%= submit_tag "#{YearMonth.chinese_month_format date}", class: "btn #{YearMonth.chinese_month_format(date)==@active_month ? 'btn-success' : 'btn-primary'}" %>
@@ -56,7 +56,7 @@
         <div id="modal-body"></div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" class="button default" data-dismiss="modal">关闭</button>
       </div>
     </div>
   </div>

@@ -2,26 +2,26 @@
 
 <%= form_tag "/sp/users/#{@user.id}", method: :patch do %>
     <div class="row">
-      <div class="col-sm-4 text-right">
+      <div class="columns small-4 text-right">
         <label class="inline">用户名</label>
       </div>
-      <div class="col-sm-8 text-left">
+      <div class="columns small-8 text-left">
         <%= text_field_tag :user_name, params[:user_name]||@user.user_name %>
       </div>
     </div>
     <br/>
     <div class="row">
-      <div class="col-sm-4 text-right">
+      <div class="columns small-4 text-right">
         <label class="inline">客户端密码</label>
       </div>
-      <div class="col-sm-8 text-left">
+      <div class="columns small-8 text-left">
         <%= text_field_tag :terminal_password, params[:terminal_password]||@user.terminal_password %>
       </div>
     </div>
     <br/>
     <div class="row">
-      <div class="col-sm-offset-4 col-sm-4 text-left">
-        <%= submit_tag '保存', class: 'btn btn-primary' %>
+      <div class="small-offset-4 columns small-4 text-left">
+        <%= submit_tag '保存', class: 'button primary' %>
       </div>
     </div>
 <% end %>

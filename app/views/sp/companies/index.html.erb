@@ -2,14 +2,14 @@
   <div class="text-center">
 	<table border="1" cellpadding="3" cellspacing="0" style="width: 60%;margin:auto">
 		<tr>
-			<th class="col-sm-3  text-left">公司简称</th>
-			<th class="col-sm-5  text-left">公司全称</th>
+			<th class="columns small-3  text-left">公司简称</th>
+			<th class="columns small-5  text-left">公司全称</th>
 			<th></th>
 		</tr>
 			<% @companies.each do |company| %>
 				<tr>
-					<td class="col-sm-3  text-left"><%= link_to company.simple_name, sp_company_path(company.id) %></td>
-					<td class="col-sm-5  text-left"><%= company.full_name %></td>
+					<td class="columns small-3  text-left"><%= link_to company.simple_name, sp_company_path(company.id) %></td>
+					<td class="columns small-5  text-left"><%= company.full_name %></td>
 					<!--<td><%#= link_to "删除", sp_company_path(id: company.id),method:      :delete,data: { confirm: "真的要删除么?" } %></td>-->
 					<td><%= link_to "更新", edit_sp_company_path(id: company.id), method: :get %></td>
 				</tr>

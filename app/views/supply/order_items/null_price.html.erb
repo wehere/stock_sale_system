@@ -1,12 +1,12 @@
 <br/><br/>
 <%= form_tag "/supply/order_items/null_price", method: :get do %>
-  开始<%= date_field_tag :start_date, params[:start_date] %>
-  结束<%= date_field_tag :end_date, params[:end_date] %>
+  开始<%= date_field_tag :start_date, params[:start_date], class: 'sx-display-inline sx-width-auto'  %>
+  结束<%= date_field_tag :end_date, params[:end_date], class: 'sx-display-inline sx-width-auto'  %>
   单位ID
-  <%= text_field_tag :customer_id, params[:customer_id] %>
+  <%= text_field_tag :customer_id, params[:customer_id], class: 'sx-display-inline sx-width-auto'  %>
   排除单位ID
-  <%= text_field_tag :not_customer_id, params[:not_customer_id] %>
-  <%= submit_tag "查询未录入价格的品项", class: "btn btn-primary" %>
+  <%= text_field_tag :not_customer_id, params[:not_customer_id], class: 'sx-display-inline sx-width-auto'  %>
+  <%= submit_tag "查询未录入价格的品项", class: "button primary" %>
 <% end %>
 <table class="table">
   <thead>
@@ -31,7 +31,7 @@
               <td>
                 <%= link_to '', "javascript:chang_real_price(#{order_item.id})", class: 'btn glyphicon glyphicon-pencil', style: 'padding:0px;margin:0px' %>
               </td>
-              <!--<td><%#= link_to '废弃', "javascript:destroy_order_item(#{order_item.id})", class: 'btn btn-primary' %></td>-->
+              <!--<td><%#= link_to '废弃', "javascript:destroy_order_item(#{order_item.id})", class: 'button primary' %></td>-->
           </form>
         </tr>
     <% end unless @order_items.blank? %>

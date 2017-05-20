@@ -2,7 +2,7 @@
 <% colors = ['#BBFFEE','#CCFF99','#FFEE99','#FFCCCC','#E8CCFF','#FFE4E1','	#FAEBD7'] %>
 <% left = 15 %>
 <div class="search_panel">
-  <label>拼音首字母</label>&nbsp;&nbsp;&nbsp;<%= text_field_tag :abc, params[:abc] %>&nbsp;&nbsp;&nbsp;<%= link_to '检索', '#', class: 'btn btn-primary', id: 'query_button', onclick: "query_product()" %>
+  <span>拼音首字母</span>&nbsp;&nbsp;&nbsp;<%= text_field_tag :abc, params[:abc], class: 'sx-display-inline sx-width-auto'  %>&nbsp;&nbsp;&nbsp;<%= link_to '检索', '#', class: 'button primary', id: 'query_button', onclick: "query_product()" %>
 </div>
 <% @big_marks.each_with_index do |mark,index| %>
     <div class="panel" style="left:<%= left %>px;background-color: <%= colors[index] %>;">
@@ -10,7 +10,7 @@
       <div id="<%= mark %>" class="fixed_panel">
         <% @loss_prices.where("products.mark = ?", mark).limit(16).each_with_index do |loss_price, index| %>
             <div onclick="choose_this('<%= loss_price.product.chinese_name %>')" style="cursor:hand;width: 100%;height: 15px; "  >
-              <h6><a href='#'><%= loss_price.product.chinese_name %></a></h6>
+              <h6><a href='javascript:void(0)'><%= loss_price.product.chinese_name %></a></h6>
             </div>
             <div style="height: 2px"></div>
         <% end %>
@@ -24,7 +24,7 @@
   <div id="others" class="fixed_panel">
     <% @loss_prices.where("products.mark in (?)", @small_marks).limit(16).each_with_index do |loss_price, index| %>
         <div onclick="choose_this('<%= loss_price.product.chinese_name %>')" style="width: 100%;height: 15px;cursor:hand;">
-          <h6><a href='#'><%= loss_price.product.chinese_name %></a></h6>
+          <h6><a href='javascript:void(0)'><%= loss_price.product.chinese_name %></a></h6>
         </div>
         <div style="height: 2px"></div>
     <% end %>
@@ -32,11 +32,17 @@
 </div>
 <% left = left + 130 + 5 %>
 <div class="order_panel" style="left:<%= left %>px;">
-  <label>买自</label><%= select_tag :seller_id, options_from_collection_for_select(@sellers, 'id', 'name', params[:seller_id]||(@sellers.first.id rescue '')), onchange: 'change_supplier()'%>
-  <label>损耗类型</label><%= select_tag :loss_type, options_from_collection_for_select(LossOrder::LOSS_TYPE, 'first', 'second', params[:loss_type]||LossOrder::LOSS_TYPE.keys.first) %>
+  <span>买自</span><%= select_tag :seller_id,
+                                options_from_collection_for_select(@sellers, 'id', 'name', params[:seller_id]||(@sellers.first.id rescue '')),
+                                onchange: 'change_supplier()', class: 'sx-display-inline sx-width-auto' %>
+  <span>损耗类型</span><%= select_tag :loss_type,
+                                  options_from_collection_for_select(LossOrder::LOSS_TYPE, 'first', 'second', params[:loss_type]||LossOrder::LOSS_TYPE.keys.first),
+                                  class: 'sx-display-inline sx-width-auto'  %>
   <br/>
 
-  <label>损耗日期</label><%= date_field_tag :loss_date, params[:loss_date]||Time.now.tomorrow.to_date %>
+  <span>损耗日期</span><%= date_field_tag :loss_date,
+                                      params[:loss_date]||Time.now.tomorrow.to_date,
+                                      class: 'sx-display-inline sx-width-auto'  %>
   <table class="bordered">
     <thead>
     <th width="150px">品名</th><th width="50px">规格</th><th width="50px">数量</th><th width="50px">价格</th><th></th>
@@ -52,7 +58,7 @@
   <label>备注</label><br/><%= text_area_tag :memo, params[:memo], class: 'memo_area' %>
 </div>
 <div style="position: fixed;bottom: 50px;left:<%= left+100 %>px;">
-  <%= link_to '保存损耗单', "javascript:save_loss_order()", class: 'btn btn-primary' %>
+  <%= link_to '保存损耗单', "javascript:save_loss_order()", class: 'button primary' %>
 </div>
 
 <script language="javascript">

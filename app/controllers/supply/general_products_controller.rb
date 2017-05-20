@@ -125,6 +125,7 @@ class Supply::GeneralProductsController < BaseController
   end
 
   def edit
+    @title = '编辑通用产品'
     begin
       supplier_id = current_user.company.id
       @general_product = GeneralProduct.where(id: params[:id], supplier_id: supplier_id, is_valid: 1).first

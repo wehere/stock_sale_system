@@ -128,21 +128,21 @@
 </script>
 <br/>
 <div class="row">
-  <div class="col-sm-7">
+  <div class="columns small-7">
     <%#= render partial: 'link_edit_order' %>
     <div class="row">
-      <div class="col-sm-1 text-right">
-        <h5>ID</h5>
+      <div class="columns small-1 text-right">
+        <span class="sx-margin-top-30">ID</span>
       </div>
-      <div class="col-sm-1">
+      <div class="columns small-2">
         <%= text_field_tag 'order_id', '', class:'order_id_jump', size: 10, style: "height: 35px;" %>
 
       </div>
-      <!--<div class="col-sm-2" style="background-color: #0063dc" onclick="jump_specified_order()">-->
+      <!--<div class="columns small-2" style="background-color: #0063dc" onclick="jump_specified_order()">-->
       <!--<h5>跳转到该单据</h5>-->
       <!--</div>-->
-      <div class="col-sm-2">
-        <%= link_to "跳转到该单据", "#", class: 'btn btn-primary', id: "jump_order", onclick: "jum_order_click_1()" %>
+      <div class="columns small-5 end">
+        <%= link_to "跳转到该单据", "#", class: 'button primary', id: "jump_order", onclick: "jum_order_click_1()" %>
       </div>
     </div>
     <h3>
@@ -197,8 +197,8 @@
       </tbody>
     </table>
     <div class="row">
-      <div class="col-sm-1 col-sm-offset-3">
-        <%= link_to '确认&提交', "javascript:calculate_money()", class: 'btn-primary btn' %>
+      <div class="columns small-3 small-offset-3">
+        <%= link_to '确认&提交', "javascript:calculate_money()", class: 'button primary' %>
       </div>
     </div>
     </form>
@@ -209,39 +209,39 @@
     </script>
     <br/>
     <div class="row">
-      <div class="col-sm-2 text-right">
-        <%= link_to '添加新品项', "/supply/order_items/new?order_id=#{@order.id}", class: 'btn btn-primary' %>
+      <div class="columns small-5 text-right">
+        <%= link_to '添加新品项', "/supply/order_items/new?order_id=#{@order.id}", class: 'button primary' %>
       </div>
     </div>
     <br/>
     <div class="row">
-        <div class="col-sm-1 text-right">
-          <h5>ID</h5>
+        <div class="columns small-1 text-right">
+          <span>ID</span>
         </div>
-        <div class="col-sm-1">
+        <div class="columns small-2">
           <%= text_field_tag 'order_id_2', '', size: 10, style: "height: 35px;" %>
 
         </div>
-        <!--<div class="col-sm-2" style="background-color: #0063dc" onclick="jump_specified_order()">-->
+        <!--<div class="columns small-2" style="background-color: #0063dc" onclick="jump_specified_order()">-->
         <!--<h5>跳转到该单据</h5>-->
         <!--</div>-->
-        <div class="col-sm-2">
-          <%= link_to "跳转到该单据", "#", class: 'btn btn-primary', id: "jump_order_2", onclick: "jum_order_click_2()" %>
+        <div class="columns small-5 end">
+          <%= link_to "跳转到该单据", "#", class: 'button primary', id: "jump_order_2", onclick: "jum_order_click_2()" %>
         </div>
     </div>
     <br/>
     <%#= render partial: 'link_edit_order' %>
   </div>
-  <div class="col-sm-5">
+  <div class="columns small-5">
     <% unless @order.comments.valid.blank? %>
         <% @order.comments.valid.each do |comment| %>
             <div class="row">
-              <div class="col-sm-12">
+              <div class="columns small-12">
                 <h6><%= comment.user.user_name %>&nbsp&nbsp<%= comment.created_at.to_s(:db) %>  </h6>
               </div>
             </div>
             <div class="row" style="border-bottom: solid 1px;border-color: #DDD;">
-              <div class="col-sm-12">
+              <div class="columns small-12">
                 <%= comment.content %>
               </div>
             </div>
@@ -253,15 +253,15 @@
         <%= hidden_field_tag 'order_id', @order.id %>
         <%= label_tag :content, '针对上面客户提出的疑问，赶紧回复他们吧' %>
         <div class="row">
-          <div class="col-sm-12">
+          <div class="columns small-12">
             <%= text_area_tag :content, '', size: '70x5' %>
           </div>
         </div>
         <div class="row">
-          <div class="col-sm-11 text-right">
-            <%= submit_tag '发表', class: 'btn btn-primary' %>
+          <div class="columns small-11 text-right">
+            <%= submit_tag '发表', class: 'button primary' %>
           </div>
-          <div class="col-sm-1"></div>
+          <div class="columns small-1"></div>
         </div>
     <% end %>
     <br/>
@@ -276,44 +276,39 @@
   </div>
 </div>
 
-<div class="modal fade" id="OrderItemModal" tabindex="-1" role="dialog" aria-labelledby="OrderItemModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title"> &nbsp  </h4>
-      </div>
-      <div class="modal-body">
-        <%= form_tag '/supply/order_items/', method: :patch, remote: true, class: 'update_order_item_form' do %>
-            <table class="table table-striped">
-                <thead><th>名称</th><th>订货量</th><th>到货量</th><th>价格</th></thead>
-                <tbody>
-                    <tr>
-                      <td>
-                        <h5 id="order_item_modal_name">产品名称</h5>
-                      </td>
-                      <td>
-                        <%= text_field_tag 'order_item_modal_plan_weight', '', class: '', size: 2 %>
-                      </td>
-                      <td>
-                        <%= text_field_tag 'order_item_modal_real_weight', '', class: '', size: 2 %>
-                      </td>
-                      <td>
-                        <%= text_field_tag 'order_item_modal_price', '', class: '', size: 2 %>
-                      </td>
-                    </tr>
-                </tbody>
-            </table>
+<div class="reveal" id="OrderItemModal" data-reveal>
+  <%= form_tag '/supply/order_items/', method: :patch, remote: true, class: 'update_order_item_form' do %>
+  <div class="modal-body">
 
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-        <button type="submit" class="btn btn-primary">保存修改</button>
-        <% end %>
-      </div>
-    </div>
+        <table class="table table-striped">
+          <thead><th>名称</th><th>订货量</th><th>到货量</th><th>价格</th></thead>
+          <tbody>
+          <tr>
+            <td>
+              <h5 id="order_item_modal_name">产品名称</h5>
+            </td>
+            <td>
+              <%= text_field_tag 'order_item_modal_plan_weight', '', class: '', size: 2 %>
+            </td>
+            <td>
+              <%= text_field_tag 'order_item_modal_real_weight', '', class: '', size: 2 %>
+            </td>
+            <td>
+              <%= text_field_tag 'order_item_modal_price', '', class: '', size: 2 %>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+
   </div>
-
+  <div class="modal-footer">
+    <button type="button" class="button default" data-dismiss="modal">关闭</button>
+    <button type="submit" class="button primary">保存修改</button>
+  </div>
+  <% end %>
+  <button class="close-button" data-close aria-label="Close modal" type="button">
+    <span aria-hidden="true">&times;</span>
+  </button>
 
 </div>
 

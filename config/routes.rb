@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
-  devise_for :users
-  root 'vis/static_pages#welcome'
+  devise_for :users, controllers: { sessions: 'users/sessions' }
+  root to: 'vis/static_pages#welcome'
 
   # 超级管理员
   namespace :sp do
@@ -20,11 +20,6 @@ Rails.application.routes.draw do
 
   end
 
-  resources :users do
-    collection do
-      get :login
-    end
-  end
   # 供应方
   namespace :supply do
 

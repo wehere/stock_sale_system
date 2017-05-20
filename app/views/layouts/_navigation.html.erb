@@ -1,36 +1,63 @@
-<div class="sx-global-topbar">
-  <div class="y-topbar-row" style="position: static; opacity: 1;">
-    <div class="aliyun-login">
-      <%
-        rank = if user_signed_in?
-                 if current_user.super_admin?
-                   '超级管理员'
-                 elsif current_user.admin?
-                   '管理员'
-                 end
-               end
-      %>
-      <a class="lnk-login-pre" onlcick="return false;" href="#nogo">欢迎来访，<%= rank %></a>
-      <% if user_signed_in? %>
-          <%= current_user.user_name %>
-          <a id="lnk_login" class="lnk-login" target="_self" rel="nofollow" data-method="delete" href="/users/sign_out">
-            <span>退出</span>
-          </a>
-          <span class="li-spacing"></span>
-      <% else %>
-          <a id="lnk_login" class="lnk-login" target="_self" href="<%= new_user_session_path %>">
-            <span>请登录</span>
-          </a>
-          <span class="li-spacing"></span>
-      <% end %>
-      <a id="lnk_login" class="lnk-login" target="_self" href="<%= "#" %>">
-        <span></span>
+<div class="title-bar ys-title-bar-padding ys-title-bar-bg">
+  <div class="title-bar-left">
+    <span>
+      <a href="javascript:void(0)">
+        <%= image_tag 'warehouse.png', class: 'ys-logo', style: 'color: white' %>
       </a>
-      <span class="li-spacing"></span>
-      <a id="lnk_login" class="lnk-login" target="_self" href="<%= "/vis/static_pages/welcome" %>">
-        <span>主页</span>
-      </a>
-      <span class="li-spacing"></span>
-    </div>
+    </span>
+    <span class="title-bar-title ys-padding-top-5"><h4>591库存</h4></span>
   </div>
+  <div class="title-bar-right">
+    <ul class="dropdown menu" data-dropdown-menu>
+      <li>
+        <a class="ys-color-white" href="javascript:void(0)"><%= current_user&.user_name %></a>
+        <ul class="menu">
+          <li><a data-method="delete" href="/users/sign_out" data-turbolinks='false'><i class="fa fa-sign-out fa-lg"></i>退出</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <!--<div class="title-bar-right ys-padding-top-5">-->
+    <!--<span class="ys-color-white title-bar-title"><%#= '591库存' %></span>-->
+  <!--</div>-->
 </div>
+
+
+
+
+<!--<div class="sx-global-topbar">-->
+  <!--<div class="y-topbar-row" style="position: static; opacity: 1;">-->
+    <!--<div class="aliyun-login">-->
+      <!--<%#-->
+#         rank = if user_signed_in?
+#                  if current_user.super_admin?
+#                    '超级管理员'
+#                  elsif current_user.admin?
+#                    '管理员'
+#                  end
+#                end
+      <!--%>-->
+      <!--<a class="lnk-login-pre" onlcick="return false;" href="#nogo">欢迎来访，<%#= rank %></a>-->
+      <!--<%# if user_signed_in? %>-->
+          <!--<%#= current_user.user_name %>-->
+          <!--<a id="lnk_login" class="lnk-login" target="_self" rel="nofollow" data-method="delete" href="/users/sign_out">-->
+            <!--<span>退出</span>-->
+          <!--</a>-->
+          <!--<span class="li-spacing"></span>-->
+      <!--<%# else %>-->
+          <!--<a id="lnk_login" class="lnk-login" target="_self" href="<%#= new_user_session_path %>">-->
+            <!--<span>请登录</span>-->
+          <!--</a>-->
+          <!--<span class="li-spacing"></span>-->
+      <!--<%# end %>-->
+      <!--<a id="lnk_login" class="lnk-login" target="_self" href="<%#= "#" %>">-->
+        <!--<span></span>-->
+      <!--</a>-->
+      <!--<span class="li-spacing"></span>-->
+      <!--<a id="lnk_login" class="lnk-login" target="_self" href="<%#= "/vis/static_pages/welcome" %>">-->
+        <!--<span>主页</span>-->
+      <!--</a>-->
+      <!--<span class="li-spacing"></span>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->

@@ -8,12 +8,23 @@
 <% end %>
 
 
-<h3 class="text-center">员工餐下单 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= link_to '客餐订货', '/purchase/orders/dingyu_send_order'  %></h3><br/>
+<h2 class="text-center">员工餐下单 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= link_to '客餐订货', '/purchase/orders/dingyu_send_order'  %></h2><br/>
 <%= form_tag '/purchase/employee_foods', method: :get do %>
-    <div class="text-center">
-<%= select_tag 'supplier_id', options_from_collection_for_select(@suppliers, 'id', 'simple_name', @default_supplier.id), onchange: '$("#params_form").click();' %>
-<%= date_field_tag 'reach_date', @reach_date, onchange: '$("#params_form").click();' %>
-<%= submit_tag '#', id: 'params_form' %>
+    <div class="row">
+      <div class="column small-2 small-offset-3">
+        <%= select_tag 'supplier_id',
+                       options_from_collection_for_select(@suppliers, 'id', 'simple_name', @default_supplier.id),
+                       onchange: '$("#params_form").click();'
+        %>
+      </div>
+
+      <div class="column small-2">
+        <%= date_field_tag 'reach_date', @reach_date, onchange: '$("#params_form").click();' %>
+      </div>
+
+      <div class="column small-2 end">
+        <%= submit_tag '#', id: 'params_form' %>
+      </div>
     </div>
 <% end %>
 
@@ -45,37 +56,35 @@
         %>
 
         <% if mark != employee_food.product.mark %>
-            <div class="row"><div class="col-sm-1 end"></div></div><br/><h5 style="margin-left: 80px"><%= employee_food.product.mark %></h5>
+            <div class="row"><div class="small-1 columns end"></div></div><br/><h5 style="margin-left: 80px"><%= employee_food.product.mark %></h5>
             <%
                mark = employee_food.product.mark
                change = !change
             %>
         <% end %>
-        <div class="col-sm-4">
-          <tr>
-          <td><label style="background-color: <%= change ? 'chartreuse' : 'yellow' %>"><%= employee_food.product.chinese_name %></label></td>&nbsp;
-          <td><%= " #{price.price}元/#{price.true_spec}" rescue '' %></td>&nbsp;
-            <%= hidden_field_tag "data[#{employee_food.id}][]", employee_food.product.chinese_name %>
-          <td><%= text_field_tag "data[#{employee_food.id}][]", '', size: 5 %></td>
-            <%= hidden_field_tag "data[#{employee_food.id}][]", (price.true_spec rescue '') %>
-          <td><%= "#{price.true_spec}" rescue '' %></td>
-        </tr>
+        <div class="small-4 columns">
+          <label class="sx-display-inline" style="background-color: <%= change ? 'chartreuse' : 'yellow' %>"><%= employee_food.product.chinese_name %></label>
+          <%= " #{price.price}元/#{price.true_spec}" rescue '' %>
+            <%= hidden_field_tag "data[#{employee_food.id}][]", employee_food.product.chinese_name, class: "sx-display-inline" %>
+          <%= text_field_tag "data[#{employee_food.id}][]", '', size: 5, class: "sx-display-inline sx-width-percent-30" %>
+            <%= hidden_field_tag "data[#{employee_food.id}][]", (price.true_spec rescue ''),  class: "sx-display-inline" %>
+          <%= "#{price.true_spec}" rescue '' %>
         </div>
 
     <% end %>
     <div class="row">
-      <div class="col-sm-1 end"></div>
+      <div class="columns small-1 end"></div>
     </div><br/>
     <div class="row">
-      <div class="col-sm-1 text-right">
+      <div class="columns small-1 text-right">
         <label class="inline">备注</label>
       </div>
-      <div class="col-sm-11">
+      <div class="columns small-11">
         <%= text_area_tag 'memo' %>
       </div>
     </div>
     <div class="text-center">
-      <%= submit_tag '发送员工餐订单', class: 'btn btn-primary' %>
+      <%= submit_tag '发送员工餐订单', class: 'button primary' %>
     </div>
     <!--</table>-->
 <% end %>

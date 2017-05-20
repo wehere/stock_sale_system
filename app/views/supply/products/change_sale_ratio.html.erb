@@ -1,5 +1,5 @@
 <h3><%= "更改[#{@product.chinese_name}]的售出系数" %></h3>
 <%= form_tag "/supply/products/change_sale_ratio?id=#{@product.id}", method: :post do %>
     <label>系数</label><%= text_field_tag 'sale_ratio', params[:sale_ratio]||@product.sale_ratio %>
-    <%= submit_tag '保存', class: 'btn btn-primary' %>
+    <%= submit_tag '保存', class: 'button primary' %>
 <% end %>

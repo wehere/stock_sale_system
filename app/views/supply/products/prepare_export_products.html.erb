@@ -1,6 +1,6 @@
 <h3>导出产品清单给门店</h3>
 <%= form_tag '/supply/products/export_products', method: :post do %>
-选择客户<%= select_tag :customer_id, options_from_collection_for_select(@customers, 'id', 'simple_name', params[:customer_id]) %>
-选择月份<%= select_tag :year_month_id, options_from_collection_for_select(@year_months, 'id', 'val', YearMonth.current_year_month.id) %>
-<%= submit_tag "导出产品清单", class: 'btn btn-primary' %>
+选择客户<%= select_tag :customer_id, options_from_collection_for_select(@customers, 'id', 'simple_name', params[:customer_id]), class: 'sx-display-inline sx-width-auto'  %>
+选择月份<%= select_tag :year_month_id, options_from_collection_for_select(@year_months, 'id', 'val', YearMonth.current_year_month.id), class: 'sx-display-inline sx-width-auto'  %>
+<%= submit_tag "导出产品清单", class: 'button primary' %>
 <% end %>

@@ -8,7 +8,7 @@
 <%= select_tag 'supplier_id', options_from_collection_for_select(@supplies, 'id', 'simple_name', @supplier_id) %>
 <%= label_tag 'product_name','品名' %>
 <%= text_field_tag 'product_name', @product_name %>
-    <%= submit_tag '查询', class: 'btn btn-info' %>
+    <%= submit_tag '查询', class: 'button info' %>
 <% end %>
 <br/>
 <% if @search_results.blank? %>

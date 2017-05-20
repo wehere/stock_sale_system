@@ -1,14 +1,15 @@
 <br/>
 <%= form_tag search_supply_order_items_path, method: :post do %>
-<%= label_tag 'start_date', '起始日期' %>
-<%= date_field_tag 'start_date', @start_date %>
-<%= label_tag 'end_date', '结束日期' %>
-<%= date_field_tag 'end_date', @end_date %>
-<%= label_tag 'customer_id', '客户名称' %>
-<%= select_tag 'customer_id', options_from_collection_for_select( @customers, 'id', 'simple_name', @customer_id), include_blank: true %>
-<%= label_tag 'product_name', '产品名称' %>
-<%= text_field_tag 'product_name', @product_name %>
-<%= submit_tag '搜索', class: 'btn btn-primary' %>
+<span>起始日期</span>
+<%= date_field_tag 'start_date', @start_date, class: 'sx-display-inline sx-width-auto'  %>
+<span>结束日期</span>
+<%= date_field_tag 'end_date', @end_date, class: 'sx-display-inline sx-width-auto'  %>
+<span>客户名称</span>
+<%= select_tag 'customer_id', options_from_collection_for_select( @customers, 'id', 'simple_name', @customer_id),
+               include_blank: true, class: 'sx-display-inline sx-width-auto'  %>
+<span>产品名称</span>
+<%= text_field_tag 'product_name', @product_name, class: 'sx-display-inline sx-width-auto'  %>
+<%= submit_tag '搜索', class: 'button primary' %>
 <% end %>
 <br/>
 <% if @order_items.blank? %>

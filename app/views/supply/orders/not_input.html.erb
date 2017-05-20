@@ -1,17 +1,17 @@
 <br/><br/>
 <%= form_tag '/supply/orders/not_input', method: :get do %>
 开始
-<%= date_field_tag :start_date, params[:start_date] %>
+<%= date_field_tag :start_date, params[:start_date], class: 'sx-display-inline sx-width-auto' %>
 结束
-<%= date_field_tag :end_date, params[:end_date] %>
+<%= date_field_tag :end_date, params[:end_date], class: 'sx-display-inline sx-width-auto' %>
 允许未填到货量个数
-<%= text_field_tag :allowed_number_not_input, params[:allowed_number_not_input] %>
+<%= text_field_tag :allowed_number_not_input, params[:allowed_number_not_input], class: 'sx-display-inline sx-width-auto' %>
 <br/>
 单位ID
-<%= text_field_tag :customer_id, params[:customer_id] %>
+<%= text_field_tag :customer_id, params[:customer_id], class: 'sx-display-inline sx-width-auto' %>
 排除单位ID
-<%= text_field_tag :not_customer_id, params[:not_customer_id] %>
-<%= submit_tag '查询未录入数据的单据', class: 'btn btn-primary' %>
+<%= text_field_tag :not_customer_id, params[:not_customer_id], class: 'sx-display-inline sx-width-auto' %>
+<%= submit_tag '查询未录入数据的单据', class: 'button primary' %>
 <% end %>
 <table class="table table-striped">
   <thead><th>订单ID</th><th>单位ID</th><th>订货单位</th><th>门店</th><th>到货量未填个数</th><th>单据类型</th><th>到货日期</th><th>金额</th><th>操作</th></thead>

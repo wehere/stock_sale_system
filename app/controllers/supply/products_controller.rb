@@ -360,6 +360,7 @@ class Supply::ProductsController < BaseController
   end
 
   def disabled_products
+    @title = '无效的产品查询'
     need_admin
     @disabled_products = current_user.company.products.where(is_valid: false)
     @disabled_products = if params[:name].blank?

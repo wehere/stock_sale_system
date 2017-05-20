@@ -5,5 +5,5 @@
     <% @companies.each do |company| %>
         <%= radio_button_tag :company_id, company.id, params[:company_id].to_s==company.id.to_s %><%= company.simple_name %>
     <% end %>
-    <%= submit_tag '保存', class: 'btn btn-primary' %>
+    <%= submit_tag '保存', class: 'button primary' %>
 <% end %>

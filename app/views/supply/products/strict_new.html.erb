@@ -4,71 +4,71 @@
 <h5 style="color: darkred">解释：鼎丰是品牌名，白醋是品名，瓶代表单位，是白醋卖出的最小单位，700毫升表示这1瓶白醋有700毫升。</h5>
 
 <div class="row">
-  <div class="col-sm-2 text-right">
+  <div class="columns small-2 text-right">
     <label class="inline">品牌名</label>
   </div>
-  <div class="col-sm-3">
+  <div class="columns small-3">
     <%= text_field_tag :brand, params[:brand], onchange: "change_pro()" %>
   </div>
-  <div class="col-sm-7 end">
+  <div class="columns small-7 end">
     <label class="inline" style="color: coral">如果是蔬菜,品牌名填"无"；实在暂时不知道品牌名，填"？"</label>
   </div>
 </div>
 <br/>
 <div class="row">
-  <div class="col-sm-2 text-right">
+  <div class="columns small-2 text-right">
     <label class="inline">品名</label>
   </div>
-  <div class="col-sm-3">
+  <div class="columns small-3">
     <%= text_field_tag :name, params[:name], onchange: "change_pro()" %>
   </div>
-  <div class="col-sm-7 end">
+  <div class="columns small-7 end">
     <label class="inline" style="color: coral">比如：大番茄，白醋</label>
   </div>
 </div>
 <br/>
 <div class="row">
-  <div class="col-sm-2 text-right">
+  <div class="columns small-2 text-right">
     <label class="inline">出货最小单位</label>
   </div>
-  <div class="col-sm-3">
+  <div class="columns small-3">
     <%= select_tag :min_spec, options_from_collection_for_select(@MIN_SPEC, "to_s", "to_s", params[:min_spec]), prompt: "请选择", onchange: "change_min_spec()" %>
   </div>
-  <div class="col-sm-7 end">
+  <div class="columns small-7 end">
     <label class="inline" style="color: coral">若想添加其他的单位，联系管理员</label>
   </div>
 </div>
 <br/>
 <div class="row">
-  <div class="col-sm-2 text-right">
+  <div class="columns small-2 text-right">
     <label class="inline">大小</label>
   </div>
-  <div class="col-sm-3">
+  <div class="columns small-3">
     <%= text_field_tag :number, params[:number], onchange: "change_pro()" %>
   </div>
-  <div class="col-sm-7 end">
+  <div class="columns small-7 end">
     <label class="inline" style="color: coral">只可以填数字，如果实在不知道大小，那么就填？，以后记得补上</label>
   </div>
 </div>
 <br/>
 <div class="row">
-  <div class="col-sm-2 text-right">
+  <div class="columns small-2 text-right">
     <label class="inline">大小的单位</label>
   </div>
-  <div class="col-sm-3" id="sub_spec_div">
+  <div class="columns small-3" id="sub_spec_div">
     <%= select_tag :sub_spec, options_from_collection_for_select(@SUB_SPEC, "to_s", "to_s", params[:sub_spec]), prompt: "请选择", onchange: "change_pro()"  %>
   </div>
-  <div class="col-sm-7 end">
+  <div class="columns small-7 end">
     <label class="inline" style="color: coral">若想添加其他的单位，联系管理员</label>
   </div>
 </div>
 <br/>
 <div class="row" style="background-color: greenyellow">
   <br/>
-  <div class="col-sm-3 text-right">
+  <div class="columns small-3 text-right">
     <label class="inline">最终产品名称预览：</label>
   </div>
-  <div class="col-sm-9 text-left">
+  <div class="columns small-9 text-left">
     <label class="inline" style="color: red;" id="preview_product_name"></label>
   </div>
   <br/>&nbsp;
@@ -78,50 +78,50 @@
   <label class="inline" id="existed_product_name"></label>
 </div>
 <div class="row">
-  <div class="col-sm-2 text-right">
+  <div class="columns small-2 text-right">
     <label class="inline">进货单位</label>
   </div>
-  <div class="col-sm-3">
+  <div class="columns small-3">
     <%= select_tag :purchase_spec, options_from_collection_for_select(@MIN_SPEC, "to_s", "to_s", params[:purchase_spec]), prompt: "请选择", onchange: "change_pro()" %>
   </div>
-  <div class="col-sm-4 text-left">
+  <div class="columns small-4 text-right">
     <label id="explain_ratio">相对出货最小单位的比率</label>
   </div>
-  <div class="col-sm-3 end">
+  <div class="columns small-3 end">
     <%= text_field_tag :purchase_ratio, params[:purchase_ratio], onchange: "change_pro()" %>
   </div>
 </div>
 <br/>
 <div class="row" style="background-color: greenyellow">
   <br/>
-  <div class="col-sm-2 text-right">
+  <div class="columns small-2 text-right">
     <label class="inline">解释：</label>
   </div>
-  <div class="col-sm-10 text-left">
+  <div class="columns small-10 text-left">
     <label class="inline" style="color: red;" id="explain_panel"></label>
   </div>
   <br/>&nbsp;
 </div>
 <br/>
 <div class="row">
-  <div class="col-sm-2 text-right">
+  <div class="columns small-2 text-right">
     <label class="inline">属于哪个分类</label>
   </div>
-  <div class="col-sm-3">
+  <div class="columns small-3">
     <%= select_tag :mark, options_from_collection_for_select(@marks, "to_s", "to_s", @marks.first) %>
   </div>
-  <div class="col-sm-2 text-left">
+  <div class="columns small-2 text-right">
     <label id="explain_ratio">从哪里购买</label>
   </div>
-  <div class="col-sm-3 end">
+  <div class="columns small-3 end">
     <%= select_tag "vendor", options_from_collection_for_select(@vendors, 'to_s', 'to_s', @vendors.first) %>
   </div>
 </div>
 <div class="row">
-  <div class="col-sm-2 col-sm-offset-1" id="create_button_div">
-    <%= link_to '创建', 'javascript:create_product("1")', class: 'btn btn-primary' %>
+  <div class="columns small-2 columns small-offset-1" id="create_button_div">
+    <%= link_to '创建', 'javascript:create_product("1")', class: 'button primary' %>
   </div>
-  <div class="col-sm-2 end" id="give_up_button_div"></div>
+  <div class="columns small-2 end" id="give_up_button_div"></div>
 </div>
 <script language="javascript">
   function change_pro(){
@@ -165,11 +165,11 @@
                       if(r[0]=='1') {
                           names = r[1].split("^")
                           $("#existed_product_name").html('系统检测到这些类似产品：'+names.join(", ")+'，是否其中就有您需要的？')
-                          $("#create_button_div").html('<a class="btn btn-primary" href="javascript:create_product('+'0'+')">还是要创建</a>');
-                          $("#give_up_button_div").html('<a class="btn btn-primary" href="javascript:give_up()">放弃</a>');
+                          $("#create_button_div").html('<a class="button primary" href="javascript:create_product('+'0'+')">还是要创建</a>');
+                          $("#give_up_button_div").html('<a class="button primary" href="javascript:give_up()">放弃</a>');
                       }else{
                           alert(r[1]);
-                          $("#create_button_div").html('<a class="btn btn-primary" href="javascript:create_product('+'1'+')">创建</a>');
+                          $("#create_button_div").html('<a class="button primary" href="javascript:create_product('+'1'+')">创建</a>');
                       }
                   }
               }

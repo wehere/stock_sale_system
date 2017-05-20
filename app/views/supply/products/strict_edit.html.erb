@@ -5,71 +5,71 @@
 <% b = @product.chinese_name.match  /([\S]*)-([\u4e00-\u9fa5a-zA-Z\d\s]*)-([\u4e00-\u9fa5a-zA-Z\d]*)\(([?\d]*)([\u4e00-\u9fa5a-zA-Z\d]*)\)/ %>
 <%= form_tag "/supply/products/strict_update?id=#{@product.id}", method: :post do %>
 <div class="row">
-  <div class="col-sm-2 text-right">
+  <div class="columns small-2 text-right">
     <label class="inline">品牌名</label>
   </div>
-  <div class="col-sm-3">
+  <div class="columns small-3">
     <%= text_field_tag :brand, params[:brand]||b[1], onchange: "change_pro()" %>
   </div>
-  <div class="col-sm-7 end">
+  <div class="columns small-7 end">
     <label class="inline" style="color: coral"></label>
   </div>
 </div>
 <br/>
 <div class="row">
-  <div class="col-sm-2 text-right">
+  <div class="columns small-2 text-right">
     <label class="inline">品名</label>
   </div>
-  <div class="col-sm-3">
+  <div class="columns small-3">
     <%= b[2] %>
   </div>
-  <div class="col-sm-7 end">
+  <div class="columns small-7 end">
     <label class="inline" style="color: coral"></label>
   </div>
 </div>
 <br/>
 <div class="row">
-  <div class="col-sm-2 text-right">
+  <div class="columns small-2 text-right">
     <label class="inline">出货最小单位</label>
   </div>
-  <div class="col-sm-3">
+  <div class="columns small-3">
     <%= b[3] %>
   </div>
-  <div class="col-sm-7 end">
+  <div class="columns small-7 end">
     <label class="inline" style="color: coral"></label>
   </div>
 </div>
 <br/>
 <div class="row">
-  <div class="col-sm-2 text-right">
+  <div class="columns small-2 text-right">
     <label class="inline">大小</label>
   </div>
-  <div class="col-sm-3">
+  <div class="columns small-3">
     <%= text_field_tag :number, params[:number]||b[4], onchange: "change_pro()" %>
   </div>
-  <div class="col-sm-7 end">
+  <div class="columns small-7 end">
     <label class="inline" style="color: coral">只可以填数字</label>
   </div>
 </div>
 <br/>
 <div class="row">
-  <div class="col-sm-2 text-right">
+  <div class="columns small-2 text-right">
     <label class="inline">大小的单位</label>
   </div>
-  <div class="col-sm-3" id="sub_spec_div">
+  <div class="columns small-3" id="sub_spec_div">
     <%= b[5] %>
   </div>
-  <div class="col-sm-7 end">
+  <div class="columns small-7 end">
     <label class="inline" style="color: coral"></label>
   </div>
 </div>
 <br/>
 <div class="row" style="background-color: greenyellow">
   <br/>
-  <div class="col-sm-3 text-right">
+  <div class="columns small-3 text-right">
     <label class="inline">最终产品名称预览：</label>
   </div>
-  <div class="col-sm-9 text-left">
+  <div class="columns small-9 text-left">
     <label class="inline" style="color: red;" id="preview_product_name"><%= @product.chinese_name %></label>
   </div>
   <br/>&nbsp;
@@ -77,19 +77,19 @@
 
 <br/>
 <div class="row">
-  <div class="col-sm-2 text-right">
+  <div class="columns small-2 text-right">
     <label class="inline">属于哪个分类</label>
   </div>
-  <div class="col-sm-3 end">
+  <div class="columns small-3 end">
     <%= select_tag :mark, options_from_collection_for_select(@marks, "to_s", "to_s", params[:mark]||@product.mark) %>
   </div>
 
 </div>
 <div class="row">
-  <div class="col-sm-2 col-sm-offset-1" id="create_button_div">
-    <%= submit_tag '保存', class: 'btn btn-primary' %>
+  <div class="columns small-2 columns small-offset-1" id="create_button_div">
+    <%= submit_tag '保存', class: 'button primary' %>
   </div>
-  <div class="col-sm-2 end" id="give_up_button_div"></div>
+  <div class="columns small-2 end" id="give_up_button_div"></div>
 </div>
 <% end %>
 <script language="javascript">
@@ -132,11 +132,11 @@
                         if(r[0]=='1') {
                             names = r[1].split("^")
                             $("#existed_product_name").html('系统检测到这些类似产品：'+names.join(", ")+'，是否其中就有您需要的？')
-                            $("#create_button_div").html('<a class="btn btn-primary" href="javascript:create_product('+'0'+')">还是要创建</a>');
-                            $("#give_up_button_div").html('<a class="btn btn-primary" href="javascript:give_up()">放弃</a>');
+                            $("#create_button_div").html('<a class="button primary" href="javascript:create_product('+'0'+')">还是要创建</a>');
+                            $("#give_up_button_div").html('<a class="button primary" href="javascript:give_up()">放弃</a>');
                         }else{
                             alert(r[1]);
-                            $("#create_button_div").html('<a class="btn btn-primary" href="javascript:create_product('+'1'+')">创建</a>');
+                            $("#create_button_div").html('<a class="button primary" href="javascript:create_product('+'1'+')">创建</a>');
                         }
                     }
                 }

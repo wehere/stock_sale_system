@@ -2,19 +2,19 @@
 <br/>
 <h3>导出客户月清单</h3>
 <%= form_tag export_order_total_for_specified_days_supply_sheets_path, method: :post do %>
-    <label>起始日期</label>
-    <%= date_field_tag 'start_date', @start_date %>
-    <label>结束日期</label>
-    <%= date_field_tag 'end_date', @end_date %>
-    <label>单位</label>
+    <span>起始日期</span>
+    <%= date_field_tag 'start_date', @start_date, class: 'sx-display-inline sx-width-auto'  %>
+    <span>结束日期</span>
+    <%= date_field_tag 'end_date', @end_date, class: 'sx-display-inline sx-width-auto'  %>
+    <span>单位</span>
     <% unless @customers.blank? %>
-    <%= select_tag 'customer_id', options_from_collection_for_select(@customers, 'id', 'simple_name', @customer_id), id: "customers_select" %>
+      <%= select_tag 'customer_id', options_from_collection_for_select(@customers, 'id', 'simple_name', @customer_id), id: "customers_select", class: 'sx-display-inline sx-width-auto'  %>
     <% end %>
-    <label>门店</label>
+    <span>门店</span>
     <% unless @stores.blank? %>
-    <label><div id="store_select"><%= select_tag 'store_id', options_from_collection_for_select(@stores, 'id', 'name', @store_id) %></div></label>
+      <span id="store_select"><%= select_tag 'store_id', options_from_collection_for_select(@stores, 'id', 'name', @store_id), class: 'sx-display-inline sx-width-auto'%></span>
     <% end %>
-    <%= submit_tag '导出', class: 'btn btn-primary' %>
+    <%= submit_tag '导出', class: 'button primary' %>
 <% end %>
 
 <script>
@@ -31,68 +31,68 @@
 <br/>
 <h3>导出进货清单</h3>
 <%= form_tag "/supply/sheets/export_purchase_order", method: :post do %>
-    <label>起始日期</label>
-    <%= date_field_tag 'start_date', params[:start_date]||@start_date %>
-    <label>结束日期</label>
-    <%= date_field_tag 'end_date', params[:end_date]||@end_date %>
-    <%= submit_tag '导出', class: 'btn btn-primary' %>
+    <span>起始日期</span>
+    <%= date_field_tag 'start_date', params[:start_date]||@start_date, class: 'sx-display-inline sx-width-auto'  %>
+    <span>结束日期</span>
+    <%= date_field_tag 'end_date', params[:end_date]||@end_date, class: 'sx-display-inline sx-width-auto'  %>
+    <%= submit_tag '导出', class: 'button primary' %>
 <% end %>
 <br/>
 <h3>导出月汇总单</h3>
 <%= form_tag export_order_total_for_specified_month_supply_sheets_path, method: :post do %>
-    <label>起始日期</label>
-    <%= date_field_tag 'start_date', @start_date %>
-    <label>结束日期</label>
-    <%= date_field_tag 'end_date', @end_date %>
-    <%= submit_tag '导出', class: 'btn btn-primary' %>
+    <span>起始日期</span>
+    <%= date_field_tag 'start_date', @start_date, class: 'sx-display-inline sx-width-auto'  %>
+    <span>结束日期</span>
+    <%= date_field_tag 'end_date', @end_date, class: 'sx-display-inline sx-width-auto'  %>
+    <%= submit_tag '导出', class: 'button primary' %>
 <% end %>
 <br/>
 <h3>导出库存情况</h3>
 <%= form_tag "/supply/sheets/export_stocks", method: :post do %>
-    <label>起始日期</label>
-    <%= date_field_tag 'start_date', params[:start_date] %>
-    <label>结束日期</label>
-    <%= date_field_tag 'end_date', params[:end_date] %>
-    <%= submit_tag '导出', class: 'btn btn-primary' %>
+    <span>起始日期</span>
+    <%= date_field_tag 'start_date', params[:start_date], class: 'sx-display-inline sx-width-auto'  %>
+    <span>结束日期</span>
+    <%= date_field_tag 'end_date', params[:end_date], class: 'sx-display-inline sx-width-auto'  %>
+    <%= submit_tag '导出', class: 'button primary' %>
 <% end %>
 <br/>
 <h3>每个产品入出库及损耗情况</h3>
 <%= form_tag '/supply/sheets/export_product_in_out', method: :post do %>
-    <label>起始日期</label>
-    <%= date_field_tag 'start_date', params[:start_date] %>
-    <label>结束日期</label>
-    <%= date_field_tag 'end_date', params[:end_date] %>
-    <%= submit_tag '导出', class: 'btn btn-primary' %>
+    <span>起始日期</span>
+    <%= date_field_tag 'start_date', params[:start_date], class: 'sx-display-inline sx-width-auto'  %>
+    <span>结束日期</span>
+    <%= date_field_tag 'end_date', params[:end_date], class: 'sx-display-inline sx-width-auto'  %>
+    <%= submit_tag '导出', class: 'button primary' %>
 <% end %>
 <br/>
 <h3>按商贩统计每日采购总金额</h3>
 <%= form_tag '/supply/sheets/export_total_day_money_by_vendor', method: :post do %>
-    <label>起始日期</label>
-    <%= date_field_tag 'start_date', params[:start_date] %>
-    <label>结束日期</label>
-    <%= date_field_tag 'end_date', params[:end_date] %>
-    <%= submit_tag '导出', class: 'btn btn-primary' %>
+    <span>起始日期</span>
+    <%= date_field_tag 'start_date', params[:start_date], class: 'sx-display-inline sx-width-auto'  %>
+    <span>结束日期</span>
+    <%= date_field_tag 'end_date', params[:end_date], class: 'sx-display-inline sx-width-auto'  %>
+    <%= submit_tag '导出', class: 'button primary' %>
 <% end %>
 <br/>
 <h3>按供应商统计每日采购总金额</h3>
 <%= form_tag '/supply/sheets/export_total_day_money_by_seller', method: :post do %>
-  <label>起始日期</label>
-  <%= date_field_tag 'start_date', params[:start_date] %>
-  <label>结束日期</label>
-  <%= date_field_tag 'end_date', params[:end_date] %>
-  <%= submit_tag '导出', class: 'btn btn-primary' %>
+  <span>起始日期</span>
+  <%= date_field_tag 'start_date', params[:start_date], class: 'sx-display-inline sx-width-auto'  %>
+  <span>结束日期</span>
+  <%= date_field_tag 'end_date', params[:end_date], class: 'sx-display-inline sx-width-auto'  %>
+  <%= submit_tag '导出', class: 'button primary' %>
 <% end %>
 <br/>
 <h3>每家门店所用产品－盘点表</h3>
 <%= form_tag '/supply/sheets/export_product_list_by_store', method: :post do %>
-      <label>单位</label>
+      <span>单位</span>
       <% unless @customers.blank? %>
-          <%= select_tag 'customer_id', options_from_collection_for_select(@customers, 'id', 'simple_name', @customer_id), id: "customers_select" %>
+          <%= select_tag 'customer_id', options_from_collection_for_select(@customers, 'id', 'simple_name', @customer_id), id: "customers_select", class: 'sx-display-inline sx-width-auto'  %>
       <% end %>
-      <label>门店</label>
+      <span>门店</span>
       <% unless @stores.blank? %>
-          <label><div id="store_select"><%= select_tag 'store_id', options_from_collection_for_select(@stores, 'id', 'name', @store_id) %></div></label>
+          <span id="store_select"><%= select_tag 'store_id', options_from_collection_for_select(@stores, 'id', 'name', @store_id), class: 'sx-display-inline sx-width-auto'  %></span>
       <% end %>
-  <%= submit_tag '导出', class: 'btn btn-primary' %>
+  <%= submit_tag '导出', class: 'button primary' %>
 <% end %>
 </div>

@@ -1,14 +1,13 @@
 <%= form_tag "/supply/purchase_orders", method: :get do %>
-    <label>起始日期</label>
-    <%= date_field_tag 'start_date', params[:start_date] %>
-    <label>结束日期</label>
-    <%= date_field_tag 'end_date', params[:end_date] %>
-    <label>包含产品</label>
-    <%= text_field_tag 'product_name', params[:product_name] %>
-    <br/>
-    <label>备注包含</label>
-    <%= text_field_tag 'memo', params[:memo] %>
-    <%= submit_tag '查询', class: 'btn btn-primary' %>
+    <span>起始日期</span>
+    <%= date_field_tag 'start_date', params[:start_date], class: 'sx-display-inline sx-width-auto'  %>
+    <span>结束日期</span>
+    <%= date_field_tag 'end_date', params[:end_date], class: 'sx-display-inline sx-width-auto'  %>
+    <span>包含产品</span>
+    <%= text_field_tag 'product_name', params[:product_name], class: 'sx-display-inline sx-width-auto'  %>
+    <span>备注包含</span>
+    <%= text_field_tag 'memo', params[:memo], class: 'sx-display-inline sx-width-auto'  %>
+    <%= submit_tag '查询', class: 'button primary' %>
 <% end %>
 <br/>
 <table class="table">

@@ -1,11 +1,32 @@
 <%= form_tag '/supply/prices', method: :get do %>
-    <%= label_tag 'year_month_id', '月份' %>
-    <%= select_tag 'year_month_id', options_from_collection_for_select(@year_months, 'id', 'val', params[:year_month_id]) %>
-    <%= label_tag 'customer_id', '客户' %>
-    <%= select_tag 'customer_id', options_from_collection_for_select(@customers, 'id', 'simple_name', params[:customer_id]) %>
-    <%= label_tag 'product_name', '产品名称' %>
-    <%= text_field_tag 'product_name', params[:product_name] %>
-    <%= submit_tag '查询', class: 'btn btn-info' %>
+  <div class="row">
+    <div class="small-1 columns text-right">
+      <%= label_tag 'year_month_id', '月份'%>
+    </div>
+    <div class="small-2 columns">
+      <%= select_tag 'year_month_id',
+                     options_from_collection_for_select(@year_months, 'id', 'val', params[:year_month_id])
+      %>
+    </div>
+    <div class="small-1 columns text-right">
+      <%= label_tag 'customer_id', '客户' %>
+    </div>
+    <div class="small-2 columns">
+      <%= select_tag 'customer_id',
+                     options_from_collection_for_select(@customers, 'id', 'simple_name', params[:customer_id])
+      %>
+    </div>
+    <div class="small-1 columns text-right">
+      <%= label_tag 'product_name', '产品名称' %>
+    </div>
+    <div class="small-2 columns">
+      <%= text_field_tag 'product_name', params[:product_name] %>
+    </div>
+    <div class="small-3 columns">
+      <%= submit_tag '查询', class: 'button primary small' %>
+    </div>
+  </div>
+
 <% end %>
 <table class="table table-striped table-hover">
   <thead>
@@ -23,7 +44,7 @@
         <td><%= price.according_purchase_date %></td>
         <td><%= price.print_times %></td>
         <td><%= !price.is_used? ? "废弃" : "" %></td>
-        <td><%#= link_to '废弃', "/supply/prices/#{price.id}/do_not_use", class: 'btn btn-primary btn-tiny', data: {confirm: "你确定废弃此价格？"} %></td>
+        <td><%#= link_to '废弃', "/supply/prices/#{price.id}/do_not_use", class: 'button primary btn-tiny', data: {confirm: "你确定废弃此价格？"} %></td>
     </tr>
   <% end unless @prices.blank? %>
   </tbody>

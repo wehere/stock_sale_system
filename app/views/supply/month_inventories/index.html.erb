@@ -1,8 +1,8 @@
 <h3>月库存状况</h3>
 <%= form_tag '/supply/month_inventories', method: :get do %>
-    <label>月份</label>
-    <%= select_tag :year_month_id, options_from_collection_for_select(@year_months, :id, :val, params[:year_month_id]) %>
-    <%= submit_tag '查询', class: "btn btn-primary" %>
+    <span>月份</span>
+    <%= select_tag :year_month_id, options_from_collection_for_select(@year_months, :id, :val, params[:year_month_id]), class: 'sx-display-inline sx-width-auto'  %>
+    <%= submit_tag '查询', class: "button primary" %>
 <% end %>
 <table class="table">
   <thead>

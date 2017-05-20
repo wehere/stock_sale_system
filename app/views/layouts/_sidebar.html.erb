@@ -1,0 +1,136 @@
+<style>
+  a.category:after {
+    display: none !important;
+  }
+</style>
+<br/>
+<ul class='vertical menu' data-responsive-menu='drilldown medium-dropdown' style='width: 100px;' id='ys-sidebar'>
+  <!--<li>-->
+    <!--<a class='category' href='/dashboard'><i class="fa fa-thumb-tack fa-lg"></i>工作台</a>-->
+  <!--</li>-->
+
+  <li>
+    <a class='category' href='javascript:void(0)'><i class="fa fa-money fa-lg"></i>价格</a>
+    <ul class='vertical menu'>
+      <li><a href='/supply/prices'><i class="fa fa-list fa-lg"></i>价格查询</a></li>
+      <li><a href='/supply/prices/search'><i class="fa fa-pencil-square-o fa-lg"></i>修改价格</a></li>
+      <li><a href='/supply/prices/export_xls_of_prices'><i class="fa fa-download fa-lg"></i>导出价格</a></li>
+    </ul>
+  </li>
+
+  <li>
+    <a class='category' href='javascript:void(0)'><i class="fa fa-cubes fa-lg"></i>产品</a>
+    <ul class='vertical menu'>
+      <li><a href='/supply/products'><i class="fa fa-list fa-lg"></i>产品列表</a></li>
+      <li><a href='/supply/products/detail'><i class="fa fa-search fa-lg"></i>产品详情</a></li>
+      <li><a href='/supply/products/strict_new'><i class="fa fa-plus fa-lg"></i>新增产品</a></li>
+
+      <% if current_user.admin? %>
+        <li><a href='/supply/products/update_sale_ratio_by_mark'><i class="fa fa-pencil-square-o fa-lg"></i>据分类更新售出系数</a></li>
+      <% end %>
+
+      <% if current_user.admin? %>
+        <li><a href='/supply/employee_foods'><i class="fa fa-list fa-lg"></i>管理员工餐产品</a></li>
+      <% end %>
+
+      <% if current_user.admin? %>
+        <li><a href='/supply/products/disabled_products'><i class="fa fa-list fa-lg"></i>禁用的产品</a></li>
+      <% end %>
+
+      <li><a href='/supply/general_products'><i class="fa fa-list fa-lg"></i>通用产品一览</a></li>
+    </ul>
+  </li>
+
+  <li>
+    <a class='category' href='javascript:void(0)'><i class="fa fa-file-text fa-lg"></i>订单</a>
+    <ul class='vertical menu'>
+      <li><a href='/purchase/orders/dingyu_send_order' target="_blank"><i class="fa fa-plus fa-lg"></i>订客餐</a></li>
+      <li><a href='/purchase/employee_foods' target="_blank"><i class="fa fa-plus fa-lg"></i>订员工餐</a></li>
+      <li><a href='/supply/orders/got_orders'><i class="fa fa-list fa-lg"></i>收到的订单</a></li>
+      <li><a href='/supply/orders/send_out_orders'><i class="fa fa-list fa-lg"></i>发出的订单</a></li>
+    </ul>
+  </li>
+
+  <li>
+    <a class='category' href='javascript:void(0)'><i class="fa fa-tags fa-lg"></i>出货单</a>
+    <ul class='vertical menu'>
+      <li><a href='/supply/orders'><i class="fa fa-list fa-lg"></i>出货单</a></li>
+      <li><a href='/supply/orders/not_return'><i class="fa fa-list fa-lg"></i>没回来的单子</a></li>
+      <li><a href='/supply/orders/pre_confirm_back_order'><i class="fa fa-plus fa-lg"></i>单据回来－快捷</a></li>
+      <li><a href='/supply/orders/not_input'><i class="fa fa-list fa-lg"></i>查询未录入数据单据</a></li>
+      <li><a href='/supply/orders/0/edit'><i class="fa fa-pencil-square-o fa-lg"></i>开始录入到货量</a></li>
+      <li><a href='/supply/order_items/search'><i class="fa fa-search fa-lg"></i>搜索已送品项</a></li>
+      <li><a href='/supply/order_items/null_price'><i class="fa fa-pencil-square-o fa-lg"></i>补充未输入价格的品项</a></li>
+    </ul>
+  </li>
+
+  <li>
+    <a class='category' href='javascript:void(0)'><i class="fa fa-shopping-cart fa-lg"></i>进货单</a>
+    <ul class='vertical menu'>
+      <li><a href='/supply/purchase_orders'><i class="fa fa-list fa-lg"></i>进货单列表</a></li>
+      <li><a href='/supply/purchase_orders/create_purchase_order' target="_blank"><i class="fa fa-plus fa-lg"></i>录入进货单</a></li>
+      <li><a href='/supply/purchase_orders/search_item'><i class="fa fa-search fa-lg"></i>查询进货品项详细</a></li>
+    </ul>
+  </li>
+
+  <li>
+    <a class='category' href='javascript:void(0)'><i class="fa fa-sign-out fa-lg"></i>损耗单</a>
+    <ul class='vertical menu'>
+      <li><a href='/supply/loss_orders'><i class="fa fa-list fa-lg"></i>损耗单列表</a></li>
+      <li><a href='/supply/loss_orders/create_loss_order' target="_blank"><i class="fa fa-plus fa-lg"></i>录入损耗单</a></li>
+      <li><a href='/supply/loss_orders/search_item'><i class="fa fa-search fa-lg"></i>查询损耗</a></li>
+    </ul>
+  </li>
+
+  <li>
+    <a class='category' href='javascript:void(0)'><i class="fa fa-users fa-lg"></i>客户</a>
+    <ul class='vertical menu'>
+      <li><a href='/supply/customers'><i class="fa fa-list fa-lg"></i>客户列表</a></li>
+      <li><a href='/supply/order_types'><i class="fa fa-list fa-lg"></i>单据类型管理</a></li>
+      <li><a href='/supply/sellers'><i class="fa fa-list fa-lg"></i>供应商一览</a></li>
+    </ul>
+  </li>
+
+  <li>
+    <a class='category' href='javascript:void(0)'><i class="fa fa-line-chart fa-lg"></i>报表</a>
+    <ul class='vertical menu'>
+      <li><a href='/supply/sheets'><i class="fa fa-list fa-lg"></i>报表</a></li>
+      <li><a href='/supply/order_items/prepare_classify'><i class="fa fa-bar-chart fa-lg"></i>分菜</a></li>
+      <li><a href='/supply/products/prepare_export_products'><i class="fa fa-list fa-lg"></i>产品清单</a></li>
+    </ul>
+  </li>
+
+  <li>
+    <a class='category' href='javascript:void(0)'><i class="fa fa-bank fa-lg"></i>库存</a>
+    <ul class='vertical menu'>
+      <li><a href='/supply/stocks'><i class="fa fa-list fa-lg"></i>库存列表</a></li>
+      <li><a href='/supply/month_inventories'><i class="fa fa-list fa-lg"></i>每月月底库存</a></li>
+    </ul>
+  </li>
+
+  <li>
+    <a class='category' href='/supply/i/config_'><i class="fa fa-gear fa-lg"></i>配置</a>
+    <ul class='vertical menu'>
+      <li><a href='/supply/i/config_'><i class="fa fa-gear fa-lg"></i>配置</a></li>
+    </ul>
+  </li>
+
+  <li>
+    <a class='category' href='/supply/downloads'><i class="fa fa-download fa-lg"></i>下载</a>
+    <ul class='vertical menu'>
+      <li><a href='/supply/downloads'><i class="fa fa-download fa-lg"></i>下载</a></li>
+    </ul>
+  </li>
+
+  <% if current_user.super_admin? %>
+    <li>
+      <a class='category' href='javascript:void(0)'><i class="fa fa-bank fa-lg"></i>公司</a>
+      <ul class='vertical menu'>
+        <li><a href='/sp/companies'><i class="fa fa-list fa-lg"></i>公司</a></li>
+        <li><a href='/sp/companies/new'><i class="fa fa-plus fa-lg"></i>创建公司</a></li>
+        <li><a href='/sp/companies?all=1'><i class="fa fa-list fa-lg"></i>所有公司</a></li>
+      </ul>
+    </li>
+  <% end %>
+
+</ul>

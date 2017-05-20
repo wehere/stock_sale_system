@@ -5,5 +5,5 @@
     <% @roles.each do |role| %>
         <%= check_box_tag 'role[]', role.id, @own_roles.include?(role) %><%= role.name %>
     <% end %>
-    <%= submit_tag '保存', class: 'btn btn-primary' %>
+    <%= submit_tag '保存', class: 'button primary' %>
 <% end %>

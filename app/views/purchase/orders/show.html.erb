@@ -1,6 +1,6 @@
 <br/>
 <div class="row">
-  <div class="col-sm-7">
+  <div class="columns small-7">
     <%= render 'link_show_order' %>
     <h3>
       <%= @order.reach_order_date %>&nbsp&nbsp由
@@ -14,16 +14,16 @@
 
 
   </div>
-  <div class="col-sm-5">
+  <div class="columns small-5">
     <% unless @order.comments.valid.blank? %>
         <% @order.comments.valid.each do |comment| %>
             <div class="row">
-                <div class="col-sm-12">
+                <div class="columns small-12">
                   <h6><%= comment.user.user_name %>&nbsp&nbsp<%= comment.created_at.to_s(:db) %>  </h6>
                 </div>
             </div>
             <div class="row" style="border-bottom: solid 1px;border-color: #DDD;">
-              <div class="col-sm-12">
+              <div class="columns small-12">
                 <%= comment.content %>
               </div>
             </div>
@@ -35,15 +35,15 @@
         <%= hidden_field_tag 'order_id', @order.id %>
         <%= label_tag :content, '如果您对这张单据有什么疑问，可以在下面这里写下来，我们收到后会给予反馈！' %>
         <div class="row">
-            <div class="col-sm-12">
+            <div class="columns small-12">
                 <%= text_area_tag :content, '', size: '70x5' %>
             </div>
         </div>
         <div class="row">
-          <div class="col-sm-11 text-right">
-            <%= submit_tag '发表', class: 'btn btn-primary' %>
+          <div class="columns small-11 text-right">
+            <%= submit_tag '发表', class: 'button primary' %>
           </div>
-          <div class="col-sm-1"></div>
+          <div class="columns small-1"></div>
         </div>
     <% end %>
   </div>
