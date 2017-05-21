@@ -1,12 +1,17 @@
-<% flash.each do |name, msg| %>
-    <% if msg.is_a?(String) %>
-        <div class="alert alert-<%= name.to_s == 'notice'|| name.to_s == 'success' ? 'success' : 'danger' %>">
-          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-          <%= content_tag :div, msg, :id => "flash_#{name}" %>
-        </div>
-    <% end %>
-<% end %>
+<div id="ys-layout-message">
+  <% flash.each do |name, msg| %>
+      <% if msg.is_a?(String) && msg.present? %>
 
+          <div class="alert callout ys-layout-message" data-closable style="background-color: <%= name.to_s == 'notice'|| name.to_s == 'success' ? '#43ac6a' : '#f04124' %>">
+            <div><span><%= msg %></span></div>
+            <button class="close-button" aria-label="Dismiss alert" type="button" id="flash_close_button" data-close>
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <% flash[name] = nil %>
+      <% end %>
+  <% end %>
+</div>
 
 <h2 class="text-center">员工餐下单 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= link_to '客餐订货', '/purchase/orders/dingyu_send_order'  %></h2><br/>
 <%= form_tag '/purchase/employee_foods', method: :get do %>
