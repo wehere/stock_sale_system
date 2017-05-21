@@ -26,7 +26,7 @@ class SendOrderMessage < ActiveRecord::Base
     m = self.new options
     m.save!
     # 发送邮件通知供应商
-    SendOrderMessageJob.set(wait: 5.minutes.from_now).perform_later(m.id)
+    SendOrderMessageJob.set(wait: 5.minutes).perform_later(m.id)
     m
   end
 
