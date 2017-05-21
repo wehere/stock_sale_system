@@ -1,3 +1,3 @@
 <% if current_user.blank? || !current_user.super_admin? && !current_user.admin? %>
-    <img src="https://www.dujin.org/sys/bing/1366.php"  alt="" width="100%" height="100%"/>
+    <img src="<%= asset_path('bing.jpg') %>"  alt="" width="100%" height="100%"/>
 <% end %>
