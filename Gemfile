@@ -18,7 +18,7 @@ gem 'therubyracer',  platforms: :ruby
 # 上传头像
 gem 'paperclip', '~> 5.1'
 # 异常通知邮件
-gem 'exception_notification', '~> 4.0.1'
+gem 'exception_notification', '~> 4.2', '>= 4.2.1'
 # UI
 gem 'bootstrap-sass'
 gem 'fastercsv', '~> 1.5.5'
