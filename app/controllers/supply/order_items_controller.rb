@@ -86,21 +86,6 @@ class Supply::OrderItemsController < BaseController
   end
 
   def prepare_classify
-
-    # 把更新价格表的任务放在这里
-    # 月底倒数三天更新价格
-    # now_time = SystemConfig.v( '更新下月价格时间', Time.now.to_s).to_time
-    # if (Time.now-now_time).to_i >= 3600*2
-    #   if Time.now.end_of_month.to_date.day - Time.now.to_date.day < 3
-    #     YearMonth.delay.generate_recent_year_months
-    #     Company.all_suppliers.each do |supplier|
-    #       Price.delay.g_next_month_price YearMonth.current_year_month.id, YearMonth.next_year_month.id, supplier.id
-    #     end
-    #     k = SystemConfig.find_by_k '更新下月价格时间'
-    #     k.update_attributes v: Time.now.to_s unless k.blank?
-    #   end
-    # end
-
     @specified_date = params[:specified_date].blank? ? Time.now.to_date + 1 : params[:specified_date]
   end
 

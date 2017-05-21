@@ -8,9 +8,9 @@ namespace :price do
       else
         SystemConfig.create! k: 'generate_price_count', v: '0'
       end
-      YearMonth.delay.generate_recent_year_months
+      GenerateRecentYearMonthsJob.perform_later
       Company.all_suppliers.each do |supplier|
-        Price.delay.g_next_month_price YearMonth.current_year_month.id, YearMonth.next_year_month.id, supplier.id
+        GNextMonthPriceJob.perform_later YearMonth.current_year_month.id, YearMonth.next_year_month.id, supplier.id
       end
     end
   end
