@@ -289,7 +289,7 @@ class Supply::ProductsController < BaseController
   end
 
   def export_products
-    file_name = Product.delay.export current_user.company.id, params[:customer_id], params[:year_month_id]
+    ExportProductsJob.perform_later current_user.company.id, params[:customer_id], params[:year_month_id]
     # if File.exists? file_name
     #   io = File.open(file_name)
     #   io.binmode

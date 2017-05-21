@@ -3,6 +3,14 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { sessions: 'users/sessions' }
   root to: 'vis/static_pages#welcome'
 
+  require 'sidekiq/web'
+
+  Sidekiq::Web.use Rack::Auth::Basic do |username, password|
+    username == '549174542@qq.com' && password == 'jiaren123456'
+  end if Rails.env.production?
+
+  mount Sidekiq::Web => '/sidekiq'
+
   # 超级管理员
   namespace :sp do
     resources :companies

@@ -14,7 +14,7 @@ require 'yaml'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module ShengxingSystem
+module StockSaleSystem
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -49,10 +49,12 @@ module ShengxingSystem
         :enable_starttls_auto => true
     }
 
-
     config.autoload_paths += %W(#{config.root}/lib)
     config.autoload_paths += Dir["#{config.root}/lib/**/"]
-    config.active_job.queue_adapter = :delayed_job
+    # config.active_job.queue_adapter = :delayed_job
+
+    config.active_job.queue_adapter = :sidekiq
+    # config.active_job.queue_name_prefix = Rails.env
 
     require Rails.root.join('lib/tool.rb')
   end

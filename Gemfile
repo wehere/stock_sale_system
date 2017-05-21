@@ -62,3 +62,9 @@ gem 'foundation-rails', '~> 6.3', '>= 6.3.1.0'
 gem 'font-awesome-rails'
 
 gem 'annotate'
+
+gem 'sidekiq', '~> 5.0'
+
+gem 'sinatra'
+
+gem 'redis-namespace', '~> 1.5', '>= 1.5.3'

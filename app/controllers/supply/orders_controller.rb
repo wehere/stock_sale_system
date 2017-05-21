@@ -88,7 +88,7 @@ class Supply::OrdersController < BaseController
         end
       end
 
-      StockMailer.delay.negative_stock(supplier_id) if supplier.check_negative_stock
+      StockMailer.negative_stock(supplier_id).deliver_later if supplier.check_negative_stock
 
       order.update_attributes is_confirm: true unless order.is_confirm
       order.calculate_not_input_number

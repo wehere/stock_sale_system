@@ -13,11 +13,11 @@ class GeneralProduct < ActiveRecord::Base
   validate :mini_spec_check
 
   after_create do |g_p|
-    GeneralProduct.delay.check_repeated g_p.supplier_id if g_p.company.check_repeated_product
+    GeneralProductCheckRepeatedJob.perform_later g_p.supplier_id if g_p.company.check_repeated_product
   end
 
   after_save do |g_p|
-    GeneralProduct.delay.check_repeated g_p.supplier_id if g_p.company.check_repeated_product
+    GeneralProductCheckRepeatedJob.perform_later g_p.supplier_id if g_p.company.check_repeated_product
   end
 
   def mini_spec_check

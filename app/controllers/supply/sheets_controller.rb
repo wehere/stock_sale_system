@@ -18,8 +18,13 @@ class Supply::SheetsController < BaseController
   def export_order_total_for_specified_days
     # begin
       supplier_id = current_user.company.id
-      file_name = Order.delay.export_order_total_for_specified_days params[:start_date].to_date, params[:end_date].to_date,
-                                                              params[:customer_id], supplier_id, params[:store_id]
+
+      ExportOrderTotalForSpecifiedDaysJob.perform_later params[:start_date],
+                                                      params[:end_date],
+                                                      params[:customer_id],
+                                                      supplier_id,
+                                                      params[:store_id]
+
       flash[:notice] = "正在下载，下载完毕后，您可以在下载页看到您需要的文件"
       redirect_to action: :index
     #   if File.exists? file_name
@@ -40,7 +45,7 @@ class Supply::SheetsController < BaseController
 
   def export_order_total_for_specified_month
     supplier_id = current_user.company.id
-    file_name = Order.delay.export_order_total_for_specified_month params[:start_date], params[:end_date], supplier_id
+    ExportOrderTotalForSpecifiedMonthJob.perform_later(params[:start_date], params[:end_date], supplier_id)
     flash[:notice] = "正在下载，下载完毕后，您可以在下载页看到您需要的文件"
     redirect_to action: :index
     # if File.exists? file_name
@@ -57,7 +62,7 @@ class Supply::SheetsController < BaseController
 
   def export_purchase_order
     supplier_id = current_user.company.id
-    file_name = PurchaseOrder.delay.export_purchase_order params[:start_date], params[:end_date], supplier_id
+    ExportPurchaseOrderJob.perform_later params[:start_date], params[:end_date], supplier_id
     flash[:notice] = "正在下载，下载完毕后，您可以在下载页看到您需要的文件"
     redirect_to action: :index
     # send_file file_name
@@ -65,35 +70,35 @@ class Supply::SheetsController < BaseController
 
   def export_stocks
     supplier_id = current_user.company.id
-    OrderDetail.delay.export_stocks params[:start_date], params[:end_date], supplier_id
+    ExportStocksJob.perform_later params[:start_date], params[:end_date], supplier_id
     flash[:notice] = "正在下载，下载完毕后，您可以在下载页看到您需要的文件"
     redirect_to action: :index
   end
 
   def export_product_in_out
     supplier_id = current_user.company.id
-    Product.delay.export_product_in_out params[:start_date], params[:end_date], supplier_id
+    ExportProductInOutJob.perform_later params[:start_date], params[:end_date], supplier_id
     flash[:notice] = "正在下载，下载完毕后，您可以在下载页看到您需要的文件"
     redirect_to action: :index
   end
 
   def export_total_day_money_by_vendor
     supplier_id = current_user.company.id
-    Product.delay.export_total_day_money_by_vendor params[:start_date], params[:end_date], supplier_id
+    ExportTotalDayMoneyByVendorJob.perform_later params[:start_date], params[:end_date], supplier_id
     flash[:notice] = "正在下载，下载完毕后，您可以在下载页看到您需要的文件"
     redirect_to action: :index
   end
 
   def export_total_day_money_by_seller
     supplier_id = current_user.company.id
-    OrderDetail.delay.export_total_day_money_by_seller params[:start_date], params[:end_date], supplier_id
+    ExportTotalDayMoneyBySellerJob.perform_later params[:start_date], params[:end_date], supplier_id
     flash[:notice] = "正在下载，下载完毕后，您可以在下载页看到您需要的文件"
     redirect_to action: :index
   end
 
   def export_product_list_by_store
     supplier_id = current_user.company.id
-    Product.delay.export_product_list_by_store supplier_id, params[:store_id]
+    ExportProductListByStoreJob.perform_later supplier_id, params[:store_id]
     flash[:notice] = "正在下载，下载完毕后，您可以在下载页看到您需要的文件"
     redirect_to action: :index
   end

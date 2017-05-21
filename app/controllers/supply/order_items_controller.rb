@@ -106,7 +106,7 @@ class Supply::OrderItemsController < BaseController
 
   def do_classify
     # begin
-      file_name = OrderItem.delay.classify current_user.company.id, params[:specified_date]
+    OrderItemClassifyJob.perform_later current_user.company.id, params[:specified_date]
       flash[:notice] = "正在下载，下载完毕后，您可以在下载页看到您需要的文件"
       redirect_to action: :prepare_classify
       # if File.exists? file_name
