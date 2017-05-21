@@ -147,6 +147,7 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (4.1.0)
+    newrelic_rpm (4.1.0.333)
     nio4r (2.0.0)
     nokogiri (1.7.2)
       mini_portile2 (~> 2.1.0)
@@ -303,6 +304,7 @@ DEPENDENCIES
   jquery-rails
   mail
   mysql2 (= 0.3.18)
+  newrelic_rpm (~> 4.1, >= 4.1.0.333)
   paperclip (~> 5.1)
   rails (= 5.0.2)
   rake (~> 11.3.0)
