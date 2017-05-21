@@ -10,7 +10,7 @@ namespace :price do
       end
       GenerateRecentYearMonthsJob.perform_later
       Company.all_suppliers.each do |supplier|
-        GNextMonthPriceJob.perform_later YearMonth.current_year_month.id, YearMonth.next_year_month.id, supplier.id
+        GNextMonthPriceJob.perform_later supplier.id
       end
     end
   end
