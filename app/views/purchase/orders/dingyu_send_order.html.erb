@@ -1,43 +1,19 @@
-<h2 style="text-align: center"><%= "#{@customer.simple_name}-#{@store.name}－后台下订单系统" %>&nbsp;&nbsp;&nbsp;&nbsp;<%= link_to '（去订员工餐）', '/purchase/employee_foods' %></h2>
+
+
+<h4 class="sx-center sx-margin-bottom-15 sx-margin-top-5"><%= "#{@customer.simple_name}-#{@store.name}－后台下订单系统" %>&nbsp;&nbsp;&nbsp;&nbsp;<%= link_to '（去订员工餐）', '/purchase/employee_foods' %></h4>
 <% colors = ['#BBFFEE','#CCFF99','#FFEE99','#FFCCCC','#E8CCFF','#FFE4E1','	#FAEBD7'] %>
   <% left = 15 %>
 <div class="search_panel">
   <div class="row">
-    <div class="columns small-offset-2 small-2"><label>拼音首字母</label></div>
+    <div class="columns small-offset-2 small-2 text-right sx-margin-top-5"><span>拼音首字母</span></div>
     <div class="columns small-3"><%= text_field_tag :abc, params[:abc] %></div>
     <div class="columns small-5 text-left end">
-      <%= link_to '检索', '#', class: 'button primary', id: 'query_button', onclick: "query_product()" %>
+      <%= link_to '检索', 'javascript:void(0)', class: 'button primary search-button', id: 'query_button', onclick: "query_product()" %>
     </div>
   </div>
-
 </div>
-  <% @big_marks.each_with_index do |mark,index| %>
-      <div class="panel" style="left:<%= left %>px;background-color: <%= colors[index] %>;">
-        <h3 style="text-align: center"><%= mark %></h3>
-        <div id="<%= mark %>" class="fixed_panel">
-            <% @products.where(mark: mark).limit(16).each_with_index do |product,index| %>
-                <div onclick="choose_this('<%= product.chinese_name %>')" style="cursor:hand;width: 100%;height: 20px; "  >
-                    <span class="elipsis"><a href='javascript:void(0)'><%= product.chinese_name %></a></span>
-                </div>
-                <div style="height: 2px"></div>
-            <% end %>
-        </div>
-      </div>
-      <% left = left + 130 + 5  %>
-  <% end %>
 
-<div class="panel" style="left:<%= left %>px;background-color: <%= colors.last %>">
-  <h3 style="text-align: center"><%= "其他" %></h3>
-  <div id="others" class="fixed_panel">
-      <% @products.where("mark in (?)", @small_marks).limit(16).each_with_index do |product,index| %>
-          <div onclick="choose_this('<%= product.chinese_name %>')" style="width: 100%;height: 15px;cursor:hand;">
-            <div class="elipsis"><a href='javascript:void(0)' class="elipsis"><%= product.chinese_name %></a></div>
-          </div>
-          <div style="height: 2px"></div>
-      <% end %>
-  </div>
-</div>
-<% left = left + 130 + 5 %>
+
 <div class="order_panel" style="left:<%= left %>px;">
   <div class="row">
     <!--<div class="columns small-2"><label></label></div>-->
@@ -67,7 +43,7 @@
 
   <table class="bordered">
     <thead>
-    <th width="150px">品名</th><th width="50px">规格</th><th width="100px">数量</th>
+    <th width="170px" class="sx-center"><span >品名</span></th><th width="50px" class="sx-center">规格</th><th width="80px" class="sx-center">数量</th>
     </thead>
     <tbody id="order_item_container">
 
@@ -78,9 +54,39 @@
 <div class="memo_panel" style="left:<%= left %>px;">
   <label>其他信息</label><br/><%= text_area_tag :secondary_message, params[:secondary_message], class: 'memo_area' %>
 </div>
-<div style="position: fixed;bottom: 50px;left:<%= left+100 %>px;">
-  <%= link_to '发送订单', "javascript:send_order()", class: 'button primary' %>
+<div style="position: fixed;top: 35px;left:<%= 330 %>px;">
+  <%= link_to '发送订单', "javascript:send_order()", class: 'button primary search-button' %>
 </div>
+
+
+
+<% left = left + 300 + 5 %>
+
+<% @big_marks.each_with_index do |mark,index| %>
+    <div class="panel sx-panel" style="left:<%= left %>px;background-color: <%= colors[index] %>;">
+      <h3 class="sx-center"><%= mark %></h3>
+      <div id="<%= mark %>" class="fixed_panel">
+        <% @products.where(mark: mark).limit(16).each_with_index do |product,index| %>
+            <p onclick="choose_this('<%= product.chinese_name %>')" class="sx-item">
+              <span><a class="a-item" href='javascript:void(0)'><%= product.chinese_name %></a></span>
+            </p>
+        <% end %>
+      </div>
+    </div>
+    <% left = left + 130 + 5  %>
+<% end %>
+
+<div class="panel sx-panel" style="left:<%= left %>px;background-color: <%= colors.last %>">
+  <h3 class="sx-center"><%= "其他" %></h3>
+  <div id="others" class="fixed_panel">
+    <% @products.where("mark in (?)", @small_marks).limit(16).each_with_index do |product,index| %>
+        <p onclick="choose_this('<%= product.chinese_name %>')" class="sx-item">
+          <span><a class="a-item" href='javascript:void(0)'><%= product.chinese_name %></a></span>
+        </p>
+    <% end %>
+  </div>
+</div>
+
 
 <script language="javascript">
   index = 1;
@@ -98,7 +104,7 @@
               function (result) {
                   r = result.split('|');
                   if(r[0]=='0'){
-                      str = '<tr id="item_'+index+'" class="product"><td id="product_name_'+index+'">'+product_name+'</td><td id="spec_'+index+'">'+r[1]+'</td><td><input type="text" id="num_'+index+'" name="num_'+index+'" size=5 class= "sx-display-inline sx-width-percent-80" />&nbsp;&nbsp;<a href="javascript:delete_item('+index+')">X</a></td></tr>';
+                      str = '<tr id="item_'+index+'" class="product"><td id="product_name_'+index+'">'+product_name+'</td><td id="spec_'+index+'">'+r[1]+'</td><td><input type="text" id="num_'+index+'" name="num_'+index+'" size=5 class= "sx-display-inline sx-width-percent-80 sx-margin-bottom-0" /><a href="javascript:delete_item('+index+')"><i class="sx-margin-left-5 fa fa-remove fa-lg"></i></a></td></tr>';
                       $("#order_item_container").append(str);
                       index += 1;
                   }else{
@@ -185,10 +191,42 @@
 
 <style>
 
+  .sx-center {
+    text-align: center !important;
+  }
+  .sx-panel {
+    border-radius: 10px;
+  }
+
+  .sx-item {
+    cursor: hand;
+    width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-bottom: 5px;
+    padding-left: 2px;
+  }
+  a.a-item {
+    color: black;
+    font-weight: bold;
+  }
+
+  a.a-item:hover {
+    color: blue;
+  }
+
+  .search-button {
+    padding: 0.6em 1em;
+    border-radius: 5px;
+  }
+
+
     .search_panel {
         text-align: center;
         position: fixed;
         width: 780px;
+        left: 300px;
     }
 
     .panel {
@@ -198,9 +236,13 @@
     }
 
     .order_panel {
+        border-radius: 5px;
+        padding-top: 5px;
+        padding-bottom: 5px;
         position: relative;
         width: 300px;
-        background-color: #c7dfb6;
+        background-color: #dce9f9;
+        min-height: 400px;
     }
 
     .memo_panel {
