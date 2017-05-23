@@ -18,7 +18,7 @@ ExceptionNotification.configure do |config|
   # Email notifier sends notifications by email.
   config.add_notifier :email, {
     :email_prefix         => "[ERROR] ",
-    :sender_address       => %{"Notifier" <864454373@qq.com>},
+    :sender_address       => %{"Notifier" <message@591order.com>},
     :exception_recipients => %w{549174542@qq.com}
   } if Rails.env.production?
 
