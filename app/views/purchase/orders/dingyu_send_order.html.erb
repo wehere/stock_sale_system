@@ -16,8 +16,8 @@
 
 <div class="order_panel" style="left:<%= left %>px;">
   <div class="row">
-    <div class="columns small-3 text-right"><label class="sx-margin-top-5">供应商</label></div>
-    <div class="columns small-9">
+    <div class="columns small-4 text-right"><label class="sx-margin-top-5">供应商</label></div>
+    <div class="columns small-8">
       <%= select_tag :supplier_id,
                      options_from_collection_for_select(@suppliers, 'id', 'simple_name', params[:supplier_id]||@supplier_id),
                      onchange: 'change_supplier()',
@@ -27,8 +27,8 @@
 
   </div>
   <div class="row">
-    <div class="columns small-3 text-right"><label class="sx-margin-top-5">单据类型</label></div>
-    <div class="columns small-9">
+    <div class="columns small-4 text-right"><label class="sx-margin-top-5">单据类型</label></div>
+    <div class="columns small-8">
       <%= select_tag :order_type_id,
                      options_from_collection_for_select(@order_types, 'id', 'name', params[:order_type_id]||@order_type_id),
                      class: 'sx-width-percent-50 sx-title-item'
@@ -37,8 +37,8 @@
   </div>
 
   <div class="row">
-    <div class="columns small-3 text-right"><label class="sx-margin-top-5">到货日期</label></div>
-    <div class="columns small-6 end">
+    <div class="columns small-4 text-right"><label class="sx-margin-top-5">到货日期</label></div>
+    <div class="columns small-8">
       <%= date_field_tag :reach_date, params[:reach_date]||Time.now.tomorrow.to_date, class: 'sx-title-item' %>
     </div>
   </div>
