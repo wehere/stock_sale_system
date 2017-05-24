@@ -109,7 +109,7 @@
               function (result) {
                   r = result.split('|');
                   if(r[0]=='0'){
-                      str = '<tr id="item_'+index+'" class="product"><td id="product_name_'+index+'">'+product_name+'</td><td id="spec_'+index+'">'+r[1]+'</td><td><input type="text" id="num_'+index+'" name="num_'+index+'" size=5 class= "sx-display-inline sx-width-percent-80 sx-margin-bottom-0" /></td><td><a href="javascript:delete_item('+index+')"><i class="sx-margin-left-5 fa fa-remove fa-lg"></i></a></td></tr>';
+                      str = '<tr id="item_'+index+'" class="product"><td id="product_name_'+index+'">'+product_name+'</td><td id="spec_'+index+'" class="sx-center">'+r[1]+'</td><td class="sx-center"><input type="text" id="num_'+index+'" name="num_'+index+'" size=5 class= "sx-display-inline sx-width-percent-80 sx-margin-bottom-0" /></td><td class="sx-center"><a href="javascript:delete_item('+index+')"><i class="sx-margin-left-5 fa fa-remove fa-lg"></i></a></td></tr>';
                       $("#order_item_container").append(str);
                       index += 1;
                   }else{
