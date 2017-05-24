@@ -1,14 +1,14 @@
 $(".fixed_panel").html("");
 <% @result_products.each do |purchase_price| %>
 if($("#<%= purchase_price.product.mark %>").size()==1){
-    str = '<div onclick="choose_this('+'\'<%= purchase_price.product.chinese_name %>\''+')" style="cursor:hand;width: 100%;height: 15px; "  >';
-    str += '<h6><a href="javascript:void(0)"><%= purchase_price.product.chinese_name %></a></h6>';
+    str = '<div onclick="choose_this('+'\'<%= purchase_price.product.chinese_name %>\''+')"  class="sx-item">';
+    str += '<span><a class="a-item" href="javascript:void(0)"><%= purchase_price.product.chinese_name %></a></span>';
     str += '</div>';
     str += '<div style="height: 2px"></div>';
     $("#<%= purchase_price.product.mark %>").append(str);
 }else{
-    str = '<div onclick="choose_this('+'\'<%= purchase_price.product.chinese_name %>\''+')" style="cursor:hand;width: 100%;height: 15px; "  >';
-    str += '   <h6><a href="javascript:void(0)"><%= purchase_price.product.chinese_name %></a></h6>';
+    str = '<div onclick="choose_this('+'\'<%= purchase_price.product.chinese_name %>\''+')" class="sx-item">';
+    str += '   <span><a class="a-item" href="javascript:void(0)"><%= purchase_price.product.chinese_name %></a></span>';
     str += '</div>';
     str += '<div style="height: 2px"></div>';
     $("#others").append(str);
