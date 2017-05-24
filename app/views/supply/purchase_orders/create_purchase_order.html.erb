@@ -5,7 +5,7 @@
 <% colors = ['#BBFFEE','#CCFF99','#FFEE99','#FFCCCC','#E8CCFF','#FFE4E1','	#FAEBD7'] %>
 <% left = 15 %>
 
-<div class="search_panel">
+<div class="purchase_order_search_panel">
   <div class="row">
     <div class="columns small-offset-2 small-2 text-right sx-margin-top-5"><span>拼音首字母</span></div>
     <div class="columns small-3"><%= text_field_tag :abc, params[:abc] %></div>
@@ -15,7 +15,7 @@
   </div>
 </div>
 
-<div class="order_panel" style="left:<%= left %>px;">
+<div class="purchase_order_panel" style="left:<%= left %>px;">
   <div class="row">
     <div class="columns small-4 text-right"><label class="sx-margin-top-5">买自</label></div>
     <div class="columns small-8">
@@ -36,7 +36,8 @@
 
   <table class="bordered">
     <thead>
-    <th width="150px">品名</th><th width="50px">规格</th><th width="50px">数量</th><th width="50px">价格</th><th></th>
+    <th width="150px">品名</th><th width="50px" class="sx-center">规格</th>
+    <th width="100px" class="sx-center">数量</th><th width="100px" class="sx-center">价格</th><th></th>
     </thead>
     <tbody id="order_item_container">
 
@@ -47,15 +48,15 @@
 
 <br/>
 
-<div class="memo_panel" style="left:<%= left %>px;">
-  <label>备注</label><br/><%= text_area_tag :memo, params[:memo], class: 'memo_area' %>
+<div class="purchase_order_memo_panel" style="left:<%= left %>px;">
+  <label>备注</label><br/><%= text_area_tag :memo, params[:memo], class: 'purchase_order_memo_area' %>
 </div>
 
-<div style="position: fixed;top: 35px;left: 330px;">
+<div style="position: fixed;top: 35px;left: 430px;">
   <%= link_to '保存进货单', "javascript:save_purchase_order()", class: 'button primary search-button' %>
 </div>
 
-<% left = left + 300 + 5 %>
+<% left = left + 400 + 5 %>
 
 <% @big_marks.each_with_index do |mark,index| %>
     <div class="panel sx-panel" style="left:<%= left %>px;background-color: <%= colors[index] %>;">
