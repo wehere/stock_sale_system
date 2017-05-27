@@ -23,7 +23,9 @@ gem 'exception_notification', '~> 4.2', '>= 4.2.1'
 gem 'bootstrap-sass'
 gem 'fastercsv', '~> 1.5.5'
 gem 'spreadsheet'
-gem 'unicorn'
+# gem 'unicorn'
+gem 'puma', '~> 3.8', '>= 3.8.2'
+
 group :development do
   gem 'rake', '~> 11.3.0'
   gem 'spring'
