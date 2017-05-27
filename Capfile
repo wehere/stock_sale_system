@@ -12,7 +12,7 @@ require 'capistrano/rails/assets' # for asset handling add
 require 'capistrano/rails/migrations' # for running migrations
 
 require 'capistrano/sidekiq'
-require 'capistrano/sidekiq/monit
+require 'capistrano/sidekiq/monit'
 
 # Load custom tasks from `lib/capistrano/tasks' if you have any defined
 Dir.glob('lib/capistrano/tasks/*.rake').each { |r| import r }
