@@ -1,7 +1,6 @@
 threads 8,32
-workers 2
+workers 1
 preload_app!
- 4000
 
 on_worker_boot do
   ActiveSupport.on_load(:active_record) do
