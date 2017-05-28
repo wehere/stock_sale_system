@@ -1,64 +1,96 @@
-<h4 style="text-align: center"><%= "#{@company.simple_name}损耗" %></h4>
+<div id="ys-layout-message"></div>
+
+<h4 class="sx-center sx-margin-bottom-15 sx-margin-top-5"><%= "#{@company.simple_name}损耗" %></h4>
+
 <% colors = ['#BBFFEE','#CCFF99','#FFEE99','#FFCCCC','#E8CCFF','#FFE4E1','	#FAEBD7'] %>
 <% left = 15 %>
-<div class="search_panel">
-  <span>拼音首字母</span>&nbsp;&nbsp;&nbsp;<%= text_field_tag :abc, params[:abc], class: 'sx-display-inline sx-width-auto'  %>&nbsp;&nbsp;&nbsp;<%= link_to '检索', '#', class: 'button primary', id: 'query_button', onclick: "query_product()" %>
+
+<div class="loss_order_search_panel">
+  <div class="row">
+    <div class="columns small-offset-2 small-2 text-right sx-margin-top-5"><span>拼音首字母</span></div>
+    <div class="columns small-3"><%= text_field_tag :abc, params[:abc] %></div>
+    <div class="columns small-5 text-left end">
+      <%= link_to '检索', 'javascript:void(0)', class: 'button primary search-button', id: 'query_button', onclick: "query_product()" %>
+    </div>
+  </div>
 </div>
+
+<div class="loss_order_panel" style="left:<%= left %>px;">
+  <div class="row">
+    <div class="columns small-4 text-right"><label class="sx-margin-top-5">买自</label></div>
+    <div class="columns small-8">
+      <%= select_tag :seller_id,
+                     options_from_collection_for_select(@sellers, 'id', 'name', params[:seller_id]||(@sellers.first.id rescue '')),
+                     onchange: 'change_supplier()', class: 'sx-width-percent-60 sx-title-item' %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="columns small-4 text-right"><label class="sx-margin-top-5">损耗类型</label></div>
+    <div class="columns small-8">
+      <%= select_tag :loss_type,
+                     options_from_collection_for_select(LossOrder::LOSS_TYPE, 'first', 'second', params[:loss_type]||LossOrder::LOSS_TYPE.keys.first),
+                     class: 'sx-width-percent-50 sx-title-item'%>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="columns small-4 text-right"><label class="sx-margin-top-5">损耗日期</label></div>
+    <div class="columns small-8">
+      <%= date_field_tag :loss_date,
+                         params[:loss_date]||Time.now.tomorrow.to_date,
+                         class: 'sx-width-percent-50 sx-title-item'  %>
+    </div>
+  </div>
+
+
+  <table class="bordered">
+    <thead>
+    <th width="150px">品名</th><th width="50px" class="sx-center">规格</th>
+    <th width="100px" class="sx-center">数量</th><th width="100px" class="sx-center">价格</th><th></th>
+    </thead>
+    <tbody id="order_item_container">
+
+    </tbody>
+  </table>
+  <span>合计:</span><span id="sum_money"></span>
+</div>
+
+<br/>
+
+<div class="loss_order_memo_panel" style="left:<%= left %>px;">
+  <label>备注</label><br/><%= text_area_tag :memo, params[:memo], class: 'loss_order_memo_area' %>
+</div>
+
+<div style="position: fixed;top: 35px;left: 430px;">
+  <%= link_to '保存损耗单', "javascript:save_loss_order()", class: 'button primary search-button' %>
+</div>
+
+<% left = left + 400 + 5 %>
+
 <% @big_marks.each_with_index do |mark,index| %>
-    <div class="panel" style="left:<%= left %>px;background-color: <%= colors[index] %>;">
-      <h3 style="text-align: center"><%= mark %></h3>
+    <div class="panel sx-panel" style="left:<%= left %>px;background-color: <%= colors[index] %>;">
+      <h3 class="sx-center"><%= mark %></h3>
       <div id="<%= mark %>" class="fixed_panel">
-        <% @loss_prices.where("products.mark = ?", mark).limit(16).each_with_index do |loss_price, index| %>
-            <div onclick="choose_this('<%= loss_price.product.chinese_name %>')" style="cursor:hand;width: 100%;height: 15px; "  >
-              <h6><a href='javascript:void(0)'><%= loss_price.product.chinese_name %></a></h6>
-            </div>
-            <div style="height: 2px"></div>
+        <% @loss_prices.where("products.mark = ?", mark).limit(16).each_with_index do |loss_price| %>
+            <p onclick="choose_this('<%= loss_price.product.chinese_name %>')" class="sx-item">
+              <span><a class="a-item" href='javascript:void(0)'><%= loss_price.product.chinese_name %></a></span>
+            </p>
         <% end %>
       </div>
     </div>
     <% left = left + 130 + 5  %>
 <% end %>
 
-<div class="panel" style="left:<%= left %>px;background-color: <%= colors.last %>">
-  <h3 style="text-align: center"><%= "其他" %></h3>
+<div class="panel sx-panel" style="left:<%= left %>px;background-color: <%= colors.last %>">
+  <h3 class="sx-center"><%= "其他" %></h3>
   <div id="others" class="fixed_panel">
     <% @loss_prices.where("products.mark in (?)", @small_marks).limit(16).each_with_index do |loss_price, index| %>
-        <div onclick="choose_this('<%= loss_price.product.chinese_name %>')" style="width: 100%;height: 15px;cursor:hand;">
-          <h6><a href='javascript:void(0)'><%= loss_price.product.chinese_name %></a></h6>
-        </div>
-        <div style="height: 2px"></div>
+        <p onclick="choose_this('<%= loss_price.product.chinese_name %>')" class="sx-item">
+          <span><a class="a-item" href='javascript:void(0)'><%= loss_price.product.chinese_name %></a></span>
+        </p>
     <% end %>
   </div>
-</div>
-<% left = left + 130 + 5 %>
-<div class="order_panel" style="left:<%= left %>px;">
-  <span>买自</span><%= select_tag :seller_id,
-                                options_from_collection_for_select(@sellers, 'id', 'name', params[:seller_id]||(@sellers.first.id rescue '')),
-                                onchange: 'change_supplier()', class: 'sx-display-inline sx-width-auto' %>
-  <span>损耗类型</span><%= select_tag :loss_type,
-                                  options_from_collection_for_select(LossOrder::LOSS_TYPE, 'first', 'second', params[:loss_type]||LossOrder::LOSS_TYPE.keys.first),
-                                  class: 'sx-display-inline sx-width-auto'  %>
-  <br/>
-
-  <span>损耗日期</span><%= date_field_tag :loss_date,
-                                      params[:loss_date]||Time.now.tomorrow.to_date,
-                                      class: 'sx-display-inline sx-width-auto'  %>
-  <table class="bordered">
-    <thead>
-    <th width="150px">品名</th><th width="50px">规格</th><th width="50px">数量</th><th width="50px">价格</th><th></th>
-    </thead>
-    <tbody id="order_item_container">
-
-    </tbody>
-  </table>
-  <label>合计:</label><label id="sum_money"></label>
-</div>
-<br/>
-<div class="memo_panel" style="left:<%= left %>px;">
-  <label>备注</label><br/><%= text_area_tag :memo, params[:memo], class: 'memo_area' %>
-</div>
-<div style="position: fixed;bottom: 50px;left:<%= left+100 %>px;">
-  <%= link_to '保存损耗单', "javascript:save_loss_order()", class: 'button primary' %>
 </div>
 
 <script language="javascript">
@@ -71,7 +103,7 @@
             }
         }
         if(main_message.indexOf(product_name)>=0){
-            alert('已经在右方列表里了');
+            renderFlash('已经在左方列表里了', 'alert');
             return false;
         }
         $.ajax({
@@ -90,7 +122,7 @@
                         $("#order_item_container").append(str);
                         index += 1;
                     }else{
-                        alert(r[1]);
+                        renderFlash(r[1], 'alert');
                     }
                 }
         )
@@ -114,7 +146,7 @@
     function query_product(){
         abc = $("#abc").val();
         if(abc==''){
-            alert('请填写产品拼音首字母，再点击查询');
+            renderFlash('请填写产品拼音首字母，再点击查询', 'alert');
             return false;
         }
         $.ajax({
@@ -172,10 +204,10 @@
                 function(result){
                     r = result.split('|');
                     if(r[0]=='0'){
-                        alert("保存成功。");
+                        renderFlash('保存成功。', 'success')
                         location.href='/supply/loss_orders/create_loss_order?loss_date='+$('#loss_date').val()+'&seller_id='+$("#seller_id").val()+'&loss_type='+$("#loss_type").val();
                     }else{
-                        alert(r[1]);
+                        renderFlash(r[1], 'alert')
                     }
                 }
         )
@@ -188,117 +220,3 @@
         }
     });
 </script>
-
-<style>
-
-    .search_panel {
-        text-align: center;
-        position: fixed;
-        width: 780px;
-    }
-
-    .panel {
-        top: 105px;
-        position: fixed;
-        width: 130px;
-    }
-
-    .order_panel {
-        position: relative;
-        width: 300px;
-        background-color: #c7dfb6;
-    }
-
-    .memo_panel {
-        position: relative;
-        width: 300px;
-
-    }
-
-    .memo_area {
-        width: 300px;
-        height: 100px;
-    }
-
-    table {
-        *border-collapse: collapse; /* IE7 and lower */
-        border-spacing: 0;
-        width: 100%;
-    }
-
-    .bordered {
-        border: solid #ccc 1px;
-        -moz-border-radius: 6px;
-        -webkit-border-radius: 6px;
-        border-radius: 6px;
-        -webkit-box-shadow: 0 1px 1px #ccc;
-        -moz-box-shadow: 0 1px 1px #ccc;
-        box-shadow: 0 1px 1px #ccc;
-    }
-
-    .bordered tr:hover {
-        background: #fbf8e9;
-        -o-transition: all 0.1s ease-in-out;
-        -webkit-transition: all 0.1s ease-in-out;
-        -moz-transition: all 0.1s ease-in-out;
-        -ms-transition: all 0.1s ease-in-out;
-        transition: all 0.1s ease-in-out;
-    }
-
-    .bordered td, .bordered th {
-        border-left: 1px solid #ccc;
-        border-top: 1px solid #ccc;
-        padding: 2px;
-        text-align: left;
-    }
-
-    .bordered th {
-        background-color: #dce9f9;
-        background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
-        background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
-        background-image:    -moz-linear-gradient(top, #ebf3fc, #dce9f9);
-        background-image:     -ms-linear-gradient(top, #ebf3fc, #dce9f9);
-        background-image:      -o-linear-gradient(top, #ebf3fc, #dce9f9);
-        background-image:         linear-gradient(top, #ebf3fc, #dce9f9);
-        -webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;
-        -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;
-        box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;
-        border-top: none;
-        text-shadow: 0 1px 0 rgba(255,255,255,.5);
-    }
-
-    .bordered td:first-child, .bordered th:first-child {
-        border-left: none;
-    }
-
-    .bordered th:first-child {
-        -moz-border-radius: 6px 0 0 0;
-        -webkit-border-radius: 6px 0 0 0;
-        border-radius: 6px 0 0 0;
-    }
-
-    .bordered th:last-child {
-        -moz-border-radius: 0 6px 0 0;
-        -webkit-border-radius: 0 6px 0 0;
-        border-radius: 0 6px 0 0;
-    }
-
-    .bordered th:only-child{
-        -moz-border-radius: 6px 6px 0 0;
-        -webkit-border-radius: 6px 6px 0 0;
-        border-radius: 6px 6px 0 0;
-    }
-
-    .bordered tr:last-child td:first-child {
-        -moz-border-radius: 0 0 0 6px;
-        -webkit-border-radius: 0 0 0 6px;
-        border-radius: 0 0 0 6px;
-    }
-
-    .bordered tr:last-child td:last-child {
-        -moz-border-radius: 0 0 6px 0;
-        -webkit-border-radius: 0 0 6px 0;
-        border-radius: 0 0 6px 0;
-    }
-
-</style>
