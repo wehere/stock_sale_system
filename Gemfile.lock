@@ -122,6 +122,7 @@ GEM
       railties (>= 3.1.0)
       sass (>= 3.3.0, < 3.5)
       sprockets-es6 (>= 0.9.0)
+    get_process_mem (0.2.1)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
     i18n (0.8.1)
@@ -162,6 +163,9 @@ GEM
       mime-types
       mimemagic (~> 0.3.0)
     puma (3.8.2)
+    puma_worker_killer (0.1.0)
+      get_process_mem (~> 0.2)
+      puma (>= 2.7, < 4)
     rack (2.0.3)
     rack-protection (2.0.0)
       rack
@@ -308,6 +312,7 @@ DEPENDENCIES
   newrelic_rpm (~> 4.1, >= 4.1.0.333)
   paperclip (~> 5.1)
   puma (~> 3.8, >= 3.8.2)
+  puma_worker_killer
   rails (= 5.0.2)
   rake (~> 11.3.0)
   redis-namespace (~> 1.5, >= 1.5.3)

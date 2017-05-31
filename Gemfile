@@ -72,3 +72,5 @@ gem 'sinatra'
 gem 'redis-namespace', '~> 1.5', '>= 1.5.3'
 
 gem 'newrelic_rpm', '~> 4.1', '>= 4.1.0.333'
+
+gem 'puma_worker_killer'
