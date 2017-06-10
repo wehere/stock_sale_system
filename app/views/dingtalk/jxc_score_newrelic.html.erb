@@ -1,0 +1,69 @@
+<!-- 引入 ECharts 文件 -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/echarts/3.6.1/echarts.min.js'></script>
+
+<div id="all_scores"></div>
+
+<div class="row">
+  <div class="columns small-6">
+    <div id="last_week_scores"></div>
+  </div>
+  <div class="columns small-6">
+    <div id="recent_week_scores"></div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="columns small-6">
+    <div id="last_month_scores"></div>
+  </div>
+  <div class="columns small-6">
+    <div id="recent_month_scores"></div>
+  </div>
+</div>
+<div class="row">
+  <div class="columns small-offset-8 small-4 text-right">
+    <%= link_to '钉钉评分', dingtalk_jxc_score_ding_path %>
+  </div>
+</div>
+
+<script type="text/javascript">
+    uploaded_at_data = [];
+    response_time_data = [];
+    rpm_data = [];
+    <% @all_scores.each do |score| %>
+      uploaded_at_data.push('<%= score.uploaded_at %>');
+      response_time_data.push('<%= score.response_time %>');
+      rpm_data.push('<%= score.rpm %>');
+    <% end %>
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('all_scores'));
+    // 指定图表的配置项和数据
+    var option = {
+        title: {
+            text: 'New Relic'
+        },
+        tooltip: {},
+        legend: {
+            data:['平均响应时间(ms)','RPM']
+        },
+        xAxis: {
+            data: uploaded_at_data
+        },
+        yAxis: {},
+        series: [
+            {
+                name: '平均响应时间(ms)',
+                type: 'line',
+                data: response_time_data
+            },
+            {
+                name: 'RPM',
+                type: 'line',
+                data: rpm_data
+            }
+        ]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>

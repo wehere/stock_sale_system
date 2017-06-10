@@ -1,0 +1,35 @@
+<h1>评分列表</h1>
+<%= link_to '新增评分', new_ding_score_path, class: 'button primary' %>
+<table>
+  <thead>
+    <th>评分日期</th>
+    <th>排行</th>
+    <th>健康得分</th>
+    <th>性能得分</th>
+    <th>业务得分</th>
+    <th>质量得分</th>
+    <th>安全得分</th>
+    <th>平均响应时间</th>
+    <th>RPM</th>
+    <th>操作</th>
+  </thead>
+  <tbody>
+    <% @scores.each do |score| %>
+      <tr>
+        <td><%= score.uploaded_at %></td>
+        <td><%= score.rank %></td>
+        <td><%= score.health %></td>
+        <td><%= score.performance %></td>
+        <td><%= score.business %></td>
+        <td><%= score.quality %></td>
+        <td><%= score.security %></td>
+        <td><%= score.response_time %></td>
+        <td><%= score.rpm %></td>
+        <td>
+          <%= link_to '编辑', edit_ding_score_path(score) %>
+          <%= link_to '删除', ding_score_path(score), method: :delete, data: {confirm: '确定要删除吗？'} %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

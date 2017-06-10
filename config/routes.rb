@@ -1,5 +1,15 @@
 Rails.application.routes.draw do
 
+  namespace :ding do
+    resources :scores
+  end
+
+  get 'dingtalk/upload_score'
+
+  get 'dingtalk/jxc_score_ding'
+
+  get 'dingtalk/jxc_score_newrelic'
+
   devise_for :users, controllers: { sessions: 'users/sessions' }
   root to: 'vis/static_pages#welcome'
 

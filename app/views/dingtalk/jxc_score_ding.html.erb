@@ -1,0 +1,97 @@
+<!-- 引入 ECharts 文件 -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/echarts/3.6.1/echarts.min.js'></script>
+
+<div id="all_scores"></div>
+
+<div class="row">
+  <div class="columns small-6">
+    <div id="last_week_scores"></div>
+  </div>
+  <div class="columns small-6">
+    <div id="recent_week_scores"></div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="columns small-6">
+    <div id="last_month_scores"></div>
+  </div>
+  <div class="columns small-6">
+    <div id="recent_month_scores"></div>
+  </div>
+</div>
+<div class="row">
+  <div class="columns small-offset-8 small-4 text-right">
+    <%= link_to '响应时间与RPM', dingtalk_jxc_score_newrelic_path %>
+  </div>
+</div>
+
+<script type="text/javascript">
+  uploaded_at_data = [];
+  rank_data = [];
+  health_data = [];
+  performance_data = [];
+  business_data = [];
+  quality_data = [];
+  security_data = [];
+  <% @all_scores.each do |score| %>
+    uploaded_at_data.push('<%= score.uploaded_at %>');
+    rank_data.push('<%= score.rank %>');
+    health_data.push('<%= score.health %>');
+    performance_data.push('<%= score.performance %>');
+    business_data.push('<%= score.business %>');
+    quality_data.push('<%= score.quality %>');
+    security_data.push('<%= score.security %>');
+  <% end %>
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('all_scores'));
+    // 指定图表的配置项和数据
+    var option = {
+        title: {
+            text: '钉钉评分'
+        },
+        tooltip: {},
+        legend: {
+            data:['排行','健康得分','性能得分','业务得分','质量得分','安全得分']
+        },
+        xAxis: {
+            data: uploaded_at_data
+        },
+        yAxis: {},
+        series: [
+            {
+                name: '排行',
+                type: 'line',
+                data: rank_data
+            },
+            {
+                name: '健康得分',
+                type: 'line',
+                data: health_data
+            },
+            {
+                name: '性能得分',
+                type: 'line',
+                data: performance_data
+            },
+            {
+                name: '业务得分',
+                type: 'line',
+                data: business_data
+            },
+            {
+                name: '质量得分',
+                type: 'line',
+                data: quality_data
+            },
+            {
+                name: '安全得分',
+                type: 'line',
+                data: security_data
+            }
+        ]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>

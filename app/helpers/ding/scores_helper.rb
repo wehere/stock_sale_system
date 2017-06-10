@@ -1,0 +1,2 @@
+module Ding::ScoresHelper
+end

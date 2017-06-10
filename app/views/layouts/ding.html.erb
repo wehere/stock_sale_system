@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>jxc评分</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body id="<%= "#{params[:controller].gsub('/', '-')}-#{params[:action]}" rescue '' %>">
+<%# Rails flash messages styled for Bootstrap 3.0 %>
+<div id="ys-layout-message">
+  <% flash.each do |name, msg| %>
+      <% if msg.is_a?(String) && msg.present? %>
+
+          <div class="alert callout ys-layout-message" data-closable style="background-color: <%= name.to_s == 'notice'|| name.to_s == 'success' ? '#43ac6a' : '#f04124' %>">
+            <div><span><%= msg %></span></div>
+            <button class="close-button" aria-label="Dismiss alert" type="button" id="flash_close_button" data-close>
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <% flash[name] = nil %>
+      <% end %>
+  <% end %>
+</div>
+
+<%= yield %>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<%= form_for @score do |f| %>
+    <div class="row">
+      <div class="columns small-1">
+        评分日期
+      </div>
+      <div class="columns small-5 end">
+        <%= f.date_field :uploaded_at %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="columns small-1">
+        排名
+      </div>
+      <div class="columns small-5 end">
+        <%= f.text_field :rank %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="columns small-1">
+        健康得分
+      </div>
+      <div class="columns small-5 end">
+        <%= f.text_field :health %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="columns small-1">
+        性能得分
+      </div>
+      <div class="columns small-5 end">
+        <%= f.text_field :performance %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="columns small-1">
+        业务得分
+      </div>
+      <div class="columns small-5 end">
+        <%= f.text_field :business %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="columns small-1">
+        质量得分
+      </div>
+      <div class="columns small-5 end">
+        <%= f.text_field :quality %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="columns small-1">
+        安全得分
+      </div>
+      <div class="columns small-5 end">
+        <%= f.text_field :security %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="columns small-1">
+        平均响应时间
+      </div>
+      <div class="columns small-5 end">
+        <%= f.text_field :response_time %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="columns small-1">
+        RPM
+      </div>
+      <div class="columns small-5 end">
+        <%= f.text_field :rpm %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="columns small-1">
+      </div>
+      <div class="columns small-5 end">
+        <%= f.submit '保存', class: 'button primary' %>
+      </div>
+    </div>
+
+<% end %>

@@ -1,0 +1,2 @@
+module DingtalkHelper
+end
