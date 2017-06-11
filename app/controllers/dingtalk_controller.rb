@@ -24,7 +24,7 @@ class DingtalkController < DingController
 
   def score_params
     p = params.permit(:uploaded_at, :rank, :health, :performance, :business, :quality, :security, :response_time, :rpm)
-    p[:uploaded_at] ||= Time.now.to_date
+    p[:uploaded_at] ||= Time.now.to_date - 1.day
     p
   end
 end

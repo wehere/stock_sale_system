@@ -5,7 +5,7 @@ class Ding::ScoresController < DingController
   before_action :set_score, only: [:edit, :update, :destroy]
 
   def index
-    @scores = Ding::Score.all.order(uploaded_at: :desc).paginate(per_page: 20, page: params[:page])
+    @scores = Ding::Score.all.order(uploaded_at: :desc).paginate(per_page: 10, page: params[:page])
   end
 
   def new
