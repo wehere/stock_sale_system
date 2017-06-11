@@ -1,11 +1,12 @@
 <h1>评分列表</h1>
-<%= link_to '新增评分', new_ding_score_path, class: 'button primary' %>
 <div class="row">
-  <div class="columns small-offset-8 small-4 text-right">
+  <div class="columns small-6 text-left">
+    <%= link_to '新增评分', new_ding_score_path %>
+  </div>
+  <div class="columns small-6 text-right">
     <%= link_to '查看图表', dingtalk_jxc_score_ding_path %>
   </div>
 </div>
-<%= link_to '新增评分', new_ding_score_path, class: 'button primary' %>
 <table>
   <thead>
     <th>评分日期</th>
