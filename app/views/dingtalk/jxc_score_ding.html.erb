@@ -2,8 +2,8 @@
 <script src="http://cdn.hcharts.cn/highcharts/themes/dark-blue.js"></script>
 
 <div id="all_scores"></div>
-<div id="detail_data"></div>
 <div id="newrelic"></div>
+<div id="detail_data"></div>
 
 <div class="row">
   <div class="columns small-6">
@@ -36,6 +36,9 @@
   business_data = [];
   quality_data = [];
   security_data = [];
+
+  average_load_time_data = [];
+
   response_time_data = [];
   rpm_data = [];
   <% @all_scores.each do |score| %>
@@ -46,6 +49,8 @@
     business_data.push(parseFloat('<%= score.business %>'));
     quality_data.push(parseFloat('<%= score.quality %>'));
     security_data.push(parseFloat('<%= score.security %>'));
+
+    average_load_time_data.push(parseFloat('<%= score.average_load_time %>'));
 
     response_time_data.push(parseFloat('<%= score.response_time %>'));
     rpm_data.push(parseFloat('<%= score.rpm %>'));
@@ -134,7 +139,7 @@
       series: [
           {
               name: '平均加载时间(ms)',
-              data: response_time_data
+              data: average_load_time_data
           }
       ]
   });
