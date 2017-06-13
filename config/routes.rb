@@ -8,8 +8,6 @@ Rails.application.routes.draw do
 
   get 'dingtalk/jxc_score_ding'
 
-  get 'dingtalk/jxc_score_newrelic'
-
   devise_for :users, controllers: { sessions: 'users/sessions' }
   root to: 'vis/static_pages#welcome'
 

@@ -18,13 +18,10 @@ class DingtalkController < DingController
     # @recent_month = Ding::Score.where(uploaded_at: Time.now.to_date.all_month)
   end
 
-  def jxc_score_newrelic
-    @all_scores = Ding::Score.all.order(uploaded_at: :asc)
-  end
-
   def score_params
-    p = params.permit(:uploaded_at, :rank, :health, :performance, :business, :quality, :security, :response_time, :rpm)
+    p = params.permit(:uploaded_at, :rank, :health, :performance, :average_load_time, :business, :quality, :security, :response_time, :rpm)
     p[:uploaded_at] ||= Time.now.to_date - 1.day
+    p[:rpm] = p[:rpm].gsub('k', '').to_f * 1000 if p[:rpm].include?('k')
     p
   end
 end

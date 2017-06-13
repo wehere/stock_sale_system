@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170610135516) do
+ActiveRecord::Schema.define(version: 20170613144958) do
 
   create_table "comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "order_id"
@@ -65,15 +65,16 @@ ActiveRecord::Schema.define(version: 20170610135516) do
   create_table "ding_scores", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.date     "uploaded_at"
     t.integer  "rank"
-    t.float    "health",        limit: 24
-    t.float    "performance",   limit: 24
-    t.float    "business",      limit: 24
-    t.float    "quality",       limit: 24
-    t.float    "security",      limit: 24
-    t.float    "response_time", limit: 24
-    t.float    "rpm",           limit: 24
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.float    "health",            limit: 24
+    t.float    "performance",       limit: 24
+    t.float    "average_load_time", limit: 24
+    t.float    "business",          limit: 24
+    t.float    "quality",           limit: 24
+    t.float    "security",          limit: 24
+    t.float    "response_time",     limit: 24
+    t.float    "rpm",               limit: 24
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
   create_table "employee_foods", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|

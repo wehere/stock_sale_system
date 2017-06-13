@@ -1,7 +1,9 @@
-<!-- 引入 ECharts 文件 -->
-<script src='https://cdnjs.cloudflare.com/ajax/libs/echarts/3.6.1/echarts.min.js'></script>
+<script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+<script src="http://cdn.hcharts.cn/highcharts/themes/dark-blue.js"></script>
 
 <div id="all_scores"></div>
+<div id="detail_data"></div>
+<div id="newrelic"></div>
 
 <div class="row">
   <div class="columns small-6">
@@ -22,11 +24,6 @@
 </div>
 <div class="row">
   <div class="columns small-offset-8 small-4 text-right">
-    <%= link_to '响应时间与RPM', dingtalk_jxc_score_newrelic_path, 'data-turbolinks': 'false' %>
-  </div>
-</div>
-<div class="row">
-  <div class="columns small-offset-8 small-4 text-right">
     <%= link_to '原始数据', ding_scores_path %>
   </div>
 </div>
@@ -39,64 +36,145 @@
   business_data = [];
   quality_data = [];
   security_data = [];
+  response_time_data = [];
+  rpm_data = [];
   <% @all_scores.each do |score| %>
     uploaded_at_data.push('<%= score.uploaded_at %>');
-    rank_data.push('<%= score.rank %>');
-    health_data.push('<%= score.health %>');
-    performance_data.push('<%= score.performance %>');
-    business_data.push('<%= score.business %>');
-    quality_data.push('<%= score.quality %>');
-    security_data.push('<%= score.security %>');
-  <% end %>
-    // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('all_scores'));
-    // 指定图表的配置项和数据
-    var option = {
-        title: {
-            text: '钉钉评分'
-        },
-        tooltip: {},
-        legend: {
-            data:['排行','健康得分','性能得分','业务得分','质量得分','安全得分']
-        },
-        xAxis: {
-            data: uploaded_at_data
-        },
-        yAxis: {},
-        series: [
-            {
-                name: '排行',
-                type: 'line',
-                data: rank_data
-            },
-            {
-                name: '健康得分',
-                type: 'line',
-                data: health_data
-            },
-            {
-                name: '性能得分',
-                type: 'line',
-                data: performance_data
-            },
-            {
-                name: '业务得分',
-                type: 'line',
-                data: business_data
-            },
-            {
-                name: '质量得分',
-                type: 'line',
-                data: quality_data
-            },
-            {
-                name: '安全得分',
-                type: 'line',
-                data: security_data
-            }
-        ]
-    };
+    rank_data.push(parseInt('<%= score.rank %>'));
+    health_data.push(parseFloat('<%= score.health %>'));
+    performance_data.push(parseFloat('<%= score.performance %>'));
+    business_data.push(parseFloat('<%= score.business %>'));
+    quality_data.push(parseFloat('<%= score.quality %>'));
+    security_data.push(parseFloat('<%= score.security %>'));
 
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
+    response_time_data.push(parseFloat('<%= score.response_time %>'));
+    rpm_data.push(parseFloat('<%= score.rpm %>'));
+  <% end %>
+
+  $('#all_scores').highcharts({
+      chart: {
+          type: 'line'
+      },
+      title: {
+          text: '钉钉评分'
+      },
+      subtitle: {
+          text: ''
+      },
+      xAxis: {
+          categories: uploaded_at_data
+      },
+      yAxis: {
+          title: {
+              text: ''
+          }
+      },
+      plotOptions: {
+          line: {
+              dataLabels: {
+                  enabled: true          // 开启数据标签
+              },
+              enableMouseTracking: false // 关闭鼠标跟踪，对应的提示框、点击事件会失效
+          }
+      },
+      series: [
+          {
+              name: '排行',
+              data: rank_data
+          },
+          {
+              name: '健康得分',
+              data: health_data
+          },
+          {
+              name: '性能得分',
+              data: performance_data
+          },
+          {
+              name: '业务得分',
+              data: business_data
+          },
+          {
+              name: '质量得分',
+              data: quality_data
+          },
+          {
+              name: '安全得分',
+              data: security_data
+          }
+      ]
+  });
+
+  $('#detail_data').highcharts({
+      chart: {
+          type: 'line'
+      },
+      title: {
+          text: '性能数据'
+      },
+      subtitle: {
+          text: ''
+      },
+      xAxis: {
+          categories: uploaded_at_data
+      },
+      yAxis: {
+          title: {
+              text: ''
+          }
+      },
+      plotOptions: {
+          line: {
+              dataLabels: {
+                  enabled: true          // 开启数据标签
+              },
+              enableMouseTracking: false // 关闭鼠标跟踪，对应的提示框、点击事件会失效
+          }
+      },
+      series: [
+          {
+              name: '平均加载时间(ms)',
+              data: response_time_data
+          }
+      ]
+  });
+
+  $('#newrelic').highcharts({
+      chart: {
+          type: 'line'
+      },
+      title: {
+          text: 'New Relic'
+      },
+      subtitle: {
+          text: ''
+      },
+      xAxis: {
+          categories: uploaded_at_data
+      },
+      yAxis: {
+          title: {
+              text: ''
+          }
+      },
+      plotOptions: {
+          line: {
+              dataLabels: {
+                  enabled: true          // 开启数据标签
+              },
+              enableMouseTracking: false // 关闭鼠标跟踪，对应的提示框、点击事件会失效
+          }
+      },
+      series: [
+          {
+              name: '平均响应时间(ms)',
+              data: response_time_data
+          },
+          {
+              name: 'RPM',
+              type: 'line',
+              data: rpm_data
+          }
+      ]
+  });
 </script>

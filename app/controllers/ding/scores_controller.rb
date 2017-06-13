@@ -50,6 +50,6 @@ class Ding::ScoresController < DingController
   end
 
   def score_params
-    params.require(:ding_score).permit(:uploaded_at, :rank, :health, :performance, :business, :quality, :security, :response_time, :rpm)
+    params.require(:ding_score).permit(:uploaded_at, :rank, :health, :performance, :average_load_time, :business, :quality, :security, :response_time, :rpm)
   end
 end
