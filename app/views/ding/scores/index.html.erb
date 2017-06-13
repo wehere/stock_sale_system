@@ -19,6 +19,7 @@
     <th>平均响应时间</th>
     <th>RPM</th>
     <th>操作</th>
+    <th>上传时间</th>
   </thead>
   <tbody>
     <% @scores.each do |score| %>
@@ -35,6 +36,9 @@
         <td>
           <%= link_to '编辑', edit_ding_score_path(score) %>
           <%= link_to '删除', ding_score_path(score), method: :delete, data: {confirm: '确定要删除吗？'} %>
+        </td>
+        <td>
+          <%= score.created_at.strftime('%Y-%m-%d %H:%M:%S') %>
         </td>
       </tr>
     <% end %>
