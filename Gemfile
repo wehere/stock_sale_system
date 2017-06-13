@@ -14,6 +14,7 @@ gem 'devise'
 gem 'mysql2', '= 0.3.18'
 gem 'will_paginate', '3.1.5'
 gem 'bootstrap-will_paginate','0.0.10'
+gem 'will_paginate-foundation', '~> 6.2', '>= 6.2.1'
 gem 'therubyracer',  platforms: :ruby
 # 上传头像
 gem 'paperclip', '~> 5.1'
