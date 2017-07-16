@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: year_months
+#
+#  id         :integer          not null, primary key
+#  val        :string(255)
+#  created_at :datetime
+#  updated_at :datetime
+#  value      :integer
+#
+
 class YearMonth < ActiveRecord::Base
 
   has_many :month_inventories

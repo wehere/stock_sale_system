@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: purchase_prices
+#
+#  id          :integer          not null, primary key
+#  supplier_id :integer
+#  seller_id   :integer
+#  is_used     :boolean
+#  true_spec   :string(255)
+#  price       :float(24)
+#  product_id  :integer
+#  ratio       :float(24)
+#  created_at  :datetime
+#  updated_at  :datetime
+#  print_times :integer
+#
+
 require "spreadsheet"
 class PurchasePrice < ActiveRecord::Base
   belongs_to :supplier, class_name: 'Company', foreign_key: 'supplier_id'

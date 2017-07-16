@@ -1,0 +1,10 @@
+zh-CN:
+  activerecord:
+    models:
+      check: 盘点
+
+  enums:
+    check:
+      status:
+        draft: 草稿
+        submitted: 提交

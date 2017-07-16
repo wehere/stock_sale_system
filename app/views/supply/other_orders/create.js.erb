@@ -1,0 +1,6 @@
+<% if @other_order.id.to_i >0 %>
+  renderFlash('<%= flash[:success] %>', 'success')
+  Turbolinks.visit('/supply/other_orders/<%= @other_order.id %>')
+<% else %>
+  renderFlash('<%= flash[:alert] %>', 'alert')
+<% end %>

@@ -1,0 +1,34 @@
+<%= link_to '删除', supply_other_order_path(@other_order), method: :delete, data: {confirm: '确定要删除吗？'}, class: 'primary button' %>
+<div class="row">
+  <div class="columns small-2">仓库：<%= @other_order.storage.name %></div>
+  <div class="columns small-2">关联盘点：<%= @other_order.check_id %></div>
+  <div class="columns small-2">单据日期：<%= @other_order.check_id %></div>
+  <div class="columns small-2">创建人：<%= @other_order.creator.user_name %></div>
+  <div class="columns small-2 end">类型：<%= @other_order.category_i18n %></div>
+</div>
+
+<table>
+  <thead>
+  <th>产品名称</th>
+  <th>单位</th>
+  <th>数量</th>
+  <th>价格</th>
+  <th>金额</th>
+  </thead>
+  <tbody>
+    <% @other_order.product_items.each do |product_item| %>
+    <tr>
+      <td><%= product_item.product_name %></td>
+      <td><%= product_item.unit %></td>
+      <td><%= product_item.quantity %></td>
+      <td><%= product_item.price %></td>
+      <td><%= product_item.amount %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+<div class="row">
+  <div class="columns-small-12">
+    备注：<%= @other_order.note %>
+  </div>
+</div>

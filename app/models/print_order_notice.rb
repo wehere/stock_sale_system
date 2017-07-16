@@ -1,3 +1,13 @@
+# == Schema Information
+#
+# Table name: print_order_notices
+#
+#  id          :integer          not null, primary key
+#  supplier_id :integer
+#  customer_id :integer
+#  notice      :string(2000)
+#
+
 class PrintOrderNotice < ActiveRecord::Base
   belongs_to :supplier, class_name: 'Company', foreign_key: 'supplier_id'
   belongs_to :customer, class_name: 'Company', foreign_key: 'customer_id'

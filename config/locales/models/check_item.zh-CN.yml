@@ -1,0 +1,60 @@
+zh-CN:
+  activerecord:
+    models:
+      check_item: 盘点项
+
+    errors:
+      models:
+        check_item:
+          attributes:
+            check:
+              blank: 关联盘点不能为空
+            quantity:
+              blank: 盘点库存数量不能为空
+            general_product:
+              blank: 关联产品不能为空
+            storage_quantity:
+              blank: 库存数量不能为空
+
+#    attributes:
+#      ding:
+#        score:
+#          rank: 排名
+#          health: 健康得分
+#          performance: 性能得分
+#          business: 业务得分
+#          quality: 质量得分
+#          security: 安全得分
+#          response_time: 平均响应时间
+#          rpm: RPM
+#保存为提交失败,["translation missing: zh-CN.activerecord.errors.models.check_item.attributes.check.blank"]
+#    errors:
+#      models:
+#        ding/score:
+#          attributes:
+#            uploaded_at:
+#              blank: 评分日期不能为空
+#              taken: 评分日期已经被占用
+#            rank:
+#              blank: 排名不能为空
+#            health:
+#              blank: 健康得分不能为空
+#            performance:
+#              blank: 性能得分不能为空
+#            business:
+#              blank: 业务得分不能为空
+#            quality:
+#              blank: 质量得分不能为空
+#            security:
+#              blank: 安全得分不能为空
+#            response_time:
+#              blank: 平均响应时间不能为空
+#            rpm:
+#              blank: RPM不能为空
+
+  enums:
+    check_item:
+      check_item_type:
+        profit: 盘盈
+        loss: 盘亏
+        equal: 相同

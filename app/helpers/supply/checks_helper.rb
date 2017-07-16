@@ -1,0 +1,2 @@
+module Supply::ChecksHelper
+end

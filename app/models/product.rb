@@ -1,3 +1,24 @@
+# == Schema Information
+#
+# Table name: products
+#
+#  id                 :integer          not null, primary key
+#  english_name       :string(255)
+#  chinese_name       :string(255)
+#  simple_abc         :string(255)
+#  spec               :string(255)
+#  created_at         :datetime
+#  updated_at         :datetime
+#  supplier_id        :integer
+#  general_product_id :integer
+#  print_times        :integer          default(0)
+#  describe           :string(255)
+#  is_valid           :boolean          default(TRUE)
+#  mark               :string(255)      default("未分类")
+#  barcode            :string(255)
+#  sale_ratio         :float(24)        default(0.0)
+#
+
 class Product < ActiveRecord::Base
   has_many :order_details
   belongs_to :general_product

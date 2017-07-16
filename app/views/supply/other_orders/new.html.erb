@@ -1,0 +1,45 @@
+<%= form_for @other_order, url: supply_other_orders_url, remote: true, html: {id: 'other_order_new_form'} do |f| %>
+    <%= f.hidden_field :supplier_id %>
+    <%= f.hidden_field :storage_id %>
+    <%= f.hidden_field :check_id %>
+    <%= f.hidden_field :category %>
+    <div class="row">
+      <div class="columns small-2">关联盘点单:<%= @check.id %></div>
+      <div class="columns small-2">仓库:<%= @check.storage.name %></div>
+      <div class="columns small-2">类型:<%= @category_i18n %></div>
+      <div class="columns small-1">单据日期:</div>
+      <div class="columns small-2 end"><%= f.date_field :io_at %></div>
+    </div>
+
+    <table>
+      <thead>
+      <th>产品名称</th>
+      <th>单位</th>
+      <th><%= @category_i18n %></th>
+      <th>价格</th>
+      </thead>
+      <tbody>
+
+      <%= f.fields_for :product_items do |product_item_fields| %>
+      <%= product_item_fields.hidden_field :supplier_id %>
+      <%= product_item_fields.hidden_field :general_product_id %>
+          <tr>
+            <td><%= product_item_fields.text_field :product_name, readonly: 'readonly' %></td>
+            <td><%= product_item_fields.text_field :unit, readonly: 'readonly' %></td>
+            <td><%= product_item_fields.text_field :quantity, class: 'product_items_quantity' %></td>
+            <td><%= product_item_fields.text_field :price, class: 'product_items_price' %></td>
+          </tr>
+      <% end %>
+
+      </tbody>
+    </table>
+    <div class="row">
+      <div class="columns small-1">备注：</div>
+      <div class="columns small-11">
+        <%= f.text_area :note %>
+      </div>
+    </div>
+
+    <%= link_to '提交', 'javascript:void(0)', id: 'other_order_new_submit', class: 'button primary' %>
+
+<% end %>

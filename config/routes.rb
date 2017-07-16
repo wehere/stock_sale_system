@@ -223,6 +223,10 @@ Rails.application.routes.draw do
         get :change_delete_flag
       end
     end
+
+    resources :checks
+
+    resources :other_orders
   end
 
   # 游客

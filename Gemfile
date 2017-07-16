@@ -66,9 +66,15 @@ gem 'font-awesome-rails'
 
 gem 'annotate'
 
+gem 'paranoia', '~> 2.2'
+
+gem 'enum_help', '0.0.15'
+
 gem 'sidekiq', '~> 5.0'
 
 gem 'sinatra'
+
+gem 'lodash-rails', '4.12.0'
 
 gem 'redis-namespace', '~> 1.5', '>= 1.5.3'
 

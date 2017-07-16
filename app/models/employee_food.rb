@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: employee_foods
+#
+#  id          :integer          not null, primary key
+#  product_id  :integer
+#  supplier_id :integer
+#  is_valid    :boolean
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
+
 class EmployeeFood < ActiveRecord::Base
   belongs_to :company, foreign_key: :supplier_id
   belongs_to :product

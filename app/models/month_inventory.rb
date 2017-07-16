@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: month_inventories
+#
+#  id                 :integer          not null, primary key
+#  year_month_id      :integer
+#  storage_id         :integer
+#  general_product_id :integer
+#  real_weight        :float(24)        default(0.0)
+#  supplier_id        :integer
+#  created_at         :datetime
+#  updated_at         :datetime
+#
+
 class MonthInventory < ActiveRecord::Base
 
   belongs_to :year_month

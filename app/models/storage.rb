@@ -1,5 +1,18 @@
+# == Schema Information
+#
+# Table name: storages
+#
+#  id         :integer          not null, primary key
+#  store_id   :integer
+#  name       :string(255)
+#  describe   :string(255)
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 class Storage < ActiveRecord::Base
   belongs_to :store
+
   has_many :stocks
 
   has_many :month_inventories

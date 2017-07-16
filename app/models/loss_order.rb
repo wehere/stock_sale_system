@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: loss_orders
+#
+#  id          :integer          not null, primary key
+#  storage_id  :integer
+#  loss_date   :datetime
+#  user_id     :integer
+#  delete_flag :boolean          default(FALSE)
+#  supplier_id :integer
+#  seller_id   :integer
+#  loss_type   :integer
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  memo        :string(1000)
+#
+
 class LossOrder < ActiveRecord::Base
   LOSS_TYPE = {
       3 => '仓库损耗',

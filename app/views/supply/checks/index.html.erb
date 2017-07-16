@@ -1,0 +1,29 @@
+<table>
+  <thead>
+    <th>id</th>
+    <th>关联盘盈单</th>
+    <th>关联盘亏单</th>
+    <th>仓库</th>
+    <th>分类</th>
+    <th>项数</th>
+    <th>状态</th>
+    <th>操作</th>
+  </thead>
+  <tbody>
+    <% @checks.each do |check| %>
+      <tr>
+        <td><%= link_to check.id, supply_check_path(check) %></td>
+        <th><%= link_to check.profit_other_order.id, supply_other_order_path(check.profit_other_order) if check.profit_other_order.present? %></th>
+        <th><%= link_to check.loss_other_order.id, supply_other_order_path(check.loss_other_order) if check.loss_other_order.present? %></th>
+        <td><%= check.storage.name %></td>
+        <td><%= check.category %></td>
+        <td><%= check.check_items_count %></td>
+        <td><%= check.status_i18n %></td>
+        <td><%= link_to '继续盘点', edit_supply_check_path(check) if check.draft? %>
+          <%= link_to '生成盘盈单', "#{new_supply_other_order_path}?check_id=#{check.id}&category=profit" if check.can_generate_profit? %>
+          <%= link_to '生成盘亏单', "#{new_supply_other_order_path}?check_id=#{check.id}&category=loss" if check.can_generate_loss? %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

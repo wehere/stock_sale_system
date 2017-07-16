@@ -1,0 +1,27 @@
+zh-CN:
+  activerecord:
+    models:
+      product_item: 产品项
+
+    errors:
+      models:
+        product_item:
+          attributes:
+            supplier:
+              blank: 关联供应商不能为空
+            other_order:
+              blank: 关联其他单据不能为空
+            general_product:
+              blank: 关联产品不能为空
+            product_name:
+              blank: 产品名称不能为空
+            quantity:
+              blank: 数量不能为空
+            unit:
+              blank: 单位不能为空
+            price:
+              blank: 价格不能为空
+            price:
+              blank: 金额小计不能为空
+            storage_quantity:
+              blank: 库存数量不能为空

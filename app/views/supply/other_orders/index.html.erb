@@ -1,0 +1,28 @@
+<% form_tag supply_other_orders_path do %>
+  <div class="row">
+    <div class="columns small-1"></div>
+  </div>
+
+<% end %>
+<table>
+  <thead>
+  <th>ID</th>
+  <th>关联盘点单</th>
+  <th>单据日期</th>
+  <th>类型</th>
+  <th>创建人</th>
+  <th>操作</th>
+  </thead>
+  <tbody>
+  <% @other_orders.each do |other_order| %>
+      <tr>
+        <td><%= link_to other_order.id, supply_other_order_path(other_order) %></td>
+        <td><%= link_to other_order.check_id, supply_check_path(other_order.check_id) %></td>
+        <td><%= other_order.io_at.strftime('%Y-%m-%d') %></td>
+        <td><%= other_order.category_i18n %></td>
+        <td><%= other_order.creator.user_name %></td>
+        <td><%= link_to '删除', supply_other_order_path(other_order), method: :delete, data: {confirm: '确定要删除吗？'} %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

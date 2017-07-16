@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  helper_method :current_company
+
   layout :layout
 
   require 'pp'
@@ -26,6 +28,10 @@ class ApplicationController < ActionController::Base
         # $@.to_logger
         return '貌似有一些问题，请联系系统管理员，微信 mbeslow'
     end
+  end
+
+  def current_company
+    current_user.company
   end
 
 

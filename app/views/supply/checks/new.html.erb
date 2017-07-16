@@ -1,0 +1,68 @@
+<h1>盘点</h1>
+
+<%= form_for(@check, url: new_supply_check_path, method: :get) do |f| %>
+  <div class="row">
+    <div class="columns small-1 text-right">
+      <%= label_tag 'checked_at', '盘点日期' %>
+    </div>
+    <div class="columns small-2 text-left">
+      <%= date_field_tag :checked_at, params[:checked_at] %>
+    </div>
+    <div class="columns small-1 text-right">
+      <%= label_tag 'category', '分类' %>
+    </div>
+    <div class="columns small-2 text-left">
+      <%= select_tag :category, options_for_select(@categories, params[:category]), include_blank: true %>
+    </div>
+    <div class="columns small-1 text-right">
+      <%= label_tag 'name', '产品名称' %>
+    </div>
+    <div class="columns small-2 text-left">
+      <%= text_field_tag :name, params[:name] %>
+    </div>
+    <div class="columns small-2">
+      <%= submit_tag '查询', class: 'button primary' %>
+    </div>
+  </div>
+<% end %>
+
+<%= form_tag supply_checks_path, method: :post, id: 'check_form', remote: true do %>
+    <%= hidden_field_tag 'check[status]' %>
+    <%= hidden_field_tag 'check[category]', params[:category] %>
+    <%= hidden_field_tag 'check[checked_at]', params[:checked_at] %>
+<table>
+  <thead>
+    <th width="40">序号</th>
+    <th width="200">产品名称</th>
+    <th width="50">单位</th>
+    <th width="75">库存数量</th>
+    <th width="75">实际库存</th>
+    <th width="50">差异</th>
+    <th width="200">备注</th>
+    <th width="100"></th>
+  </thead>
+  <% index = 1 %>
+<% @general_products.includes(:stock).each do |gp| %>
+      <% next if gp.stock.blank? %>
+      <%= hidden_field_tag "check[check_items_attributes][#{gp.id}][general_product_id]", gp.id %>
+      <%= hidden_field_tag "check[check_items_attributes][#{gp.id}][product_name]", gp.name %>
+      <%= hidden_field_tag "check[check_items_attributes][#{gp.id}][unit]", gp.mini_spec %>
+      <%= hidden_field_tag "check[check_items_attributes][#{gp.id}][storage_quantity]", gp.stock.real_weight %>
+      <%= hidden_field_tag "check[check_items_attributes][#{gp.id}][_destroy]", false %>
+
+  <tr>
+    <td><%= index %></td>
+    <td><%= gp.name %></td>
+    <td><%= gp.mini_spec %></td>
+    <td id="check_item_real_weight_<%= gp.id %>"><%= gp.stock.real_weight %></td>
+    <td><%= text_field_tag "check[check_items_attributes][#{gp.id}][quantity]", '', size: 2, class: 'check_items_quantity', data: {gpid: gp.id} %></td>
+    <td id="check_item_diff_<%= gp.id %>"></td>
+    <td><%= text_field_tag "check[check_items_attributes][#{gp.id}][note]", '', size: 5 %></td>
+  </tr>
+      <% index += 1 %>
+<% end %>
+</table>
+    <%= link_to '保存为草稿', 'javascript:void(0)', id: 'draft_check', class: 'button primary' %>
+    <%= link_to '提交', 'javascript:void(0)', id: 'submit_check', class: 'button primary' %>
+
+<% end %>

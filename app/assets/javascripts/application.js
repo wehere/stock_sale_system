@@ -16,5 +16,6 @@
 //= require foundation
 //= require turbolinks
 //= require zeroclipboard
+//= require lodash
 //= require_tree ./pc
 //= require_tree .

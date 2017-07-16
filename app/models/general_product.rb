@@ -1,3 +1,26 @@
+# == Schema Information
+#
+# Table name: general_products
+#
+#  id                     :integer          not null, primary key
+#  name                   :string(255)
+#  seller_id              :integer
+#  created_at             :datetime
+#  updated_at             :datetime
+#  supplier_id            :integer
+#  mini_spec              :string(255)
+#  another_seller_id      :integer
+#  pass                   :boolean
+#  is_valid               :boolean          default(TRUE)
+#  vendor                 :string(255)      default("未分配")
+#  location               :string(500)
+#  memo                   :string(1000)
+#  barcode                :string(255)
+#  current_purchase_price :float(24)        default(0.0)
+#  purchase_price_date    :date
+#  need_check             :boolean          default(TRUE)
+#
+
 class GeneralProduct < ActiveRecord::Base
   belongs_to :seller, foreign_key: "another_seller_id"
   belongs_to :company, foreign_key: :supplier_id

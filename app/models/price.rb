@@ -1,3 +1,24 @@
+# == Schema Information
+#
+# Table name: prices
+#
+#  id                          :integer          not null, primary key
+#  year_month_id               :integer
+#  customer_id                 :integer
+#  product_id                  :integer
+#  price                       :float(24)
+#  is_used                     :boolean
+#  created_at                  :datetime
+#  updated_at                  :datetime
+#  true_spec                   :string(255)
+#  supplier_id                 :integer
+#  print_times                 :integer          default(0)
+#  ratio                       :float(24)
+#  according_purchase_date     :date
+#  pre_according_purchase_date :date
+#  pre_price                   :float(24)
+#
+
 require "spreadsheet"
 class Price < ActiveRecord::Base
   belongs_to :year_month

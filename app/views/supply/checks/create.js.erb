@@ -1,0 +1,6 @@
+<% if @check.id.to_i >0 %>
+  renderFlash('<%= flash[:success] %>', 'success')
+  Turbolinks.visit('/supply/checks/<%= @check.id %>')
+<% else %>
+  renderFlash('<%= flash[:alert] %>', 'alert')
+<% end %>

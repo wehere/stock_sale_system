@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: purchase_order_items
+#
+#  id                :integer          not null, primary key
+#  purchase_order_id :integer
+#  product_id        :integer
+#  real_weight       :float(24)
+#  price             :float(24)
+#  money             :float(24)
+#  created_at        :datetime
+#  updated_at        :datetime
+#  plan_weight       :string(255)
+#  purchase_price_id :integer
+#  true_spec         :string(255)
+#
+
 class PurchaseOrderItem < ActiveRecord::Base
   # price里的值可能与对应的purchase_price的price值不同，所以用到price时，以item里的price为基准。
 

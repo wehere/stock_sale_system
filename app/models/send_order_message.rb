@@ -1,3 +1,22 @@
+# == Schema Information
+#
+# Table name: send_order_messages
+#
+#  id                :integer          not null, primary key
+#  supplier_id       :integer
+#  customer_id       :integer
+#  store_id          :integer
+#  user_id           :integer
+#  reach_date        :datetime
+#  order_type_id     :integer
+#  main_message      :text(65535)
+#  secondary_message :text(65535)
+#  is_valid          :boolean          default(TRUE)
+#  is_dealt          :boolean          default(FALSE)
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#
+
 class SendOrderMessage < ActiveRecord::Base
 
   DEALT_STATUS ={

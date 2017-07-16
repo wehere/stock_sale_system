@@ -1,0 +1,43 @@
+
+<div class="row">
+  <div class="columns small-2">仓库:<%= @check.storage.name %></div>
+  <div class="columns small-2">分类:<%= @check.category %></div>
+  <div class="columns small-2">盘点人:<%= @check.creator.user_name %></div>
+  <div class="columns small-2">盘点时间:<%= @check.checked_at %></div>
+  <div class="columns small-2">状态:<%= @check.status_i18n %></div>
+  <div class="columns small-2">盘点项数:<%= @check.check_items_count %></div>
+</div>
+<br/>
+<%= form_tag supply_check_path(@check), method: :put, id: 'check_form', remote: true do %>
+    <%= hidden_field_tag 'check[status]' %>
+
+<table>
+  <thead>
+  <th width="40">序号</th>
+  <th width="200">产品名称</th>
+  <th width="50">单位</th>
+  <th width="75">库存数量</th>
+  <th width="75">实际库存</th>
+  <th width="50">差异</th>
+  <th width="200">备注</th>
+  <th width="10"></th>
+  </thead>
+  <% @check.check_items.includes(:general_product).each_with_index do |check_item, index| %>
+      <%= hidden_field_tag "check[check_items_attributes][#{check_item.general_product_id}][id]", check_item.id %>
+      <%= hidden_field_tag "check[check_items_attributes][#{check_item.general_product_id}][storage_quantity]", check_item.general_product.stock.real_weight %>
+      <%= hidden_field_tag "check[check_items_attributes][#{check_item.general_product_id}][_destroy]", false %>
+      <tr>
+        <td><%= index + 1 %></td>
+        <td><%= check_item.product_name %></td>
+        <td><%= check_item.unit %></td>
+        <td id="check_item_real_weight_<%= check_item.general_product_id %>"><%= check_item.general_product.stock.real_weight %></td>
+        <td><%= text_field_tag "check[check_items_attributes][#{check_item.general_product_id}][quantity]", check_item.quantity, size: 2, class: 'check_items_quantity', data: {gpid: check_item.general_product_id} %></td>
+        <td id="check_item_diff_<%= check_item.general_product_id %>"><%= check_item.profit_or_loss %></td>
+        <td><%= text_field_tag "check[check_items_attributes][#{check_item.general_product_id}][note]", check_item.note, size: 5 %></td>
+      </tr>
+  <% end %>
+</table>
+    <%= link_to '保存为草稿', 'javascript:void(0)', id: 'draft_check', class: 'button primary' %>
+    <%= link_to '提交', 'javascript:void(0)', id: 'submit_check', class: 'button primary' %>
+
+<% end %>

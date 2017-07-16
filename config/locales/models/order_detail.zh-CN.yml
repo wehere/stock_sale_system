@@ -1,0 +1,12 @@
+zh-CN:
+  activerecord:
+    models:
+      order_detail: 单据项明细
+
+  enums:
+    order_detail:
+      detail_type:
+        other: 其他单据
+        in: 入库
+        out: 出库
+        loss: 损耗

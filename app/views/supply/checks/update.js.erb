@@ -1,0 +1,6 @@
+<% if @error.blank? %>
+  renderFlash('<%= @notice %>', 'success')
+  Turbolinks.visit('/supply/checks/<%= @check.id %>')
+<% else %>
+  renderFlash('<%= @error %>', 'alert')
+<% end %>

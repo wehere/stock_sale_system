@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: purchase_orders
+#
+#  id            :integer          not null, primary key
+#  storage_id    :integer
+#  purchase_date :datetime
+#  user_id       :integer
+#  delete_flag   :boolean
+#  created_at    :datetime
+#  updated_at    :datetime
+#  supplier_id   :integer
+#  seller_id     :integer
+#  memo          :string(500)
+#
+
 class PurchaseOrder < ActiveRecord::Base
 
   has_many :purchase_order_items

@@ -1,3 +1,25 @@
+# == Schema Information
+#
+# Table name: companies
+#
+#  id                     :integer          not null, primary key
+#  simple_name            :string(255)
+#  full_name              :string(255)
+#  phone                  :string(255)
+#  address                :string(255)
+#  created_at             :datetime
+#  updated_at             :datetime
+#  marks                  :string(1000)     default("未分类")
+#  vendors                :string(2000)     default("未分配")
+#  min_specs              :string(500)
+#  sub_specs              :string(500)
+#  except_company_ids     :string(255)      default("0")
+#  mail_address           :string(255)
+#  check_negative_stock   :boolean          default(FALSE)
+#  use_sale_ratio         :boolean          default(FALSE)
+#  check_repeated_product :boolean          default(FALSE)
+#
+
 class Company < ActiveRecord::Base
   has_many :users
   has_many :get_prices, foreign_key: 'customer_id', class_name: 'Price' #得到的价格
@@ -30,9 +52,15 @@ class Company < ActiveRecord::Base
   has_many :general_products, foreign_key: :supplier_id
   has_many :stocks, foreign_key: :supplier_id
 
+  has_many :storages, through: :stores
+
   has_many :month_inventories, foreign_key: :supplier_id
 
   has_many :employee_foods, foreign_key: :supplier_id
+
+  has_many :checks, foreign_key: :supplier_id
+
+  has_many :other_orders, foreign_key: :supplier_id
 
   #由eric添加
   has_many :purchase_prices, foreign_key: :supplier_id
@@ -60,6 +88,10 @@ class Company < ActiveRecord::Base
 
   def customer_count
     self.now_customers.count
+  end
+
+  def categories
+    marks.split(',')
   end
 
   # 管理员创建客户

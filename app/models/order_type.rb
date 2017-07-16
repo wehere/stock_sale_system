@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: order_types
+#
+#  id          :integer          not null, primary key
+#  customer_id :integer
+#  name        :string(255)
+#  created_at  :datetime
+#  updated_at  :datetime
+#  supplier_id :integer
+#  delete_flag :boolean
+#
+
 class OrderType < ActiveRecord::Base
   has_many :orders
   belongs_to :supplier, class_name: 'Company', foreign_key: 'supplier_id'

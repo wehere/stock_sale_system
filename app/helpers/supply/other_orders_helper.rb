@@ -1,0 +1,2 @@
+module Supply::OtherOrdersHelper
+end

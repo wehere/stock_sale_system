@@ -1,14 +1,44 @@
+# == Schema Information
+#
+# Table name: order_details
+#
+#  id                 :integer          not null, primary key
+#  supplier_id        :integer
+#  related_company_id :integer
+#  order_id           :integer
+#  detail_type        :integer
+#  detail_date        :datetime
+#  item_id            :integer
+#  product_id         :integer
+#  price              :float(24)
+#  plan_weight        :string(255)
+#  real_weight        :float(24)
+#  money              :float(24)
+#  delete_flag        :boolean
+#  created_at         :datetime
+#  updated_at         :datetime
+#  true_spec          :string(255)
+#  memo               :string(500)
+#
+
 class OrderDetail < ActiveRecord::Base
   # price 与 对应purchase_price的price可能不一样。所以用到price时以此price为准。
 
   belongs_to :product
+
   belongs_to :supplier, foreign_key: :supplier_id, class_name: 'Company'
+
+  belongs_to :storage
 
   ORDER_TYPE = {
       1 => '入库',
       2 => '出库',
       3 => '损耗'
   }
+
+  enum detail_type: [:default_type, :in, :out, :loss, :check_profit, :check_loss]
+
+  after_save :update_stock
 
   after_create :change_month_inventory_for_create
 
@@ -17,6 +47,18 @@ class OrderDetail < ActiveRecord::Base
   after_destroy :change_month_inventory_for_destroy
 
   scope :valid, ->{where("delete_flag is null or delete_flag = 0")}
+
+  def update_stock
+    if (check_profit? || check_loss?)
+      stock = Stock.where(general_product: product.general_product, storage: storage, supplier: supplier).first
+      if delete_flag?
+        stock.real_weight -= real_weight
+      else
+        stock.real_weight += real_weight
+        end
+      stock.save!
+    end
+  end
 
   def change_month_inventory_for_create
     year_month = YearMonth.year_month(self.detail_date)

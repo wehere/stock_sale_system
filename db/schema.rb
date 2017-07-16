@@ -10,7 +10,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170613144958) do
+ActiveRecord::Schema.define(version: 20170716180912) do
+
+  create_table "check_items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "check_id"
+    t.integer  "general_product_id"
+    t.string   "product_name"
+    t.string   "unit"
+    t.float    "storage_quantity",   limit: 24
+    t.float    "quantity",           limit: 24
+    t.float    "profit_or_loss",     limit: 24
+    t.integer  "check_item_type"
+    t.string   "note"
+    t.datetime "deleted_at"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  create_table "checks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "supplier_id"
+    t.integer  "storage_id"
+    t.string   "category"
+    t.integer  "creator_id"
+    t.integer  "check_items_count"
+    t.integer  "status"
+    t.date     "checked_at",                     comment: "盘点日期"
+    t.datetime "deleted_at"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
 
   create_table "comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "order_id"
@@ -162,6 +190,7 @@ ActiveRecord::Schema.define(version: 20170613144958) do
 
   create_table "order_details", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "supplier_id"
+    t.integer  "storage_id"
     t.integer  "related_company_id"
     t.integer  "order_id"
     t.integer  "detail_type"
@@ -217,6 +246,19 @@ ActiveRecord::Schema.define(version: 20170613144958) do
     t.boolean  "is_confirm"
   end
 
+  create_table "other_orders", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "supplier_id"
+    t.integer  "storage_id"
+    t.integer  "check_id"
+    t.datetime "io_at"
+    t.integer  "creator_id"
+    t.integer  "category"
+    t.datetime "deleted_at"
+    t.text     "note",        limit: 65535
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
   create_table "price_change_histories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "price_id"
     t.float    "from_price",  limit: 24
@@ -248,6 +290,20 @@ ActiveRecord::Schema.define(version: 20170613144958) do
     t.integer "supplier_id"
     t.integer "customer_id"
     t.string  "notice",      limit: 2000
+  end
+
+  create_table "product_items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "supplier_id"
+    t.integer  "other_order_id"
+    t.integer  "general_product_id"
+    t.string   "product_name"
+    t.float    "quantity",           limit: 24
+    t.string   "unit"
+    t.float    "price",              limit: 24
+    t.float    "amount",             limit: 24
+    t.datetime "deleted_at"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
   end
 
   create_table "products", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: loss_order_items
+#
+#  id            :integer          not null, primary key
+#  loss_order_id :integer
+#  product_id    :integer
+#  real_weight   :float(24)
+#  price         :float(24)
+#  money         :float(24)
+#  loss_price_id :integer
+#  true_spec     :string(255)
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
+
 class LossOrderItem < ActiveRecord::Base
 
   belongs_to :loss_order

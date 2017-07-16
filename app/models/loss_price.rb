@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: loss_prices
+#
+#  id          :integer          not null, primary key
+#  supplier_id :integer
+#  seller_id   :integer
+#  is_used     :boolean
+#  true_spec   :string(255)
+#  price       :float(24)
+#  product_id  :integer
+#  ratio       :float(24)
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
+
 class LossPrice < ActiveRecord::Base
   belongs_to :product
   has_many :loss_order_items

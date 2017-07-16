@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: sellers
+#
+#  id          :integer          not null, primary key
+#  name        :string(255)
+#  shop_name   :string(255)
+#  phone       :string(255)
+#  address     :string(255)
+#  created_at  :datetime
+#  updated_at  :datetime
+#  supplier_id :integer
+#  sort_number :integer          default(0)
+#  delete_flag :boolean
+#
+
 class Seller < ActiveRecord::Base
   has_many :general_products, foreign_key: 'another_seller_id'
   belongs_to :company, foreign_key: :supplier_id

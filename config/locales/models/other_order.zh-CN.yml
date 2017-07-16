@@ -1,0 +1,17 @@
+zh-CN:
+  activerecord:
+    models:
+      other_order: 其他单据
+
+    errors:
+      models:
+        other_order:
+          attributes:
+            check:
+              invalid: 该盘点单已经生成过盘盈单或者盘亏单了
+
+  enums:
+    other_order:
+      category:
+        profit: 盘盈
+        loss: 盘亏
