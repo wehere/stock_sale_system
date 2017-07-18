@@ -1,0 +1,10 @@
+<% if @error.blank? %>
+renderFlash('<%= flash[:success] %>', 'success')
+
+if ($('body').attr('id') == 'supply-checks-show')
+  Turbolinks.visit('<%= supply_checks_path %>')
+else
+$("#tr_<%= params[:id] %>").html('')
+<% else %>
+renderFlash('<%= @error %>', 'alert')
+<% end %>

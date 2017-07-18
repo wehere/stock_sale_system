@@ -70,6 +70,12 @@ class Supply::ChecksController < BaseController
   end
 
   def destroy
+    @check = current_company.checks.draft.find(params[:id])
+    if @check.destroy
+      flash[:success] = '删除成功'
+    else
+      @error = "删除失败,#{@check.errors.messages.values.flatten.first}"
+    end
   end
 
   private

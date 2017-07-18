@@ -1,6 +1,7 @@
 <div class="row">
   <% if @check.draft? %>
-    <%= link_to '继续盘点', edit_supply_check_path(@check), class: 'button btn-primary' %>
+      <%= link_to '继续盘点', edit_supply_check_path(@check), class: 'button btn-primary' %>
+      <%= link_to '删除', supply_check_path(@check), method: :delete, remote: true, data: {confirm: '确定删除此盘点吗'}, class: 'button btn-primary' %>
   <% end %>
   <% if @check.submitted? %>
     <%= link_to '生成盘盈单', "#{new_supply_other_order_path}?check_id=#{@check.id}&category=profit", class: 'button btn-primary' if @has_profit && @check.profit_other_order.blank? %>

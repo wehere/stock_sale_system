@@ -12,7 +12,7 @@
   </thead>
   <tbody>
     <% @checks.each do |check| %>
-      <tr>
+      <tr id="tr_<%= check.id %>">
         <td><%= link_to check.id, supply_check_path(check) %></td>
         <th><%= link_to check.profit_other_order.id, supply_other_order_path(check.profit_other_order) if check.profit_other_order.present? %></th>
         <th><%= link_to check.loss_other_order.id, supply_other_order_path(check.loss_other_order) if check.loss_other_order.present? %></th>
@@ -21,7 +21,9 @@
         <td><%= check.checked_at.strftime('%Y-%m-%d') %></td>
         <td><%= check.check_items_count %></td>
         <td><%= check.status_i18n %></td>
-        <td><%= link_to '继续盘点', edit_supply_check_path(check) if check.draft? %>
+        <td>
+          <%= link_to '继续盘点', edit_supply_check_path(check) if check.draft? %>
+          <%= link_to '删除', supply_check_path(check), method: :delete, remote: true, data: {confirm: '确定删除此盘点吗'} if check.draft? %>
           <%= link_to '生成盘盈单', "#{new_supply_other_order_path}?check_id=#{check.id}&category=profit" if check.can_generate_profit? %>
           <%= link_to '生成盘亏单', "#{new_supply_other_order_path}?check_id=#{check.id}&category=loss" if check.can_generate_loss? %>
         </td>
