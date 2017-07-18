@@ -5,6 +5,7 @@
     <th>关联盘亏单</th>
     <th>仓库</th>
     <th>分类</th>
+    <th>盘点日期</th>
     <th>项数</th>
     <th>状态</th>
     <th>操作</th>
@@ -17,6 +18,7 @@
         <th><%= link_to check.loss_other_order.id, supply_other_order_path(check.loss_other_order) if check.loss_other_order.present? %></th>
         <td><%= check.storage.name %></td>
         <td><%= check.category %></td>
+        <td><%= check.checked_at.strftime('%Y-%m-%d') %></td>
         <td><%= check.check_items_count %></td>
         <td><%= check.status_i18n %></td>
         <td><%= link_to '继续盘点', edit_supply_check_path(check) if check.draft? %>
@@ -27,3 +29,5 @@
     <% end %>
   </tbody>
 </table>
+
+<%= will_paginate @checks, :class => 'flickr_pagination' ,:previous_label => '上一页', :next_label => '下一页'%>

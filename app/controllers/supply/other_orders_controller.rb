@@ -4,7 +4,7 @@ class Supply::OtherOrdersController < BaseController
 
   def index
     @title = '盘盈盘亏列表'
-    @other_orders = current_company.other_orders.order(updated_at: :desc)
+    @other_orders = current_company.other_orders.order(updated_at: :desc).paginate(per_page: 10, page: params[:page])
   end
 
   def new

@@ -4,7 +4,7 @@ class Supply::ChecksController < BaseController
 
   def index
     @title = '盘点列表'
-    @checks = current_company.checks.order(updated_at: :desc)
+    @checks = current_company.checks.order(updated_at: :desc).paginate(per_page: 10, page: params[:page])
   end
 
   def new

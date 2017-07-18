@@ -26,8 +26,8 @@
       <%= hidden_field_tag "check[check_items_attributes][#{check_item.general_product_id}][id]", check_item.id %>
       <%= hidden_field_tag "check[check_items_attributes][#{check_item.general_product_id}][storage_quantity]", check_item.general_product.stock.real_weight %>
       <%= hidden_field_tag "check[check_items_attributes][#{check_item.general_product_id}][_destroy]", false %>
-      <tr>
-        <td><%= index + 1 %></td>
+      <tr id="tr_<%= check_item.general_product_id %>">
+        <td><%= index + 1 %>&nbsp;&nbsp;<%= link_to 'x', 'javascript:void(0)', title: '删除', class: 'delete_check_item', data: {gpid: check_item.general_product_id} %></td>
         <td><%= check_item.product_name %></td>
         <td><%= check_item.unit %></td>
         <td id="check_item_real_weight_<%= check_item.general_product_id %>"><%= check_item.general_product.stock.real_weight %></td>

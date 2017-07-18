@@ -21,6 +21,11 @@ initCheck = ->
       $("#check_status").val('submitted')
       $('#check_form').submit()
 
+  $('body').on 'click', '.delete_check_item', ->
+    gp_id = $(this).data('gpid')
+    $("#tr_#{gp_id}").html('')
+    $("#check_check_items_attributes_#{gp_id}__destroy").val(true)
+
 initCheckDiff = ->
   quantity_arr = $('.check_items_quantity')
   return false if quantity_arr?.length is 0

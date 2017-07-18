@@ -50,8 +50,8 @@
       <%= hidden_field_tag "check[check_items_attributes][#{gp.id}][storage_quantity]", gp.stock.real_weight %>
       <%= hidden_field_tag "check[check_items_attributes][#{gp.id}][_destroy]", false %>
 
-  <tr>
-    <td><%= index %></td>
+  <tr id="tr_<%= gp.id %>">
+    <td><%= index %>&nbsp;&nbsp;<%= link_to 'x', 'javascript:void(0)', title: '删除', class: 'delete_check_item', data: {gpid: gp.id} %></td>
     <td><%= gp.name %></td>
     <td><%= gp.mini_spec %></td>
     <td id="check_item_real_weight_<%= gp.id %>"><%= gp.stock.real_weight %></td>

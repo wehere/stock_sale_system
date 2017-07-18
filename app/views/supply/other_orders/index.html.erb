@@ -1,3 +1,5 @@
+
+
 <% form_tag supply_other_orders_path do %>
   <div class="row">
     <div class="columns small-1"></div>
@@ -26,3 +28,5 @@
   <% end %>
   </tbody>
 </table>
+
+<%= will_paginate @other_orders, :class => 'flickr_pagination' ,:previous_label => '上一页', :next_label => '下一页'%>
