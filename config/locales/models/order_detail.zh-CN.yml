@@ -9,4 +9,7 @@ zh-CN:
         other: 其他单据
         in: 入库
         out: 出库
-        loss: 损耗
+        storage_loss: 仓库损耗
+        sale_loss: 销售损耗
+        check_profit: 盘盈
+        check_loss: 盘亏

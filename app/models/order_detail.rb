@@ -36,7 +36,7 @@ class OrderDetail < ActiveRecord::Base
       3 => '损耗'
   }
 
-  enum detail_type: [:default_type, :in, :out, :loss, :check_profit, :check_loss]
+  enum detail_type: [:default_type, :in, :out, :storage_loss, :sale_loss, :check_profit, :check_loss]
 
   after_save :update_stock
 

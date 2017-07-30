@@ -269,8 +269,8 @@ class Product < ActiveRecord::Base
           loss_money += od.money
         end
       end
-      average_in_price = in_money/(in_weight*1.0)
-      average_out_price = out_money/(out_weight*1.0)
+      average_in_price = in_weight == 0.0 ? '' : in_money/(in_weight*1.0)
+      average_out_price = out_weight == 0.0 ? '' : out_money/(out_weight*1.0)
       problem = average_out_price <= average_in_price ? '有' : ''
 
       hash[gp.products.first.mark] << {
