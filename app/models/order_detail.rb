@@ -46,7 +46,7 @@ class OrderDetail < ActiveRecord::Base
 
   after_destroy :change_month_inventory_for_destroy
 
-  scope :valid, ->{where("delete_flag is null or delete_flag = 0")}
+  scope :valid, ->{where('delete_flag is null or delete_flag = 0')}
 
   def update_stock
     if (check_profit? || check_loss?)

@@ -39,11 +39,11 @@ class Check < ApplicationRecord
 
   def uniq_category_other_order
     profit_orders = OtherOrder.where(category: :profit, check_id: self.id)
-    if profit_orders.size > 0
+    if profit_orders.size > 1
       errors.add(:id, '该盘点单已经生成了盘盈单')
     end
     loss_orders = OtherOrder.where(category: :loss, check_id: self.id)
-    if loss_orders.size > 0
+    if loss_orders.size > 1
       errors.add(:id, '该盘点单已经生成了盘亏单')
     end
   end

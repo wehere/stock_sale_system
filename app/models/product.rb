@@ -247,6 +247,10 @@ class Product < ActiveRecord::Base
       out_money = 0.0
       loss_weight = 0.0
       loss_money = 0.0
+      check_profit_weight = 0.0
+      check_profit_money = 0.0
+      check_loss_weight = 0.0
+      check_loss_money = 0.0
       gp.products.each do |product|
         # 入
         order_details.where(product_id: product.id).where(detail_type: 1).each do |od|
@@ -268,6 +272,19 @@ class Product < ActiveRecord::Base
           loss_weight += od.real_weight * ratio
           loss_money += od.money
         end
+
+        # 盘盈
+        order_details.where(product_id: product.id).check_profit.each do |od|
+          check_profit_weight += od.real_weight
+          check_profit_money += od.money
+        end
+
+        # 盘亏
+        order_details.where(product_id: product.id).check_loss.each do |od|
+          check_loss_weight += od.real_weight
+          check_loss_money += od.money
+        end
+
       end
       average_in_price = in_weight == 0.0 ? 0.0 : in_money/(in_weight*1.0)
       average_out_price = out_weight == 0.0 ? 0.0 : out_money/(out_weight*1.0)
@@ -284,7 +301,11 @@ class Product < ActiveRecord::Base
           'problem' => problem.to_s,
           'mini_spec' => gp.mini_spec,
           'loss_weight' => loss_weight.round(2).to_s,
-          'loss_money' => loss_money.round(2).to_s
+          'loss_money' => loss_money.round(2).to_s,
+          'check_profit_weight' => check_profit_weight.round(2).to_s,
+          'check_profit_money' => check_profit_money.round(2).to_s,
+          'check_loss_weight' => check_loss_weight.round(2).to_s,
+          'check_loss_money' => check_loss_money.round(2).to_s,
       }
     end
 
@@ -302,9 +323,21 @@ class Product < ActiveRecord::Base
 
         sheet.merge_cells(current_row, 0, current_row+1, 0)
         sheet.row(current_row).set_format(0, in_center)
-        sheet.row(current_row).push gp['name'], "入库数量/#{gp['mini_spec']}", '入库金额/元', '入库均价', "出库数量/#{gp['mini_spec']}", "出库金额/元", '出库均价', '是否有问题', "损耗数量/#{gp['mini_spec']}", '损耗金额/元'
+        sheet.row(current_row).push gp['name'],
+                                    "入库数量/#{gp['mini_spec']}", '入库金额/元', '入库均价',
+                                    "出库数量/#{gp['mini_spec']}", '出库金额/元', '出库均价',
+                                    '是否有问题',
+                                    "损耗数量/#{gp['mini_spec']}", '损耗金额/元',
+                                    "盘盈数量/#{gp['mini_spec']}", '盘盈金额/元',
+                                    "盘亏数量/#{gp['mini_spec']}", '盘亏金额/元'
         current_row += 1
-        sheet.row(current_row).push gp[name], gp['in_weight'], gp['in_money'], gp['average_in_price'], gp['out_weight'], gp['out_money'], gp['average_out_price'], gp['problem'], gp['loss_weight'], gp['loss_money']
+        sheet.row(current_row).push gp[name],
+                                    gp['in_weight'], gp['in_money'], gp['average_in_price'],
+                                    gp['out_weight'], gp['out_money'], gp['average_out_price'],
+                                    gp['problem'],
+                                    gp['loss_weight'], gp['loss_money'],
+                                    gp['check_profit_weight'], gp['check_profit_money'],
+                                    gp['check_loss_weight'], gp['check_loss_money']
         current_row += 1
       end
     end
