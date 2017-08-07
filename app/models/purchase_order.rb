@@ -50,7 +50,7 @@ class PurchaseOrder < ActiveRecord::Base
   end
 
   def sum_money
-    PurchaseOrder.joins(:purchase_order_items).where(id: self.id).sum("purchase_order_items.money").round(2)
+    PurchaseOrder.joins(:purchase_order_items).where(id: self.id).sum('purchase_order_items.money').round(2)
   end
 
   def delete_self current_user

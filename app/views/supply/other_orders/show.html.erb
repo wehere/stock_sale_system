@@ -22,7 +22,7 @@
       <td><%= product_item.unit %></td>
       <td><%= product_item.quantity %></td>
       <td><%= product_item.price %></td>
-      <td><%= product_item.amount %></td>
+      <td><%= product_item.amount.round(2) %></td>
     </tr>
     <% end %>
   </tbody>

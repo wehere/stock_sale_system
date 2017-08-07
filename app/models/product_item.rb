@@ -29,7 +29,7 @@ class ProductItem < ApplicationRecord
   validates :supplier, :other_order, :general_product, :product_name, :quantity, :unit, :price, :amount, presence: true
 
   after_initialize do
-    self.amount = quantity.to_f * price.to_f
+    self.amount = (quantity.to_f * price.to_f).round(2)
   end
 
   after_commit :delete_order_detail_if_deleted, prepend: true
