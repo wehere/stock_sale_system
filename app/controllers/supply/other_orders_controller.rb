@@ -4,7 +4,9 @@ class Supply::OtherOrdersController < BaseController
 
   def index
     @title = '盘盈盘亏列表'
-    @other_orders = current_company.other_orders.order(updated_at: :desc).paginate(per_page: 10, page: params[:page])
+    @other_orders = current_company.other_orders.query_by(params.permit(:start_date, :end_date, :category))
+    @other_orders = @other_orders.order(updated_at: :desc).paginate(per_page: 10, page: params[:page])
+    @total_amount = @other_orders.sum(:total_amount).round(2)
   end
 
   def new

@@ -54,5 +54,25 @@ class OtherOrder < ApplicationRecord
                       delete_flag: false,
                       true_spec: product_item.unit
     end
+
+    self.update_columns total_amount: product_items.sum(:amount).round(2)
+  end
+
+  def self.query_by(options = {})
+    scope = self.all
+
+    if options[:start_date].present?
+      scope = scope.where('io_at >= ?', options[:start_date].to_date.beginning_of_day)
+    end
+
+    if options[:end_date].present?
+      scope = scope.where('io_at <= ?', options[:end_date].to_date.end_of_day)
+    end
+
+    if options[:category].present?
+      scope = scope.where(category: options[:category])
+    end
+
+    scope
   end
 end

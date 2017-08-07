@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170716180912) do
+ActiveRecord::Schema.define(version: 20170807131622) do
 
   create_table "check_items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "check_id"
@@ -90,7 +90,7 @@ ActiveRecord::Schema.define(version: 20170716180912) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
   end
 
-  create_table "ding_scores", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "ding_scores", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.date     "uploaded_at"
     t.integer  "rank"
     t.float    "health",            limit: 24
@@ -254,9 +254,10 @@ ActiveRecord::Schema.define(version: 20170716180912) do
     t.integer  "creator_id"
     t.integer  "category"
     t.datetime "deleted_at"
-    t.text     "note",        limit: 65535
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.string   "note"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.float    "total_amount", limit: 24
   end
 
   create_table "price_change_histories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

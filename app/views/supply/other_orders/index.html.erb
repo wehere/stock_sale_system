@@ -1,8 +1,14 @@
 
 
-<% form_tag supply_other_orders_path do %>
+<%= form_tag supply_other_orders_path, method: :get do %>
   <div class="row">
-    <div class="columns small-1"></div>
+    <div class="columns small-1">时间区间</div>
+    <div class="columns small-2"><%= date_field_tag :start_date, params[:start_date] %></div>
+    <div class="columns small-1">至</div>
+    <div class="columns small-2"><%= date_field_tag :end_date, params[:end_date] %></div>
+    <div class="columns small-1">类型</div>
+    <div class="columns small-2"><%= select_tag :category, options_from_collection_for_select(OtherOrder.categories_i18n.to_a, 'first', 'last', params[:category]), prompt: '所有' %></div>
+    <div class="columns small-2"><%= submit_tag '查询', class: 'button primary' %></div>
   </div>
 
 <% end %>
@@ -12,6 +18,7 @@
   <th>关联盘点单</th>
   <th>单据日期</th>
   <th>类型</th>
+  <th>金额</th>
   <th>创建人</th>
   <th>操作</th>
   </thead>
@@ -22,11 +29,23 @@
         <td><%= link_to other_order.check_id, supply_check_path(other_order.check_id) %></td>
         <td><%= other_order.io_at.strftime('%Y-%m-%d') %></td>
         <td><%= other_order.category_i18n %></td>
+        <td><%= other_order.total_amount %></td>
         <td><%= other_order.creator.user_name %></td>
         <td><%= link_to '删除', supply_other_order_path(other_order), method: :delete, data: {confirm: '确定要删除吗？'} %></td>
       </tr>
   <% end %>
   </tbody>
+  <tfoot>
+  <tr>
+    <td>总计</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td><%= @total_amount %></td>
+    <td></td>
+    <td></td>
+  </tr>
+  </tfoot>
 </table>
 
 <%= will_paginate @other_orders, :class => 'flickr_pagination' ,:previous_label => '上一页', :next_label => '下一页'%>
