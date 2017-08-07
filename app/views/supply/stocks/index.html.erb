@@ -1,11 +1,25 @@
 <%= form_tag '/supply/stocks', method: :get do %>
-    产品名称
-    <%= text_field_tag 'product_name', params[:product_name], class: 'sx-display-inline sx-width-auto'  %>
+    <div class="row">
+    <div class="columns small-1">产品名称</div>
+    <div class="columns small-2">
+      <%= text_field_tag 'product_name', params[:product_name], class: 'sx-display-inline sx-width-auto'  %>
+    </div>
+    <div class="columns small-1">分类</div>
+    <div class="columns small-2">
+      <%= select_tag 'category', options_from_collection_for_select(current_company.categories, 'to_s', 'to_s', params[:category]), prompt: '所有' %>
+    </div>
+
     <%= submit_tag '查询', class: "button primary" %>
+    </div>
 <% end %>
 <table class="table">
   <thead>
-    <th>产品名称</th><th>仓库</th><th>单位</th><th>库存量</th>
+    <th>产品名称</th>
+    <th>仓库</th>
+    <th>单位</th>
+    <th>库存量</th>
+    <th>最后一次入库价</th>
+    <th>金额小计</th>
   </thead>
   <tbody>
     <% @stocks.order(updated_at: :desc).eager_load(:general_product, :storage).each do |stock| %>
@@ -14,7 +28,21 @@
           <td><%= stock.storage.name %></td>
           <td><%= stock.general_product.mini_spec %></td>
           <td><%= stock.real_weight %></td>
+          <td><%= stock.general_product.current_purchase_price %></td>
+          <td><%= ((stock.general_product.current_purchase_price||0)&.to_f * stock.real_weight).round(2) %></td>
         </tr>
     <% end %>
   </tbody>
+  <tfoot>
+    <tr>
+      <td>总计</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><%= @total_amount %></td>
+    </tr>
+  </tfoot>
 </table>
+
+<%= will_paginate @stocks, :class => 'flickr_pagination' ,:previous_label => '上一页', :next_label => '下一页'%>
