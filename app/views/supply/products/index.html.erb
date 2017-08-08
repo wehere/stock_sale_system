@@ -45,7 +45,7 @@
       </tr>
   <% end %>
     </table>
-    <%= will_paginate @products, :class => 'flickr_pagination', :previous_label => '<<上一页', :next_label => '下一页>>' %>
+    <%= will_paginate @products, :class => 'flickr_pagination', :previous_label => '<<上一页', :next_label => '下一页>>', renderer: FoundationPagination::Rails %>
   <% end %>
 
 <script language="javascript">

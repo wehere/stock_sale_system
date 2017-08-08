@@ -38,7 +38,7 @@
   </tbody>
 </table>
 
-<%= will_paginate @order_items, :class => 'flickr_pagination' ,:previous_label => '上一页', :next_label => '下一页' unless @order_items.blank? %>
+<%= will_paginate @order_items, :class => 'flickr_pagination' ,:previous_label => '上一页', :next_label => '下一页', renderer: FoundationPagination::Rails unless @order_items.blank? %>
 
 <script language="javascript">
 //  function destroy_order_item(order_item_id){

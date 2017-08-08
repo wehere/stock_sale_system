@@ -1,4 +1,4 @@
-<%= will_paginate @general_products, :class => 'flickr_pagination', :previous_label => '上一页', :next_label => '下一页' unless @general_products.blank? %>
+<%= will_paginate @general_products, :class => 'flickr_pagination', :previous_label => '上一页', :next_label => '下一页', renderer: FoundationPagination::Rails unless @general_products.blank? %>
 
 <table class="table">
   <thead>
@@ -77,7 +77,7 @@
 
 
 
-<%= will_paginate @general_products, :class => 'flickr_pagination', :previous_label => '上一页', :next_label => '下一页' unless @general_products.blank? %>
+<%= will_paginate @general_products, :class => 'flickr_pagination', :previous_label => '上一页', :next_label => '下一页', renderer: FoundationPagination::Rails unless @general_products.blank? %>
 
 <style>
     table{border-collapse:collapse;border-spacing:0;border-left:1px solid #888;border-top:1px solid #888;background:#efefef;}

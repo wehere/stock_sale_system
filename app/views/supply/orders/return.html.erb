@@ -47,4 +47,4 @@
   <% end unless @orders.blank? %>
 </table>
 
-<%= will_paginate @orders, :class => 'flickr_pagination' ,:previous_label => '上一页', :next_label => '下一页' unless @orders.blank? %>
+<%= will_paginate @orders, :class => 'flickr_pagination' ,:previous_label => '上一页', :next_label => '下一页', renderer: FoundationPagination::Rails unless @orders.blank? %>

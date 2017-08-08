@@ -59,7 +59,7 @@
   <% end unless @prices.blank? %>
   </tbody>
 </table>
-<%= will_paginate @prices, :class => 'flickr_pagination', :previous_label => '上一页', :next_label => '下一页' unless @prices.blank? %>
+<%= will_paginate @prices, :class => 'flickr_pagination', :previous_label => '上一页', :next_label => '下一页', renderer: FoundationPagination::Rails unless @prices.blank? %>
 
 
 <script language="javascript">
