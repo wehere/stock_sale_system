@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170807131622) do
+ActiveRecord::Schema.define(version: 20170828135845) do
 
   create_table "check_items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "check_id"
@@ -407,6 +407,7 @@ ActiveRecord::Schema.define(version: 20170807131622) do
     t.float    "real_weight",         limit: 24
     t.float    "min_weight",          limit: 24
     t.float    "last_purchase_price", limit: 24
+    t.datetime "deleted_at",                     comment: "删除时间"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "supplier_id"

@@ -14,6 +14,9 @@
 #
 
 class Stock < ActiveRecord::Base
+
+  acts_as_paranoid
+
   belongs_to :supplier, foreign_key: :supplier_id, class_name: :Company
   belongs_to :general_product
   belongs_to :storage
